@@ -1,0 +1,57 @@
+:root {
+  --max-width: 1100px;
+  --border-radius: 10px;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono',
+    'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --gradient-wrapper: linear-gradient(140deg, #6734c3 0%, #d355de 100%);
+  --primary-rgb: 235, 0, 255;
+  --background-rgb: 240, 240, 240;
+  --card-rgb: #fafafa;
+  --error-color: rgb(190, 33, 33);
+  --foreground-rgb: 167, 122, 223;
+  --title-start-rgb: 40, 40, 40;
+  --callout-rgb: 215, 215, 215;
+  --check-rgb: 233, 64, 87;
+  --link-color: #0080ff;
+  --text-color: #000000;
+  --border-color: #d7d7d7;
+  --border-color-high: #d7d7d7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gradient-wrapper: linear-gradient(140deg, #6734c3 0%, #d355de 100%);
+    --primary-rgb: 235, 0, 255;
+    --background-rgb: 0, 0, 0;
+    --card-rgb: #1d1d1d;
+    --error-color: rgb(223, 0, 11);
+    --foreground-rgb: 167, 122, 223;
+    --title-start-rgb: 255, 255, 255;
+    --callout-rgb: 215, 215, 215;
+    --check-rgb: 233, 64, 87;
+    --text-color: #ffffff;
+    --link-color: #0080ff;
+    --border-color: rgba(61, 61, 61, 0.34);
+    --border-color-high: rgba(61, 61, 61, 1);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(var(--background-rgb));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
