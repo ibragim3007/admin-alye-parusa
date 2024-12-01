@@ -21,17 +21,17 @@ export const apiConfig = {
   client: {
     get: {
       clients: '/clients',
-      client: (id: IdType) => `/clients/${id}`,
+      clientId: (id: IdType) => `/clients/${id}`,
     },
     post: {
       clients: '/clients',
     },
     delete: {
       clients: '/clients',
-      clientsID: (id: IdType) => `/clients/${id}`,
+      clientId: (id: IdType) => `/clients/${id}`,
     },
     put: {
-      clients: (id: IdType) => `/clients/${id}`,
+      clientId: (id: IdType) => `/clients/${id}`,
     },
   },
   dictionary: {

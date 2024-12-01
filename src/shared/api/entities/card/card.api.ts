@@ -6,7 +6,7 @@ import {
   CardChangeStatusDto,
   CardCreateDto,
 } from './types/req.type';
-import { CardGetDto } from './types/res.type';
+import { CardBalanceResponseDto, CardGetDto } from './types/res.type';
 
 export async function getCards() {
   return (await api.get<Promise<CardGetDto[]>>(apiConfig.card.get.cards)).data;
@@ -21,7 +21,7 @@ export async function deleteCard(id: number) {
 }
 
 export async function getBalance(id: number) {
-  return (await api.get<Promise<CardGetDto[]>>(apiConfig.card.get.balance(id))).data;
+  return (await api.get<Promise<CardBalanceResponseDto>>(apiConfig.card.get.balance(id))).data;
 }
 
 export async function changeCardStatus(id: number, params: CardChangeStatusDto) {
