@@ -3,35 +3,35 @@ type IdType = number;
 export const apiConfig = {
   card: {
     get: {
-      cards: '/cards',
-      balance: (id: IdType) => `/cards/${id}/balance`,
-      bonusExpectation: (id: IdType) => `/cards/${id}/bonus-expectation`,
-      bonusSpendingAllowed: (id: IdType) => `/cards/${id}/bonus-spending-allowed`,
+      cards: '/api/cards',
+      balance: (id: IdType) => `/api/cards/${id}/balance`,
+      bonusExpectation: (id: IdType) => `/api/cards/${id}/bonus-expectation`,
+      bonusSpendingAllowed: (id: IdType) => `/api/cards/${id}/bonus-spending-allowed`,
     },
     post: {
-      cards: '/cards',
-      changeStatus: (id: IdType) => `/cards/${id}/change-status`,
-      updateBonusPercentage: (id: IdType) => `/cards/${id}/update-bonus-percentage`,
+      cards: '/api/cards',
+      changeStatus: (id: IdType) => `/api/cards/${id}/change-status`,
+      updateBonusPercentage: (id: IdType) => `/api/cards/${id}/update-bonus-percentage`,
     },
     delete: {
-      cards: '/cards',
-      cardsId: (id: IdType) => `/cards/${id}`,
+      cards: '/api/cards',
+      cardsId: (id: IdType) => `/api/cards/${id}`,
     },
   },
   client: {
     get: {
-      clients: '/clients',
-      clientId: (id: IdType) => `/clients/${id}`,
+      clients: '/api/clients',
+      clientId: (id: IdType) => `/api/clients/${id}`,
     },
     post: {
-      clients: '/clients',
+      clients: '/api/clients',
     },
     delete: {
-      clients: '/clients',
-      clientId: (id: IdType) => `/clients/${id}`,
+      clients: '/api/clients',
+      clientId: (id: IdType) => `/api/clients/${id}`,
     },
     put: {
-      clientId: (id: IdType) => `/clients/${id}`,
+      clientId: (id: IdType) => `/api/clients/${id}`,
     },
   },
   dictionary: {
@@ -45,7 +45,8 @@ export const apiConfig = {
   tour: {
     get: {
       tours: '/api/tours',
-      tour: (id: IdType) => `/api/tours/${id}`,
+      tourId: (id: IdType) => `/api/tours/${id}`,
+      toursByClientId: (id: number) => `/api/tours/tours/${id}`,
     },
     post: {
       tours: '/api/tours',
