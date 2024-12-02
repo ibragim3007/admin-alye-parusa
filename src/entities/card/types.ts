@@ -1,6 +1,6 @@
-export type CardStatusType = 'pending' | 'frozen' | 'attached';
+import { CardStatusType } from '@/shared/api/entities/card/types/res.type';
 
-export type CardGetDto = {
+export interface ICard {
   id: number;
   cardComment: string;
   cardNumber: number;
@@ -42,9 +42,4 @@ export type CardGetDto = {
     createdAt: Date;
     updatedAt: Date;
   }[];
-};
-
-export type CardBalanceResponseDto = {
-  cardId: number;
-  total: number;
-};
+}

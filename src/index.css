@@ -19,7 +19,7 @@
   --border-color-high: #d7d7d7;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --gradient-wrapper: linear-gradient(140deg, #6734c3 0%, #d355de 100%);
     --primary-rgb: 235, 0, 255;
@@ -35,7 +35,7 @@
     --border-color: rgba(61, 61, 61, 0.34);
     --border-color-high: rgba(61, 61, 61, 1);
   }
-}
+} */
 
 body {
   margin: 0;

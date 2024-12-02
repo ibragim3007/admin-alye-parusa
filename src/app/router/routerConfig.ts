@@ -1,4 +1,4 @@
 export const config = {
-  home: '/',
-  // cards: '/',
+  login: '/',
+  cards: '/cards',
 };
