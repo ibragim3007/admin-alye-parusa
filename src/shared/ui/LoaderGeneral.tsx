@@ -1,6 +1,7 @@
-import { CircularProgress } from '@mui/material';
-import React from 'react';
+import { CircularProgress, CircularProgressProps } from '@mui/material';
 
-export default function LoaderGeneral() {
-  return <CircularProgress />;
+interface LoaderGeneralProps extends CircularProgressProps {}
+
+export default function LoaderGeneral({ ...props }: LoaderGeneralProps) {
+  return <CircularProgress size={props.size} />;
 }

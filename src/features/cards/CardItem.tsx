@@ -14,7 +14,7 @@ export default function CardItem({ card }: CardItemProps) {
   const { changeCardStatusFn, isPending } = useUpdateCardStatus();
 
   return (
-    <Card sx={{ p: 2, maxWidth: 520 }}>
+    <Card sx={{ p: 2, maxWidth: 550 }}>
       <Grid2 container flexDirection="column" gap={1}>
         <Grid2 container justifyContent="space-between">
           <Grid2>
