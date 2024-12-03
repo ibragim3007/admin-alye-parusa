@@ -3,7 +3,7 @@ import { IAuthService } from '../api/api';
 export class AuthService implements IAuthService {
   setToken(token: string) {
     // localStorage.setItem('localTokenKey', `Basic ${token}`);
-    const tokenValue = `Basic ${token}`;
+    const tokenValue = token && `Basic ${token}`;
     document.cookie = `_auth=${tokenValue}`;
   }
 

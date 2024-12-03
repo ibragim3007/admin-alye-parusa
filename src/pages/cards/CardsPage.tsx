@@ -1,10 +1,20 @@
 import ListOfCards from '@/features/cards/ListOfCards';
+import { CreateCard } from '@/features/createCard';
 import { Grid2, Typography } from '@mui/material';
 
 export default function CardsPage() {
   return (
-    <Grid2 padding={3}>
-      <Typography variant="h2">Cards</Typography>
+    <Grid2
+      sx={{ bgcolor: 'background.default', minHeight: '100vh' }}
+      container
+      flexDirection="column"
+      gap={3}
+      padding={3}
+    >
+      <Grid2 container justifyContent="space-between">
+        <Typography variant="h3">Карты</Typography>
+        <CreateCard />
+      </Grid2>
       <ListOfCards />
     </Grid2>
   );

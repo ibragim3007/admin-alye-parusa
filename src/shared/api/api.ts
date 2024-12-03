@@ -48,7 +48,7 @@ class ApiService {
         return response;
       },
       (error: AxiosError) => {
-        if (error.response?.status === 401 || error.config?.headers.Authorization) {
+        if (error.response?.status === 401 && error.config?.headers.Authorization) {
           Inform.error('Ошибка авторизации');
           this.authService.setToken('');
         }

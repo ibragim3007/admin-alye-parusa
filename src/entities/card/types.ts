@@ -1,10 +1,11 @@
+import { CardCreateDto } from '@/shared/api/entities/card/types/req.type';
 import { CardStatusType } from '@/shared/api/entities/card/types/res.type';
 
 export interface ICard {
   id: number;
   cardComment: string;
   cardNumber: number;
-  clientId: number;
+  clientId: number | null;
   client?: {
     id: number;
     comment: string;
@@ -18,15 +19,15 @@ export interface ICard {
     phone: string;
     contactType: 'Telegramm';
     contact: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     cards: string[];
   };
   status: CardStatusType;
   stateComment: string;
   bonusPercentage: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   tours: {
     id: number;
     clientId: number;
@@ -39,7 +40,9 @@ export interface ICard {
     bonusSpending: number;
     state: 'Created';
     description: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
   }[];
 }
+
+export interface ICreateCard extends CardCreateDto {}

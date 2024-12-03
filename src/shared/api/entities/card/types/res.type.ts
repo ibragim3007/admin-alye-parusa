@@ -4,7 +4,7 @@ export type CardGetDto = {
   id: number;
   cardComment: string;
   cardNumber: number;
-  clientId: number;
+  clientId: number | null;
   client?: {
     id: number;
     comment: string;
@@ -18,15 +18,15 @@ export type CardGetDto = {
     phone: string;
     contactType: 'Telegramm';
     contact: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     cards: string[];
   };
   status: CardStatusType;
   stateComment: string;
   bonusPercentage: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   tours: {
     id: number;
     clientId: number;
@@ -39,12 +39,16 @@ export type CardGetDto = {
     bonusSpending: number;
     state: 'Created';
     description: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
   }[];
 };
 
 export type CardBalanceResponseDto = {
   cardId: number;
   total: number;
+  bonusesAwaiting: {
+    count: number;
+    date: Date;
+  };
 };
