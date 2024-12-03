@@ -18,9 +18,8 @@ class ToastLogger<TOptions> implements LoggerStrategy<TOptions> {
         });
 
         toast.error(errorString);
-      } else {
-        if (e.response?.data.title) toast.error(e.response.data.title);
-      }
+      } else if (e.response?.data && typeof e.response.data === 'string') toast.error(e.response.data);
+      else if (e.response?.data.title) toast.error(e.response.data.title);
     } else if (e instanceof Error) toast.error(e.message, options || {});
     else if (typeof e === 'string') toast.error(e, options || {});
     else {

@@ -2,9 +2,15 @@ export type CardStatusType = 'pending' | 'frozen' | 'attached';
 
 export type CardGetDto = {
   id: number;
+  shortName: string;
   cardComment: string;
   cardNumber: number;
   clientId: number | null;
+  status: CardStatusType;
+
+  bonusPercentage: number;
+  createdAt: string;
+  updatedAt: string;
   client?: {
     id: number;
     comment: string;
@@ -22,11 +28,6 @@ export type CardGetDto = {
     updatedAt: string;
     cards: string[];
   };
-  status: CardStatusType;
-  stateComment: string;
-  bonusPercentage: number;
-  createdAt: string;
-  updatedAt: string;
   tours: {
     id: number;
     clientId: number;
