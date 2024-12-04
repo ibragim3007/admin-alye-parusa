@@ -1,3 +1,5 @@
+import { ContactType } from '../../dictionary/types';
+
 export type CardStatusType = 'pending' | 'frozen' | 'attached';
 
 export type CardGetDto = {
@@ -22,7 +24,7 @@ export type CardGetDto = {
     passportSeries: string;
     passportNumber: string;
     phone: string;
-    contactType: 'Telegramm';
+    contactType: ContactType;
     contact: string;
     createdAt: string;
     updatedAt: string;

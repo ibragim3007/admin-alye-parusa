@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { config } from './routerConfig';
 import CardsPage from '@/pages/cards/CardsPage';
 import { authService } from '@/shared/api/api';
+import { ClientsPage } from '@/pages/clients';
 
 const AppRoter: React.FC = () => {
   const token = authService.getToken();
@@ -19,6 +20,7 @@ const AppRoter: React.FC = () => {
         ) : (
           <Routes>
             <Route path={config.cards} element={<CardsPage />} />
+            <Route path={config.clients} element={<ClientsPage />} />
             <Route path="*" element={<Navigate to={config.login} />} />
           </Routes>
         )}

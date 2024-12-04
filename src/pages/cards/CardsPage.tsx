@@ -1,4 +1,5 @@
 import ListOfCards from '@/features/cards/ListOfCards';
+import { ClientForm } from '@/features/clientForm';
 import { CreateCard } from '@/features/createCard';
 import { Grid2, Typography } from '@mui/material';
 
@@ -15,7 +16,7 @@ export default function CardsPage() {
         <Typography variant="h3">Карты</Typography>
         <CreateCard />
       </Grid2>
-      <ListOfCards />
+      <ListOfCards ClientForm={ClientForm} />
     </Grid2>
   );
 }

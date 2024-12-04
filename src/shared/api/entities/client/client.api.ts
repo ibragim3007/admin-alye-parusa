@@ -1,14 +1,14 @@
 import { apiConfig } from '@/shared/config/apiConfig';
 import { api } from '../../api';
 import { ClientGetDto } from './types/res.type';
-import { ClientCreateDto, ClientUpdateDto } from './types/req.type';
+import { ClientCreateDto, ClientCreateParams, ClientUpdateDto } from './types/req.type';
 
 export async function getClients() {
   return (await api.get<Promise<ClientGetDto[]>>(apiConfig.client.get.clients)).data;
 }
 
-export async function createClient(payload: ClientCreateDto) {
-  return (await api.post<Promise<ClientGetDto>>(apiConfig.client.post.clients, payload)).data;
+export async function createClient(params: ClientCreateParams, payload: ClientCreateDto) {
+  return (await api.post<Promise<ClientGetDto>>(apiConfig.client.post.clients, payload, { params })).data;
 }
 
 export async function deleteClient(id: number) {

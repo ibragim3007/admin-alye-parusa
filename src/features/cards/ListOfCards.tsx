@@ -2,15 +2,20 @@ import { useGetCards } from '@/entities/card/card.respository';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2 } from '@mui/material';
 import CardItem from './CardItem';
+import { ClientFormProps } from '../clientForm/ClientForm';
 
-export default function ListOfCards() {
+interface ListOfCardsProps {
+  ClientForm: React.ElementType<ClientFormProps>;
+}
+
+export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
   const { data, isLoading, isError } = useGetCards();
 
   if (isLoading) return <LoaderGeneral />;
 
   return (
     <Grid2 container gap={3} flexDirection="column">
-      {data?.map((card) => <CardItem key={card.id} card={card} />)}
+      {data?.map((card) => <CardItem key={card.id} card={card} ClientForm={ClientForm} />)}
     </Grid2>
   );
 }

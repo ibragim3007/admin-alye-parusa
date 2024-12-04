@@ -1,7 +1,7 @@
 import { changeCardStatus, createCard, deleteCard, getCards } from '@/shared/api/entities/card/card.api';
 import { CardCreateDto } from '@/shared/api/entities/card/types/req.type';
-import { Inform } from '@/shared/service/log/log.service';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
+import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
 import { ICard } from './types';
@@ -28,13 +28,7 @@ export function useCreateCard() {
   });
 
   const createCardFunction = async (card: CardCreateDto) => {
-    try {
-      const res = await mutateAsync(card);
-      if (res) Inform.success(FeedbackMessage.createdMessage('карта'));
-    } catch (e) {
-      console.log(e);
-      Inform.error(e);
-    }
+    await handleMutation(() => mutateAsync(card), FeedbackMessage.createdMessage('карта'));
   };
 
   return {
@@ -79,12 +73,7 @@ export function useUpdateCardStatus() {
   });
 
   const changeCardStatusFn = async (data: UpdateCardStatusParams) => {
-    try {
-      const res = await mutateAsync(data);
-      if (res) Inform.success(FeedbackMessage.updatedMessage('карта'));
-    } catch (e) {
-      Inform.error(e);
-    }
+    await handleMutation(() => mutateAsync(data), FeedbackMessage.updatedMessage('карта'));
   };
 
   return { changeCardStatusFn, isPending, isSuccess, isError };

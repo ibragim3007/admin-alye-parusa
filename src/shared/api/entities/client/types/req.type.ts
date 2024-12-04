@@ -1,3 +1,5 @@
+import { ContactType } from '../../dictionary/types';
+
 export type ClientCreateDto = {
   comment: string;
   surname: string;
@@ -7,7 +9,7 @@ export type ClientCreateDto = {
   passportSeries: string;
   passportNumber: string;
   phone: string;
-  contactType: 'Telegramm';
+  contactType: ContactType;
   contact: string;
 };
 
@@ -22,4 +24,8 @@ export type ClientUpdateDto = {
   phone: string;
   contactType: 'Telegramm';
   contact: string;
+};
+
+export type ClientCreateParams = {
+  cardId: string;
 };
