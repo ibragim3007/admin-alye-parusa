@@ -3,15 +3,15 @@ import { ContactTypesArray } from '@/shared/enums/constants';
 import { RHFTextField } from '@/shared/ui/RHFTextField';
 import { Autocomplete, Grid2, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { FormProvider, UseFormReturn } from 'react-hook-form';
+import { Controller, FormProvider, UseFormReturn } from 'react-hook-form';
 
 interface ClientFieldsProps {
   actionButton: React.ReactNode;
   formApi: UseFormReturn<IClientCreate, any, undefined>;
 }
 
-export default function ClientFields({ actionButton, formApi }: ClientFieldsProps) {
-  const { register, setValue, control } = formApi;
+export default function ClientFields({ formApi }: ClientFieldsProps) {
+  const { control } = formApi;
 
   return (
     <FormProvider {...formApi}>
@@ -22,17 +22,24 @@ export default function ClientFields({ actionButton, formApi }: ClientFieldsProp
           <RHFTextField name="surname" label="Фамилия" control={control} />
         </Grid2>
         <Grid2 container gap={2} flex={2}>
-          <RHFTextField name="contact" label="Номер" control={control} fullWidth />
+          <RHFTextField name="phone" label="Номер" control={control} fullWidth />
           <Grid2 width={'100%'} container gap={1} flexDirection="row" wrap="nowrap">
-            <Autocomplete
-              size="small"
-              onChange={(event, type) => setValue('contactType', type || 'telegramm')}
-              options={ContactTypesArray}
-              renderInput={(params) => <TextField {...params} label="Вид связи" fullWidth />}
-              style={{ minWidth: 120 }}
+            <Controller
+              name="contactType"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  size="small"
+                  value={field.value}
+                  onChange={(event, type) => field.onChange(type || 'telegramm')}
+                  options={ContactTypesArray}
+                  renderInput={(params) => <TextField {...params} label="Вид связи" fullWidth />}
+                  style={{ minWidth: 160 }}
+                />
+              )}
             />
 
-            <RHFTextField name="additionalContact" label="Дополнительный контакт" control={control} fullWidth />
+            <RHFTextField name="contact" label="Дополнительный контакт" control={control} fullWidth />
           </Grid2>
 
           <Typography>Паспорт</Typography>

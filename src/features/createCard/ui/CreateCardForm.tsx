@@ -11,9 +11,9 @@ export default function CreateCardForm() {
     formState: { errors },
   } = useForm<ICreateCard>({
     defaultValues: {
-      bonusPercentage: 0,
+      bonusPercentage: 1,
       cardComment: '',
-      cardNumber: 0,
+      cardNumber: 1,
     },
   });
 
@@ -44,7 +44,8 @@ export default function CreateCardForm() {
         fullWidth
         error={Boolean(errors.cardComment?.message)}
       />
-      <Button variant="contained" onClick={handleSubmit(onAddClick)}>
+
+      <Button variant="contained" onClick={() => void handleSubmit(onAddClick)()}>
         Добавить
       </Button>
     </Grid2>

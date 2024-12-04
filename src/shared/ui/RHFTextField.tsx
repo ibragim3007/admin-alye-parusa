@@ -1,11 +1,11 @@
 import React from 'react';
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { TextField, Autocomplete } from '@mui/material';
 
-interface RHFTextFieldProps {
-  name: string;
+interface RHFTextFieldProps<T extends FieldValues> {
+  name: Path<T>;
   label: string;
-  control: UseFormReturn<any>['control'];
+  control: UseFormReturn<T>['control'];
   fullWidth?: boolean;
   options?: string[];
   onChangeHandler?: (value: any) => void;
@@ -13,7 +13,7 @@ interface RHFTextFieldProps {
   rows?: number;
 }
 
-export const RHFTextField = ({
+export const RHFTextField = <T extends FieldValues>({
   name,
   label,
   control,
@@ -22,7 +22,7 @@ export const RHFTextField = ({
   onChangeHandler,
   multiline = false,
   rows = 1,
-}: RHFTextFieldProps) => {
+}: RHFTextFieldProps<T>) => {
   if (options) {
     return (
       <Controller
