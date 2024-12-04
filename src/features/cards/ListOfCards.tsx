@@ -9,12 +9,12 @@ interface ListOfCardsProps {
 }
 
 export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
-  const { data, isLoading, isError } = useGetCards();
+  const { data, isLoading } = useGetCards();
 
   if (isLoading) return <LoaderGeneral />;
 
   return (
-    <Grid2 container gap={3} flexDirection="column">
+    <Grid2 container gap={3} flexDirection="column" alignContent="center">
       {data?.map((card) => <CardItem key={card.id} card={card} ClientForm={ClientForm} />)}
     </Grid2>
   );

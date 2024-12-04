@@ -22,7 +22,7 @@ export default function CardItem({ card, ClientForm }: CardItemProps) {
   const isClientExist = card.clientId !== null;
 
   return (
-    <Card sx={{ p: 2, maxWidth: 750 }}>
+    <Card sx={{ p: 2, maxWidth: 800 }}>
       <Grid2 container flexDirection="column" gap={1}>
         <Grid2 container justifyContent="space-between">
           <Grid2>

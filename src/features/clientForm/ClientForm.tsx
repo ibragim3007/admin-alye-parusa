@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import ClientFields from './ui/ClientFields';
 import CreateClientButton from './ui/create-client-button/CreateClientButton';
+import { formStatuses } from './types';
 
 const renderAddClientButton = ({
   ...props
@@ -15,8 +16,6 @@ const renderAddClientButton = ({
 }) => {
   return <CreateClientButton {...props} />;
 };
-
-type formStatuses = 'edit' | 'create' | 'frozen';
 
 export interface ClientFormProps {
   formStatusProps?: formStatuses;
@@ -28,6 +27,7 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
   const { data, isLoading, isError } = useGetClientById(clientId || 0);
 
   const [formStatus, setformStatus] = useState<formStatuses>(formStatusProps);
+  const isFrozen = formStatus === 'frozen';
 
   const formApi = useForm<IClientCreate>({
     defaultValues: {
@@ -61,7 +61,7 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
   return (
     <Grid2 container width={'100%'} gap={2} mt={2} flexDirection="column">
       <Typography variant="h6">Создание клиента</Typography>
-      <ClientFields formApi={formApi} actionButton={undefined} />
+      <ClientFields isFrozen={isFrozen} formApi={formApi} actionButton={undefined} />
 
       {formStatus === 'create' &&
         renderAddClientButton({

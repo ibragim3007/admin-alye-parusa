@@ -11,6 +11,7 @@ interface RHFTextFieldProps<T extends FieldValues> {
   onChangeHandler?: (value: any) => void;
   multiline?: boolean;
   rows?: number;
+  disabled?: boolean;
 }
 
 export const RHFTextField = <T extends FieldValues>({
@@ -22,6 +23,7 @@ export const RHFTextField = <T extends FieldValues>({
   onChangeHandler,
   multiline = false,
   rows = 1,
+  disabled = false,
 }: RHFTextFieldProps<T>) => {
   if (options) {
     return (
@@ -38,6 +40,8 @@ export const RHFTextField = <T extends FieldValues>({
             options={options}
             renderInput={(params) => <TextField {...params} label={label} fullWidth={fullWidth} />}
             size="small"
+            disabled={disabled}
+            style={{ minWidth: 160 }}
           />
         )}
       />
@@ -49,7 +53,15 @@ export const RHFTextField = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field }) => (
-        <TextField {...field} label={label} fullWidth={fullWidth} size="small" multiline={multiline} rows={rows} />
+        <TextField
+          {...field}
+          label={label}
+          disabled={disabled}
+          fullWidth={fullWidth}
+          size="small"
+          multiline={multiline}
+          rows={rows}
+        />
       )}
     />
   );
