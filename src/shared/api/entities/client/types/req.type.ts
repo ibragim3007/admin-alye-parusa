@@ -41,7 +41,7 @@ export type ClientUpdateDto = {
   passportSeries: string;
   passportNumber: string;
   phone: string;
-  contactType: 'Telegramm';
+  contactType: ContactType;
   contact: string;
 };
 

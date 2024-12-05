@@ -1,4 +1,5 @@
-import { createClient, getClientById, getClients } from '@/shared/api/entities/client/client.api';
+import { queryClient } from '@/shared/api/api';
+import { createClient, getClientById, getClients, updateClient } from '@/shared/api/entities/client/client.api';
 import { Inform } from '@/shared/service/log/log.service';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -39,6 +40,27 @@ export const useCreateClient = () => {
   return {
     createClientFn,
     isPending,
+  };
+};
+
+export type UpdateClientParams = {
+  id: number;
+  body: IClientCreate;
+};
+
+export const useUpdateClient = () => {
+  const { mutateAsync, isPending, isError } = useMutation({
+    mutationFn: (params: UpdateClientParams) => updateClient(params.id, params.body),
+  });
+
+  const updateClientFn = async (params: UpdateClientParams) => {
+    await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('клиент'));
+  };
+
+  return {
+    updateClientFn,
+    isPending,
+    isError,
   };
 };
 

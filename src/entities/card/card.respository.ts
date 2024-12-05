@@ -1,16 +1,19 @@
 import { changeCardStatus, createCard, deleteCard, getCards } from '@/shared/api/entities/card/card.api';
-import { CardCreateDto } from '@/shared/api/entities/card/types/req.type';
+import { CardCreateDto, CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
+import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
 import { ICard } from './types';
-import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 
 const cardsKey = ['cards'];
 
-export function useGetCards() {
-  const { data, isLoading, isError } = useQuery({ queryKey: cardsKey, queryFn: () => getCards() });
+export function useGetCards(params?: CardGetPaginationParams) {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [...cardsKey, params?.page],
+    queryFn: () => getCards(params),
+  });
 
   return {
     data,
