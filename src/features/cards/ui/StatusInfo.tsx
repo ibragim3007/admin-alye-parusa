@@ -3,7 +3,7 @@ import { ICard } from '@/entities/card/types';
 import { CardStatusesType } from '@/shared/api/entities/dictionary/types';
 import { cardStatusesConverted } from '@/shared/enums/cardStatusesConverted';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 type ChipColor = 'default' | 'success' | 'primary' | 'secondary' | 'error' | 'info' | 'warning';
 interface StatusInfoProps {
@@ -25,12 +25,23 @@ export default function StatusInfo({ card, isLoading, onChangeStatus }: StatusIn
   if (isLoading) return <LoaderGeneral size={24} />;
 
   return (
-    <Select variant="standard" size="small" value={card.status} onChange={(event) => void onChangeStatusHandler(event)}>
-      {статусы.map((статус) => (
-        <MenuItem key={статус} value={статус}>
-          {cardStatusesConverted[статус]}
-        </MenuItem>
-      ))}
-    </Select>
+    <FormControl>
+      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+        Статус
+      </InputLabel>
+      <Select
+        label="Статус"
+        variant="standard"
+        size="small"
+        value={card.status}
+        onChange={(event) => void onChangeStatusHandler(event)}
+      >
+        {статусы.map((статус) => (
+          <MenuItem key={статус} value={статус}>
+            {cardStatusesConverted[статус]}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

@@ -1,10 +1,12 @@
 import { useGetCards } from '@/entities/card/card.respository';
+import { SortOrderType } from '@/shared/api/entities/dictionary/types';
 import { useDebounce } from '@/shared/hooks/useDebounce';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2, Pagination, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ClientFormProps } from '../clientForm/ClientForm';
 import CardItem from './CardItem';
+import FilterOrder from './ui/FilterOrder';
 import SearchField from './ui/SearchField';
 
 interface ListOfCardsProps {
@@ -14,11 +16,19 @@ interface ListOfCardsProps {
 export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [amountOfPages, setAmountOfPages] = useState(0);
+  const [sortType, setSortType] = useState<SortOrderType>('ascending');
+  const handleChangeSortType = (updatedSortType: SortOrderType) => setSortType(updatedSortType);
+
   const [searchString, setSearchString] = useState('');
   const debouncedSearchString = useDebounce(searchString, 500);
   const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => setCurrentPage(value);
 
-  const { data, isLoading } = useGetCards({ page: currentPage, searchString: debouncedSearchString, pageSize: 10 });
+  const { data, isLoading } = useGetCards({
+    page: currentPage,
+    searchString: debouncedSearchString,
+    pageSize: 10,
+    sortOrder: sortType,
+  });
   const updateSearchString = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchString(e.target.value);
   };
@@ -31,7 +41,10 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
 
   return (
     <Grid2 container gap={3} flexDirection="column" alignContent="center">
-      <SearchField onChange={updateSearchString} value={searchString} />
+      <Grid2 gap={2} container justifyContent="center" alignItems="center">
+        <SearchField onChange={updateSearchString} value={searchString} />
+        <FilterOrder value={sortType} onChange={handleChangeSortType} />
+      </Grid2>
 
       <Grid2 gap={3} container flexDirection="column" alignContent="center" width={'100%'} minHeight={'70vh'}>
         {isLoading && <LoaderGeneral />}

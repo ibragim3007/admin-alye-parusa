@@ -9,7 +9,7 @@ const cardsKey = ['cards'];
 
 export function useGetCards(params?: CardGetPaginationParams) {
   const { data, isLoading, isError } = useQuery({
-    queryKey: [...cardsKey, params?.page, params?.searchString],
+    queryKey: [...cardsKey, params?.page, params?.searchString, params?.sortOrder],
     queryFn: () => getCards(params),
   });
 
