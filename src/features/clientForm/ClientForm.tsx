@@ -63,6 +63,8 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
     }
   }, [data, formApi]);
 
+  const isNewClient = formStatus === 'create';
+
   if (isLoading) {
     return (
       <Grid2 container width={'100%'} gap={2} mt={2} flexDirection="column">
@@ -74,7 +76,7 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
   return (
     <Grid2 container width={'100%'} gap={2} mt={2} flexDirection="column">
       <Grid2 container justifyContent="space-between" alignItems="center">
-        <Typography variant="h6">Создание клиента</Typography>
+        <Typography variant="h6">{isNewClient ? 'Создание клиента' : 'Изменение клиента'}</Typography>
         {clientId && (
           <PopoverCustom label="Изменить клиента">
             <IconButton onClick={() => updateFormStatus(formStatus === 'edit' ? 'frozen' : 'edit')}>
