@@ -12,4 +12,8 @@ export class FeedbackMessage {
   static updatedMessage(value: string) {
     return `Успешно изменен объект ${value}`;
   }
+
+  static deleteMessage(value: string) {
+    return `Успешно удален объект ${value}`;
+  }
 }

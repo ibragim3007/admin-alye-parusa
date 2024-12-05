@@ -1,20 +1,23 @@
-import { useUpdateCardStatus } from '@/entities/card/card.respository';
+import { useDeleteCard, useUpdateCardStatus } from '@/entities/card/card.respository';
 import { formatCardNumber } from '@/entities/card/helpers/formatCardNumber';
 import { ICard } from '@/entities/card/types';
+import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 import { formatIsoDateToLocalString } from '@/shared/helpers/covertTimeToLocal';
+import DeleteButtonConfirmation from '@/shared/ui/delete-dialog/DeleteButtonConfirmation';
 import { PopoverCustom } from '@/shared/ui/PopoverCustom';
 import { Button, Card, Chip, Divider, Grid2, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ClientFormProps } from '../clientForm/ClientForm';
 import StatusInfo from './ui/StatusInfo';
-
 interface CardItemProps {
   card: ICard;
   ClientForm: React.ElementType<ClientFormProps>;
+  params?: CardGetPaginationParams;
 }
 
-export default function CardItem({ card, ClientForm }: CardItemProps) {
-  const { changeCardStatusFn, isPending } = useUpdateCardStatus();
+export default function CardItem({ card, ClientForm, params }: CardItemProps) {
+  const { changeCardStatusFn, isPending } = useUpdateCardStatus(params);
+  const { deleteCardFn, isPending: deleteLoading } = useDeleteCard();
   const [showForm, setShowForm] = useState(false);
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -48,7 +51,15 @@ export default function CardItem({ card, ClientForm }: CardItemProps) {
         </Grid2>
         <Divider />
         <Grid2 marginTop={3} container justifyContent="space-between" alignItems="center">
-          <StatusInfo onChangeStatus={changeCardStatusFn} card={card} isLoading={isPending} />
+          <Grid2 container gap={2}>
+            <StatusInfo onChangeStatus={changeCardStatusFn} card={card} isLoading={isPending} />
+            <DeleteButtonConfirmation
+              loading={deleteLoading}
+              callback={() => void deleteCardFn(card.id)}
+              title="Вы уверены что хотите удалить карту навсегда?"
+              content="Если вы это сделаете, будут утеряны все данные о турах этой карты и баланс её бонусов."
+            />
+          </Grid2>
           {isClientExist && card.clientId ? (
             <>
               <Button onClick={toggleForm}>Открыть профиль</Button>
@@ -65,7 +76,4 @@ export default function CardItem({ card, ClientForm }: CardItemProps) {
       </Grid2>
     </Card>
   );
-}
-function seGetClientById() {
-  throw new Error('Function not implemented.');
 }

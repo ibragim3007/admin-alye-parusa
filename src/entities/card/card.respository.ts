@@ -1,17 +1,15 @@
 import { changeCardStatus, createCard, deleteCard, getCards } from '@/shared/api/entities/card/card.api';
 import { CardCreateDto, CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
-import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
-import { ICard } from './types';
 
 const cardsKey = ['cards'];
 
 export function useGetCards(params?: CardGetPaginationParams) {
   const { data, isLoading, isError } = useQuery({
-    queryKey: [...cardsKey, params?.page],
+    queryKey: [...cardsKey, params?.page, params?.searchString],
     queryFn: () => getCards(params),
   });
 
@@ -53,8 +51,12 @@ export function useDeleteCard() {
     },
   });
 
+  const deleteCardFn = async (id: number) => {
+    await handleMutation(() => mutateAsync(id), FeedbackMessage.deleteMessage('карта'));
+  };
+
   return {
-    mutateAsync,
+    deleteCardFn,
     isPending,
     isSuccess,
     isError,
@@ -62,23 +64,34 @@ export function useDeleteCard() {
 }
 
 export type UpdateCardStatusParams = { cardId: number; cardChangeStatus: CardChangeStatusDto };
-export function useUpdateCardStatus() {
+export function useUpdateCardStatus(params?: CardGetPaginationParams) {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending, isSuccess, isError } = useMutation({
+    mutationKey: [...cardsKey],
     mutationFn: ({ cardId, cardChangeStatus }: UpdateCardStatusParams) => changeCardStatus(cardId, cardChangeStatus),
-    onSuccess: (updatedCard) => {
-      queryClient.setQueryData(cardsKey, (oldCards: CardsGetPaginationDto | undefined) => {
-        if (!oldCards) return [];
-
-        const updatedCache = {
-          ...oldCards,
-          cards: oldCards.cards.map((card: ICard) => (card.id === updatedCard.id ? { ...card, ...updatedCard } : card)),
-        };
-
-        return updatedCache;
-      });
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [...cardsKey, params?.page, params?.searchString] });
     },
+    // onSuccess: (updatedCard) => {
+    //   console.log(updatedCard);
+    //   queryClient.setQueryData(
+    //     [[...cardsKey, params?.page, params?.searchString]],
+    //     (oldCards: CardsGetPaginationDto | undefined) => {
+    //       console.log(oldCards);
+    //       if (!oldCards) return [];
+
+    //       const updatedCache = {
+    //         ...oldCards,
+    //         cards: oldCards.cards.map((card: ICard) =>
+    //           card.id === updatedCard.id ? { ...card, ...updatedCard } : card
+    //         ),
+    //       };
+
+    //       return updatedCache;
+    //     }
+    //   );
+    // },
   });
 
   const changeCardStatusFn = async (data: UpdateCardStatusParams) => {

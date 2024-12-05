@@ -18,7 +18,7 @@ export async function createCard(payload: CardCreateDto) {
 }
 
 export async function deleteCard(id: number) {
-  return (await api.post<Promise<CardGetDto>>(apiConfig.card.delete.cardsId(id))).data;
+  return (await api.delete<Promise<CardGetDto>>(apiConfig.card.delete.cardsId(id))).data;
 }
 
 export async function getBalance(id: number) {

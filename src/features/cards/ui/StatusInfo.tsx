@@ -1,7 +1,7 @@
 import { UpdateCardStatusParams } from '@/entities/card/card.respository';
 import { ICard } from '@/entities/card/types';
 import { CardStatusesType } from '@/shared/api/entities/dictionary/types';
-import { cardStatusesConverted } from '@/shared/helpers/cards/cardStatusesConverted';
+import { cardStatusesConverted } from '@/shared/enums/cardStatusesConverted';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
@@ -25,7 +25,7 @@ export default function StatusInfo({ card, isLoading, onChangeStatus }: StatusIn
   if (isLoading) return <LoaderGeneral size={24} />;
 
   return (
-    <Select size="small" value={card.status} onChange={(event) => void onChangeStatusHandler(event)}>
+    <Select variant="standard" size="small" value={card.status} onChange={(event) => void onChangeStatusHandler(event)}>
       {статусы.map((статус) => (
         <MenuItem key={статус} value={статус}>
           {cardStatusesConverted[статус]}
