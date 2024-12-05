@@ -5,11 +5,12 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
 import { ICard } from './types';
+import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 
 const cardsKey = ['cards'];
 
 export function useGetCards() {
-  const { data, isLoading, isError } = useQuery({ queryKey: cardsKey, queryFn: getCards });
+  const { data, isLoading, isError } = useQuery({ queryKey: cardsKey, queryFn: () => getCards() });
 
   return {
     data,
@@ -64,10 +65,15 @@ export function useUpdateCardStatus() {
   const { mutateAsync, isPending, isSuccess, isError } = useMutation({
     mutationFn: ({ cardId, cardChangeStatus }: UpdateCardStatusParams) => changeCardStatus(cardId, cardChangeStatus),
     onSuccess: (updatedCard) => {
-      queryClient.setQueryData(cardsKey, (oldCards: any[] | undefined) => {
+      queryClient.setQueryData(cardsKey, (oldCards: CardsGetPaginationDto | undefined) => {
         if (!oldCards) return [];
 
-        return oldCards.map((card: ICard) => (card.id === updatedCard.id ? { ...card, ...updatedCard } : card));
+        const updatedCache = {
+          ...oldCards,
+          cards: oldCards.cards.map((card: ICard) => (card.id === updatedCard.id ? { ...card, ...updatedCard } : card)),
+        };
+
+        return updatedCache;
       });
     },
   });

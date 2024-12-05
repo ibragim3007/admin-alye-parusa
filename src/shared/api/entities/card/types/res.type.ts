@@ -2,6 +2,14 @@ import { ContactType } from '../../dictionary/types';
 
 export type CardStatusType = 'pending' | 'frozen' | 'attached';
 
+export type CardsGetPaginationDto = {
+  cards: CardGetDto[];
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalItems: number;
+};
+
 export type CardGetDto = {
   id: number;
   shortName: string;

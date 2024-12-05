@@ -5,11 +5,12 @@ import {
   CardBonusSpendingAllowedDto,
   CardChangeStatusDto,
   CardCreateDto,
+  CardGetPaginationParams,
 } from './types/req.type';
-import { CardBalanceResponseDto, CardGetDto } from './types/res.type';
+import { CardBalanceResponseDto, CardGetDto, CardsGetPaginationDto } from './types/res.type';
 
-export async function getCards() {
-  return (await api.get<Promise<CardGetDto[]>>(apiConfig.card.get.cards)).data;
+export async function getCards(params?: CardGetPaginationParams) {
+  return (await api.get<Promise<CardsGetPaginationDto>>(apiConfig.card.get.cards, { params })).data;
 }
 
 export async function createCard(payload: CardCreateDto) {

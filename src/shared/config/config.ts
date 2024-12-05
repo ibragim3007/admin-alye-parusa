@@ -1,1 +1,1 @@
-export const API_URL = 'http://176.124.219.188';
+export const API_URL = process.env.REACT_APP_API_URL || 'https://alye-bonus.ru';
