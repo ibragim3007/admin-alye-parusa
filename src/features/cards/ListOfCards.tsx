@@ -2,7 +2,7 @@ import { useGetCards } from '@/entities/card/card.respository';
 import { SortOrderType } from '@/shared/api/entities/dictionary/types';
 import { useDebounce } from '@/shared/hooks/useDebounce';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { Grid2, Pagination, Typography } from '@mui/material';
+import { Alert, Grid2, Pagination, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ClientFormProps } from '../clientForm/ClientForm';
 import CardItem from './CardItem';
@@ -16,7 +16,7 @@ interface ListOfCardsProps {
 export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [amountOfPages, setAmountOfPages] = useState(0);
-  const [sortType, setSortType] = useState<SortOrderType>('ascending');
+  const [sortType, setSortType] = useState<SortOrderType>('notBoundDescending');
   const handleChangeSortType = (updatedSortType: SortOrderType) => setSortType(updatedSortType);
 
   const [searchString, setSearchString] = useState('');
@@ -48,7 +48,11 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
 
       <Grid2 gap={3} container flexDirection="column" alignContent="center" width={'100%'} minHeight={'70vh'}>
         {isLoading && <LoaderGeneral />}
-        {!data && !isLoading && <Typography>Нет данных</Typography>}
+        {data?.cards.length === 0 && !isLoading && (
+          <Alert color="info" variant="filled">
+            Нет данных
+          </Alert>
+        )}
         {(data?.cards || []).map((card) => (
           <CardItem
             key={card.id}
@@ -59,7 +63,11 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
         ))}
       </Grid2>
       <Grid2 container justifyContent="center">
-        <Pagination count={amountOfPages} page={currentPage} onChange={handleChangeCurrentPage} />
+        {/* <Grid2 style={{ position: 'fixed', bottom: 50 }} container justifyContent="center"> */}
+        <Paper elevation={10} sx={{ p: 1 }}>
+          <Pagination count={amountOfPages} page={currentPage} onChange={handleChangeCurrentPage} />
+        </Paper>
+        {/* </Grid2> */}
       </Grid2>
     </Grid2>
   );

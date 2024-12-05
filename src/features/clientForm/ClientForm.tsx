@@ -20,7 +20,13 @@ const renderAddClientButton = ({
   return <CreateClientButton {...props} />;
 };
 
-const renderEditClientButton = ({ ...props }: { id: number; formApi: UseFormReturn<IEditClient, any, undefined> }) => {
+const renderEditClientButton = ({
+  ...props
+}: {
+  id: number;
+  formApi: UseFormReturn<IEditClient, any, undefined>;
+  updateFormStatus: (formStatus: formStatuses) => void;
+}) => {
   return <EditClientButton {...props} />;
 };
 
@@ -99,6 +105,7 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
             return renderEditClientButton({
               id: clientId || 0,
               formApi,
+              updateFormStatus,
             });
           }
         })()}
