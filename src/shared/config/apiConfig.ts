@@ -1,6 +1,9 @@
 type IdType = number;
 
 export const apiConfig = {
+  me: {
+    get: '/api/Me',
+  },
   card: {
     get: {
       cards: '/api/cards',

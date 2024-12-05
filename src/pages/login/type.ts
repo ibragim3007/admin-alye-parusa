@@ -1,3 +1,5 @@
 export interface LoginInterface {
-  token: string;
+  // token: string;
+  login: string;
+  password: string;
 }

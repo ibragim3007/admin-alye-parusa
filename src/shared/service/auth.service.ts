@@ -2,18 +2,20 @@ import { IAuthService } from '../api/api';
 
 export class AuthService implements IAuthService {
   setToken(token: string) {
-    // localStorage.setItem('localTokenKey', `Basic ${token}`);
     const tokenValue = token && `Basic ${token}`;
     document.cookie = `_auth=${tokenValue}`;
   }
 
   getToken() {
-    // const value = localStorage.getItem('localTokenKey');
     const value = getCookie('_auth');
 
     if (!value) return '';
     return value;
   }
+}
+
+export function generateToken(str: string) {
+  return btoa(str);
 }
 
 const getCookie = (name: string) => {
