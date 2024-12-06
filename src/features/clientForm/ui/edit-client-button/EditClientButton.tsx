@@ -1,25 +1,18 @@
-import { useUpdateClient } from '@/entities/client/client.repository';
 import { IClientCreate } from '@/entities/client/types';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid2 } from '@mui/material';
 import { UseFormReturn } from 'react-hook-form';
 import { formStatuses } from '../../types';
 
-interface EditClientButtonProps {
-  id: number;
+export interface EditClientButtonProps {
   formApi: UseFormReturn<IClientCreate, any, undefined>;
-  updateFormStatus: (formStatus: formStatuses) => void;
+  callback: () => Promise<void>;
+  loading: boolean;
+  formStatus: formStatuses;
 }
 
-export default function EditClientButton({ id, formApi, updateFormStatus }: EditClientButtonProps) {
-  const { updateClientFn, isPending } = useUpdateClient();
-
-  const onClickCreateButton = async (clientData: IClientCreate) => {
-    const res = await updateClientFn({ id: id, body: clientData });
-    if (res) {
-      updateFormStatus('frozen');
-    }
-  };
+export default function EditClientButton({ callback, loading, formApi, formStatus }: EditClientButtonProps) {
+  if (formStatus !== 'edit') return null;
 
   return (
     <Grid2 container justifyContent="flex-end" gap={3}>
@@ -27,8 +20,8 @@ export default function EditClientButton({ id, formApi, updateFormStatus }: Edit
       <LoadingButton
         variant="contained"
         disabled={!formApi.formState.isDirty}
-        loading={isPending}
-        onClick={() => void formApi.handleSubmit(onClickCreateButton)()}
+        loading={loading}
+        onClick={() => void callback()}
       >
         Сохранить клиента
       </LoadingButton>

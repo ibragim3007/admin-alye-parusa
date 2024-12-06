@@ -60,7 +60,11 @@ export const useCreateClient = (params?: CardGetPaginationParams) => {
   });
 
   const createClientFn = async (params: CreateClientParams) => {
-    await handleMutation(() => mutateAsync(params), FeedbackMessage.createdMessage('клиент'), { disableError: true });
+    const res = await handleMutation(() => mutateAsync(params), FeedbackMessage.createdMessage('клиент'), {
+      disableError: true,
+    });
+
+    return res;
   };
 
   return {
@@ -81,7 +85,9 @@ export const useUpdateClient = () => {
   });
 
   const updateClientFn = async (params: UpdateClientParams) => {
-    const res = await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('клиент'));
+    const res = await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('клиент'), {
+      disableError: true,
+    });
     return res;
   };
 

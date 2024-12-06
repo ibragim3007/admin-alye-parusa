@@ -1,27 +1,21 @@
-import { useCreateClient, useGetClientById } from '@/entities/client/client.repository';
-import { IClientCreate, IEditClient } from '@/entities/client/types';
+import { useGetClientById } from '@/entities/client/client.repository';
+import { IClientCreate } from '@/entities/client/types';
+import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import EditIcon from '@mui/icons-material/Edit';
 import { Grid2, IconButton, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useCreateClientForm } from './hooks/useCreateClientForm';
+import { useEditClientForm } from './hooks/useEditClientForm';
 import { formStatuses } from './types';
 import ClientFields from './ui/ClientFields';
 import CreateClientButton, { CreateClientButtonProps } from './ui/create-client-button/CreateClientButton';
-import EditClientButton from './ui/edit-client-button/EditClientButton';
-import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
-import { BasicErrorType, isAxiosError } from '@/shared/utils/axiosErrorHandler';
+import EditClientButton, { EditClientButtonProps } from './ui/edit-client-button/EditClientButton';
 
 const renderAddClientButton = ({ ...props }: CreateClientButtonProps) => <CreateClientButton {...props} />;
 
-const renderEditClientButton = ({
-  ...props
-}: {
-  id: number;
-  formApi: UseFormReturn<IEditClient, any, undefined>;
-  updateFormStatus: (formStatus: formStatuses) => void;
-  params?: CardGetPaginationParams;
-}) => {
+const renderEditClientButton = ({ ...props }: EditClientButtonProps) => {
   return <EditClientButton {...props} />;
 };
 
@@ -34,7 +28,6 @@ export interface ClientFormProps {
 
 export default function ClientForm({ params, cardId, formStatusProps = 'create', clientId }: ClientFormProps) {
   const { data, isLoading } = useGetClientById(clientId || 0);
-
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
   const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
 
@@ -54,26 +47,8 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
     mode: 'onChange',
   });
 
-  const { createClientFn, isPending: isPendingCreateClient, error: createError } = useCreateClient(params);
-
-  const onClickCreateButton = async (clientData: IClientCreate) => {
-    await createClientFn({ body: clientData, clientCreateParams: { cardId } });
-  };
-
-  useEffect(() => {
-    if (isAxiosError<BasicErrorType>(createError)) {
-      if (createError.response?.data) {
-        const { errors } = createError.response.data;
-
-        Object.entries(errors).forEach(([field, messages]) => {
-          formApi.setError(field as keyof IClientCreate, {
-            type: 'server',
-            message: Array.isArray(messages) ? messages.join(' ') : messages,
-          });
-        });
-      }
-    }
-  }, [createError, formApi]);
+  const { onClickCreateButton, loadingCreateClient } = useCreateClientForm(cardId, formApi, updateFormStatus, params);
+  const { onClickEditButton, loadingUpdateClient } = useEditClientForm(formApi, updateFormStatus);
 
   useEffect(() => {
     if (data) formApi.reset(data);
@@ -112,15 +87,16 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
             return renderAddClientButton({
               callback: () => formApi.handleSubmit(onClickCreateButton)(),
               params,
-              loading: isPendingCreateClient,
+              loading: loadingCreateClient,
             });
           }
 
           if (formStatus === 'frozen' || formStatus === 'edit') {
             return renderEditClientButton({
-              id: clientId || 0,
+              loading: loadingUpdateClient,
+              formStatus,
               formApi,
-              updateFormStatus,
+              callback: () => formApi.handleSubmit((data) => onClickEditButton(clientId || 0, data))(),
             });
           }
         })()}
