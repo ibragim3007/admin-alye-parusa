@@ -12,6 +12,8 @@ interface RHFTextFieldProps<T extends FieldValues> {
   multiline?: boolean;
   rows?: number;
   disabled?: boolean;
+  error?: boolean;
+  helperText?: string;
 }
 
 export const RHFTextField = <T extends FieldValues>({
@@ -30,7 +32,7 @@ export const RHFTextField = <T extends FieldValues>({
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
+        render={({ field, fieldState: { error } }) => (
           <Autocomplete
             {...field}
             onChange={(_, value) => {
@@ -38,7 +40,9 @@ export const RHFTextField = <T extends FieldValues>({
               if (onChangeHandler) onChangeHandler(value);
             }}
             options={options}
-            renderInput={(params) => <TextField {...params} label={label} fullWidth={fullWidth} />}
+            renderInput={(params) => (
+              <TextField {...params} label={label} error={!!error} helperText={error?.message} fullWidth={fullWidth} />
+            )}
             size="small"
             disabled={disabled}
             style={{ minWidth: 160 }}
@@ -52,10 +56,12 @@ export const RHFTextField = <T extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           label={label}
+          error={!!error}
+          helperText={error?.message}
           disabled={disabled}
           fullWidth={fullWidth}
           size="small"

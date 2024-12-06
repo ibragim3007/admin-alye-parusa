@@ -31,7 +31,7 @@ export type CreateClientParams = {
 
 export const useCreateClient = (params?: CardGetPaginationParams) => {
   const queryClient = useQueryClient();
-  const s = queryClient.getQueryData(['cards']);
+  // const s = queryClient.getQueryData(['cards']);
 
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: (params: CreateClientParams) => createClient(params.clientCreateParams, params.body),
@@ -60,7 +60,7 @@ export const useCreateClient = (params?: CardGetPaginationParams) => {
   });
 
   const createClientFn = async (params: CreateClientParams) => {
-    await handleMutation(() => mutateAsync(params), FeedbackMessage.createdMessage('клиент'));
+    await handleMutation(() => mutateAsync(params), FeedbackMessage.createdMessage('клиент'), { disableError: true });
   };
 
   return {

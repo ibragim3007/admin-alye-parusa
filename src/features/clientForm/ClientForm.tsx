@@ -1,4 +1,4 @@
-import { useGetClientById } from '@/entities/client/client.repository';
+import { useCreateClient, useGetClientById } from '@/entities/client/client.repository';
 import { IClientCreate, IEditClient } from '@/entities/client/types';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,19 +7,12 @@ import { useEffect, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { formStatuses } from './types';
 import ClientFields from './ui/ClientFields';
-import CreateClientButton from './ui/create-client-button/CreateClientButton';
+import CreateClientButton, { CreateClientButtonProps } from './ui/create-client-button/CreateClientButton';
 import EditClientButton from './ui/edit-client-button/EditClientButton';
 import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
+import { BasicErrorType, isAxiosError } from '@/shared/utils/axiosErrorHandler';
 
-const renderAddClientButton = ({
-  ...props
-}: {
-  params?: CardGetPaginationParams;
-  cardId: string;
-  formApi: UseFormReturn<IClientCreate, any, undefined>;
-}) => {
-  return <CreateClientButton {...props} />;
-};
+const renderAddClientButton = ({ ...props }: CreateClientButtonProps) => <CreateClientButton {...props} />;
 
 const renderEditClientButton = ({
   ...props
@@ -43,12 +36,7 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
   const { data, isLoading } = useGetClientById(clientId || 0);
 
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
-
-  const updateFormStatus = (formStatus: formStatuses) => {
-    setFormStatus(formStatus);
-  };
-
-  const isFrozen = formStatus === 'frozen';
+  const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
 
   const formApi = useForm<IClientCreate>({
     defaultValues: {
@@ -66,12 +54,32 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
     mode: 'onChange',
   });
 
+  const { createClientFn, isPending: isPendingCreateClient, error: createError } = useCreateClient(params);
+
+  const onClickCreateButton = async (clientData: IClientCreate) => {
+    await createClientFn({ body: clientData, clientCreateParams: { cardId } });
+  };
+
   useEffect(() => {
-    if (data) {
-      formApi.reset(data);
+    if (isAxiosError<BasicErrorType>(createError)) {
+      if (createError.response?.data) {
+        const { errors } = createError.response.data;
+
+        Object.entries(errors).forEach(([field, messages]) => {
+          formApi.setError(field as keyof IClientCreate, {
+            type: 'server',
+            message: Array.isArray(messages) ? messages.join(' ') : messages,
+          });
+        });
+      }
     }
+  }, [createError, formApi]);
+
+  useEffect(() => {
+    if (data) formApi.reset(data);
   }, [data, formApi]);
 
+  const isFrozen = formStatus === 'frozen';
   const isNewClient = formStatus === 'create';
 
   if (isLoading) {
@@ -102,9 +110,9 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
         {(() => {
           if (formStatus === 'create') {
             return renderAddClientButton({
-              cardId: cardId,
-              formApi,
+              callback: () => formApi.handleSubmit(onClickCreateButton)(),
               params,
+              loading: isPendingCreateClient,
             });
           }
 
