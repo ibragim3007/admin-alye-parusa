@@ -58,7 +58,7 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
             key={card.id}
             card={card}
             ClientForm={ClientForm}
-            params={{ page: currentPage, searchString: debouncedSearchString }}
+            params={{ page: currentPage, searchString: debouncedSearchString, sortOrder: sortType }}
           />
         ))}
       </Grid2>

@@ -1,12 +1,14 @@
-import { queryClient } from '@/shared/api/api';
 import { createClient, getClientById, getClients, updateClient } from '@/shared/api/entities/client/client.api';
-import { Inform } from '@/shared/service/log/log.service';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { IClientCreate } from './types';
 import { ClientCreateParams } from '@/shared/api/entities/client/types/req.type';
+import { Inform } from '@/shared/service/log/log.service';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { IClientCreate } from './types';
+import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
+import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
+import { cardsKey } from '../card/card.respository';
 
 const clientKeys = ['client'];
 
@@ -28,9 +30,35 @@ export type CreateClientParams = {
   clientCreateParams: ClientCreateParams;
   body: IClientCreate;
 };
-export const useCreateClient = () => {
-  const { mutateAsync, isPending } = useMutation({
+
+export const useCreateClient = (params?: CardGetPaginationParams) => {
+  const queryClient = useQueryClient();
+  const s = queryClient.getQueryData(['cards']);
+
+  const { mutateAsync, isPending, error } = useMutation({
     mutationFn: (params: CreateClientParams) => createClient(params.clientCreateParams, params.body),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['client'] });
+    },
+    // onSuccess: (createdClient) => {
+    //   console.log(s);
+    //   queryClient.setQueryData(
+    //     [...cardsKey, params?.page, params?.sortOrder, params?.searchString],
+    //     (oldData: CardsGetPaginationDto | undefined) => {
+    //       console.log(params);
+    //       console.log(oldData, createdClient);
+    //       if (!oldData) return;
+
+    //       const updatedCards = oldData.cards.map((card) =>
+    //         card.clientId === createdClient.id ? { ...card, client: { ...createdClient } } : card
+    //       );
+
+    //       return { ...oldData, cards: updatedCards };
+    //     }
+    //   );
+
+    //   void queryClient.invalidateQueries({ queryKey: ['client'] });
+    // },
   });
 
   const createClientFn = async (params: CreateClientParams) => {
@@ -38,6 +66,7 @@ export const useCreateClient = () => {
   };
 
   return {
+    error,
     createClientFn,
     isPending,
   };
@@ -49,7 +78,7 @@ export type UpdateClientParams = {
 };
 
 export const useUpdateClient = () => {
-  const { mutateAsync, isPending, isError } = useMutation({
+  const { mutateAsync, isPending, isError, error } = useMutation({
     mutationFn: (params: UpdateClientParams) => updateClient(params.id, params.body),
   });
 
@@ -61,6 +90,7 @@ export const useUpdateClient = () => {
     updateClientFn,
     isPending,
     isError,
+    error,
   };
 };
 

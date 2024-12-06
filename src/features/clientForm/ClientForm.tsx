@@ -1,19 +1,20 @@
 import { useGetClientById } from '@/entities/client/client.repository';
 import { IClientCreate, IEditClient } from '@/entities/client/types';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { Grid2, IconButton, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Grid2, IconButton, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
+import { formStatuses } from './types';
 import ClientFields from './ui/ClientFields';
 import CreateClientButton from './ui/create-client-button/CreateClientButton';
-import { formStatuses } from './types';
 import EditClientButton from './ui/edit-client-button/EditClientButton';
-import EditIcon from '@mui/icons-material/Edit';
-import { PopoverCustom } from '@/shared/ui/PopoverCustom';
+import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 
 const renderAddClientButton = ({
   ...props
 }: {
+  params?: CardGetPaginationParams;
   cardId: string;
   formApi: UseFormReturn<IClientCreate, any, undefined>;
 }) => {
@@ -26,6 +27,7 @@ const renderEditClientButton = ({
   id: number;
   formApi: UseFormReturn<IEditClient, any, undefined>;
   updateFormStatus: (formStatus: formStatuses) => void;
+  params?: CardGetPaginationParams;
 }) => {
   return <EditClientButton {...props} />;
 };
@@ -34,10 +36,11 @@ export interface ClientFormProps {
   formStatusProps?: formStatuses;
   cardId: string;
   clientId?: number;
+  params?: CardGetPaginationParams;
 }
 
-export default function ClientForm({ cardId, formStatusProps = 'create', clientId }: ClientFormProps) {
-  const { data, isLoading, isError } = useGetClientById(clientId || 0);
+export default function ClientForm({ params, cardId, formStatusProps = 'create', clientId }: ClientFormProps) {
+  const { data, isLoading } = useGetClientById(clientId || 0);
 
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
 
@@ -84,20 +87,24 @@ export default function ClientForm({ cardId, formStatusProps = 'create', clientI
       <Grid2 container justifyContent="space-between" alignItems="center">
         <Typography variant="h6">{isNewClient ? 'Создание клиента' : 'Изменение клиента'}</Typography>
         {clientId && (
-          <PopoverCustom label="Изменить клиента">
-            <IconButton onClick={() => updateFormStatus(formStatus === 'edit' ? 'frozen' : 'edit')}>
+          <Tooltip title="Изменить клиента">
+            <IconButton
+              sx={{ bgcolor: formStatus === 'edit' ? 'background.default' : 'transparent' }}
+              onClick={() => updateFormStatus(formStatus === 'edit' ? 'frozen' : 'edit')}
+            >
               <EditIcon />
             </IconButton>
-          </PopoverCustom>
+          </Tooltip>
         )}
       </Grid2>
       <ClientFields isFrozen={isFrozen} formApi={formApi} actionButton={undefined} />
-      <Grid2>
+      <Grid2 container justifyContent="flex-end">
         {(() => {
           if (formStatus === 'create') {
             return renderAddClientButton({
               cardId: cardId,
               formApi,
+              params,
             });
           }
 

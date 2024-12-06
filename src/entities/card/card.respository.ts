@@ -5,7 +5,7 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
 
-const cardsKey = ['cards'];
+export const cardsKey = ['cards'];
 
 export function useGetCards(params?: CardGetPaginationParams) {
   const { data, isLoading, isError } = useQuery({
@@ -70,8 +70,10 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
   const { mutateAsync, isPending, isSuccess, isError } = useMutation({
     mutationKey: [...cardsKey],
     mutationFn: ({ cardId, cardChangeStatus }: UpdateCardStatusParams) => changeCardStatus(cardId, cardChangeStatus),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: [...cardsKey, params?.page, params?.searchString] });
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: [...cardsKey, params?.page, params?.searchString, params?.sortOrder],
+      });
     },
     // onSuccess: (updatedCard) => {
     //   console.log(updatedCard);

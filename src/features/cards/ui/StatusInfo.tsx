@@ -26,12 +26,12 @@ export default function StatusInfo({ card, isLoading, onChangeStatus }: StatusIn
 
   return (
     <FormControl>
-      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+      <InputLabel variant="outlined" htmlFor="uncontrolled-native">
         Статус
       </InputLabel>
       <Select
         label="Статус"
-        variant="standard"
+        variant="outlined"
         size="small"
         value={card.status}
         onChange={(event) => void onChangeStatusHandler(event)}
