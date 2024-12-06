@@ -25,9 +25,6 @@ export default function FilterOrder({ value, onChange }: FilterOrderProps) {
         value={value}
         onChange={(e) => onChangeOrderTypeHandler(e)}
       >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
         {SortOrderTypesArray.map((orderType) => (
           <MenuItem key={orderType} value={orderType}>
             {orderType}

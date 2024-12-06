@@ -29,6 +29,7 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
     pageSize: 10,
     sortOrder: sortType,
   });
+
   const updateSearchString = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchString(e.target.value);
   };

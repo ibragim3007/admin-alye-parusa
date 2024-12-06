@@ -15,8 +15,10 @@ export default function EditClientButton({ id, formApi, updateFormStatus }: Edit
   const { updateClientFn, isPending } = useUpdateClient();
 
   const onClickCreateButton = async (clientData: IClientCreate) => {
-    await updateClientFn({ id: id, body: clientData });
-    updateFormStatus('frozen');
+    const res = await updateClientFn({ id: id, body: clientData });
+    if (res) {
+      updateFormStatus('frozen');
+    }
   };
 
   return (

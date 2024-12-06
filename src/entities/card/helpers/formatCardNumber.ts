@@ -3,10 +3,10 @@ export function formatCardNumber(input: number): string {
   const inputString = input.toString();
 
   // Заполняем число нулями слева до длины 16
-  const paddedInput = inputString.padStart(16, '0');
+  const paddedInput = inputString.padStart(6, '0');
 
   // Группируем числа в блоки по 4
-  const formattedNumber = paddedInput.replace(/(\d{4})/g, '$1 ').trim();
+  const formattedNumber = paddedInput.replace(/(\d{6})/g, '$1 ').trim();
 
   return formattedNumber;
 }

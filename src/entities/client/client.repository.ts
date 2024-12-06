@@ -1,3 +1,4 @@
+import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 import { createClient, getClientById, getClients, updateClient } from '@/shared/api/entities/client/client.api';
 import { ClientCreateParams } from '@/shared/api/entities/client/types/req.type';
 import { Inform } from '@/shared/service/log/log.service';
@@ -6,9 +7,6 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IClientCreate } from './types';
-import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
-import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
-import { cardsKey } from '../card/card.respository';
 
 const clientKeys = ['client'];
 
@@ -83,7 +81,8 @@ export const useUpdateClient = () => {
   });
 
   const updateClientFn = async (params: UpdateClientParams) => {
-    await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('клиент'));
+    const res = await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('клиент'));
+    return res;
   };
 
   return {
