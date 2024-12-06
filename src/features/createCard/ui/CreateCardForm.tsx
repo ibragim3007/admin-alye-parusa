@@ -1,10 +1,15 @@
 import { useCreateCard } from '@/entities/card/card.respository';
 import { ICreateCard } from '@/entities/card/types';
-import { Button, Grid2, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Grid2, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-export default function CreateCardForm() {
-  const { createCardFunction } = useCreateCard();
+interface CreateCardFormProps {
+  handleClose: () => void;
+}
+
+export default function CreateCardForm({ handleClose }: CreateCardFormProps) {
+  const { createCardFunction, isPending } = useCreateCard();
   const {
     register,
     handleSubmit,
@@ -18,7 +23,7 @@ export default function CreateCardForm() {
   });
 
   const onAddClick = async (data: ICreateCard) => {
-    await createCardFunction(data);
+    if (await createCardFunction(data)) handleClose();
   };
 
   return (
@@ -45,9 +50,9 @@ export default function CreateCardForm() {
         error={Boolean(errors.cardComment?.message)}
       />
 
-      <Button variant="contained" onClick={() => void handleSubmit(onAddClick)()}>
+      <LoadingButton loading={isPending} variant="contained" onClick={() => void handleSubmit(onAddClick)()}>
         Добавить
-      </Button>
+      </LoadingButton>
     </Grid2>
   );
 }

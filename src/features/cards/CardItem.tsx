@@ -4,7 +4,6 @@ import { ICard } from '@/entities/card/types';
 import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 import { formatIsoDateToLocalString } from '@/shared/helpers/covertTimeToLocal';
 import DeleteButtonConfirmation from '@/shared/ui/delete-dialog/DeleteButtonConfirmation';
-import { PopoverCustom } from '@/shared/ui/PopoverCustom';
 import { Button, Card, Chip, Divider, Grid2, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ClientFormProps } from '../clientForm/ClientForm';
@@ -66,10 +65,10 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
             <Grid2>
               {isClientExist ? (
                 <Button variant="outlined" onClick={toggleForm}>
-                  Открыть профиль
+                  {showForm ? 'Скрыть' : 'Открыть профиль'}
                 </Button>
               ) : (
-                <Button onClick={toggleForm}>Создать клиента</Button>
+                <Button onClick={toggleForm}>{showForm ? 'Скрыть' : 'Создать клиента'}</Button>
               )}
             </Grid2>
           </Grid2>

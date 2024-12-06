@@ -7,6 +7,10 @@ export interface BasicErrorType {
   title: string;
 }
 
+export interface BasicSingleErrorType {
+  error: string;
+}
+
 export function isAxiosError<ResponseType>(error: unknown): error is AxiosError<ResponseType> {
   return axios.isAxiosError(error);
 }

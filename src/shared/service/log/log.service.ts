@@ -1,4 +1,4 @@
-import { BasicErrorType } from '@/shared/utils/axiosErrorHandler';
+import { BasicErrorType, BasicSingleErrorType } from '@/shared/utils/axiosErrorHandler';
 import { isAxiosError } from 'axios';
 import { Logger, LoggerStrategy } from 'logger-service-ts';
 import { ToastOptions, toast } from 'react-toastify';
@@ -16,8 +16,9 @@ class ToastLogger<TOptions> implements LoggerStrategy<TOptions> {
         errorsKeys.map((keyError) => {
           errorString = errorString + e.response?.data.errors[keyError].join('\n');
         });
-
         toast.error(errorString);
+      } else if (isAxiosError<BasicSingleErrorType>(e)) {
+        toast.error(e.response?.data.error);
       } else if (e.response?.data && typeof e.response.data === 'string') toast.error(e.response.data);
       else if (e.response?.data.title) toast.error(e.response.data.title);
     } else if (e instanceof Error) toast.error(e.message, options || {});

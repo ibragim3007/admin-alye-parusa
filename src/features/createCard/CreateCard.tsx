@@ -29,7 +29,7 @@ export default function CreateCard() {
           </Grid2>
         </DialogTitle>
         <DialogContent style={{ paddingTop: 10 }}>
-          <CreateCardForm />
+          <CreateCardForm handleClose={handleClose} />
         </DialogContent>
       </Dialog>
     </Grid2>

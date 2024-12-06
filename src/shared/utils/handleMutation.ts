@@ -13,6 +13,7 @@ export async function handleMutation<T>(
     if (error?.disableError) {
       return;
     }
+
     Inform.error(e || error?.errorMessage);
   }
 }

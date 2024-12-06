@@ -30,7 +30,7 @@ export function useCreateCard() {
   });
 
   const createCardFunction = async (card: CardCreateDto) => {
-    await handleMutation(() => mutateAsync(card), FeedbackMessage.createdMessage('карта'));
+    return await handleMutation(() => mutateAsync(card), FeedbackMessage.createdMessage('карта'));
   };
 
   return {
