@@ -33,7 +33,7 @@ const AppRoter: React.FC = () => {
             <Route path={config.cards}>
               <Route index element={<CardsPageLazy />} />
               <Route path={':pageNumber'} element={<CardsPageLazy />} />
-              <Route path={'id/:cardId'} element={<TourPageLazy />} />
+              <Route path={'client/:clientId'} element={<TourPageLazy />} />
             </Route>
             <Route path={config.clients} element={<ClientsPage />} />
             <Route path="*" element={<Navigate to={config.cards} />} />

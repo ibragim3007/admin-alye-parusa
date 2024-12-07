@@ -1,9 +1,11 @@
-import { changeCardStatus, createCard, deleteCard, getCards } from '@/shared/api/entities/card/card.api';
+import { changeCardStatus, createCard, deleteCard, getBalance, getCards } from '@/shared/api/entities/card/card.api';
 import { CardCreateDto, CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
+import { useEffect } from 'react';
+import { Inform } from '@/shared/service/log/log.service';
 
 export const cardsKey = ['cards'];
 
@@ -105,4 +107,23 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
   };
 
   return { changeCardStatusFn, isPending, isSuccess, isError };
+}
+
+export function useGetCardBalance(id: number) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: cardsKey,
+    queryFn: () => getBalance(id),
+  });
+
+  useEffect(() => {
+    if (error) {
+      Inform.error(error);
+    }
+  }, [error]);
+
+  return {
+    data,
+    error,
+    isLoading,
+  };
 }

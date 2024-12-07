@@ -49,7 +49,7 @@ export const apiConfig = {
     get: {
       tours: '/api/tours',
       tourId: (id: IdType) => `/api/tours/${id}`,
-      toursByClientId: (id: number) => `/api/tours/tours/${id}`,
+      toursByClientId: (id: number) => `/api/tours/client/${id}`,
     },
     post: {
       tours: '/api/tours',
