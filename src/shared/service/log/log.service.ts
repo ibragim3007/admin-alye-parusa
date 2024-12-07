@@ -17,7 +17,7 @@ class ToastLogger<TOptions> implements LoggerStrategy<TOptions> {
           errorString = errorString + e.response?.data.errors[keyError].join('\n');
         });
         toast.error(errorString);
-      } else if (isAxiosError<BasicSingleErrorType>(e)) {
+      } else if (isAxiosError<BasicSingleErrorType>(e) && typeof e.response?.data.error === 'string') {
         toast.error(e.response?.data.error);
       } else if (e.response?.data && typeof e.response.data === 'string') toast.error(e.response.data);
       else if (e.response?.data.title) toast.error(e.response.data.title);

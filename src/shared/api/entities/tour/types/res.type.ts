@@ -12,7 +12,7 @@ export type TourGetDto = {
   finalPrice: number;
   bonusDeposit: number;
   bonusSpending: number;
-  state: 'Created';
+  state: TourStateType;
   description: string;
   createdAt: Date;
   updatedAt: Date;

@@ -1,3 +1,5 @@
+import { TourStateType } from '../../dictionary/types';
+
 export type TourCreateDto = {
   state: 'Created';
   cardId: number;
@@ -8,5 +10,5 @@ export type TourCreateDto = {
 };
 
 export type ChangeTourStateDto = {
-  tourState: string;
+  tourState: TourStateType;
 };

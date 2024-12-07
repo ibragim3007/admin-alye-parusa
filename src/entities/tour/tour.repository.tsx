@@ -3,9 +3,10 @@ import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
 import { Inform } from '@/shared/service/log/log.service';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IChangeTourState } from './types';
+import { TourClientGetDto } from '@/shared/api/entities/tour/types/res.type';
 
 const tourKeys = ['tour'];
 
@@ -28,7 +29,7 @@ export const useGetTours = () => {
 
 export const useGetTourByClientId = (clientId: number) => {
   const { data, isLoading, error, isError, isFetching } = useQuery({
-    queryKey: [...tourKeys, clientId],
+    queryKey: ['tour-by-client'],
     queryFn: () => getToursByClientId(clientId),
   });
 
@@ -68,9 +69,25 @@ type TChangeStateTourParams = {
   tourState: IChangeTourState;
 };
 export const useChangeStateTour = () => {
+  const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationKey: tourKeys,
     mutationFn: (data: TChangeStateTourParams) => changeTourState(data.id, data.tourState),
+    onSuccess: (data, variables) => {
+      data;
+      // Обновляем локальный кэш
+      queryClient.setQueryData<TourClientGetDto>(['tour-by-client'], (cachedData) => {
+        if (!cachedData) return undefined;
+
+        // Обновляем состояние нужного тура
+        return {
+          ...cachedData,
+          tours: cachedData.tours.map((tour) =>
+            tour.id === variables.id ? { ...tour, state: variables.tourState.tourState } : tour
+          ),
+        };
+      });
+    },
   });
 
   const changeTourStateFn = async (data: TChangeStateTourParams) => {

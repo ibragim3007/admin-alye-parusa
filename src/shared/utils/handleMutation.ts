@@ -10,6 +10,7 @@ export async function handleMutation<T>(
     if (res) Inform.success(successMessage);
     return res;
   } catch (e) {
+    console.log(e);
     if (error?.disableError) {
       return;
     }

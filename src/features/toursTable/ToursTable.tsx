@@ -1,45 +1,14 @@
 import { ITourClientGet } from '@/entities/tour/types';
+import { TourStateType } from '@/shared/api/entities/dictionary/types';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import { getFromToDateString } from '@/shared/helpers/getFromToDateString';
-import { priceFormat } from '@/shared/helpers/priceFormat';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Grid2, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import { Grid2, IconButton } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import PriceSell from './ui/PriceSell';
-import BonusSell from './ui/BonusSell';
-type TourStateType = 'created' | 'approved' | 'canceled' | 'deleted';
-
-// type TourRow = {
-//   id: number;
-//   name: string;
-//   fromDate: Date;
-//   toDate: Date;
-//   bonusDeposit: number;
-//   bonusSpending: number;
-//   state: TourStateType;
-// };
-
-// const tours: TourRow[] = [
-//   {
-//     id: 1,
-//     name: 'Tour to Paris',
-//     fromDate: new Date('2024-01-01'),
-//     toDate: new Date('2024-01-10'),
-//     bonusDeposit: 50,
-//     bonusSpending: 20,
-//     state: 'created',
-//   },
-//   {
-//     id: 2,
-//     name: 'Tour to London',
-//     fromDate: new Date('2024-02-15'),
-//     toDate: new Date('2024-02-20'),
-//     bonusDeposit: 40,
-//     bonusSpending: 15,
-//     state: 'approved',
-//   },
-// ];
+import BonusSell from './ui/Cells/BonusSell';
+import PriceSell from './ui/Cells/PriceSell';
+import StatusCell from './ui/ActionCells/StatusCell';
 
 const handleStateChange = (id: number, newState: TourStateType) => {
   console.log(`State for tour ${id} changed to ${newState}`);
@@ -65,7 +34,6 @@ const columns: GridColDef[] = [
     valueGetter: (val: string, row: TourGetDto) => {
       return getFromToDateString(row.fromDate, row.toDate);
     },
-    // valueGetter: (params: GridValueGetterParams<TourRow, Date>) => params.value.toLocaleDateString(),
   },
   {
     field: 'finalPrice',
@@ -87,27 +55,15 @@ const columns: GridColDef[] = [
     field: 'state',
     headerName: 'Статус',
     width: 200,
-    renderCell: (params) => (
-      <Select
-        size="small"
-        value={params.row.state}
-        onChange={(event) => handleStateChange(params.row.id, event.target.value as TourStateType)}
-        fullWidth
-      >
-        <MenuItem value="created">Created</MenuItem>
-        <MenuItem value="approved">Approved</MenuItem>
-        <MenuItem value="canceled">Canceled</MenuItem>
-        <MenuItem value="deleted">Deleted</MenuItem>
-      </Select>
-    ),
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell id={row.id} state={row.state} />,
   },
   {
     field: 'edit',
     headerName: 'Изменить',
     width: 90,
-    renderCell: (params) => (
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
       <Grid2 container justifyContent="center" alignItems="center" height="100%">
-        <IconButton onClick={() => handleDelete(params.row.id)}>
+        <IconButton onClick={() => handleEdit(row.id)}>
           <EditIcon />
         </IconButton>
       </Grid2>
@@ -117,9 +73,9 @@ const columns: GridColDef[] = [
     field: 'delete',
     headerName: 'Удалить',
     width: 80,
-    renderCell: (params: GridRenderCellParams<TourGetDto>) => (
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
       <Grid2 container justifyContent="center" alignItems="center" height="100%">
-        <IconButton color="error" onClick={() => handleDelete(params.row.id)}>
+        <IconButton color="error" onClick={() => handleDelete(row.id)}>
           <DeleteIcon />
         </IconButton>
       </Grid2>
@@ -138,13 +94,13 @@ export default function ToursTable({ data }: ToursTableProps) {
         rows={data.tours}
         columns={columns}
         hideFooter
-        // initialState={{
-        //   pagination: {
-        //     paginationModel: {
-        //       pageSize: 10,
-        //     },
-        //   },
-        // }}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
         // checkboxSelection
         autoHeight
         disableColumnResize={false}
