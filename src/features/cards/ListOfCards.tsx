@@ -4,12 +4,11 @@ import { useDebounce } from '@/shared/hooks/useDebounce';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Alert, Grid2, Pagination, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ClientFormProps } from '../clientForm/ClientForm';
 import CardItem from './CardItem';
 import FilterOrder from './ui/FilterOrder';
 import SearchField from './ui/SearchField';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { config } from '@/app/router/routerConfig';
 
 interface ListOfCardsProps {
   ClientForm: React.ElementType<ClientFormProps>;
@@ -47,8 +46,8 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
   }, [data, isLoading]);
 
   return (
-    <Grid2 container gap={3} flexDirection="column" alignContent="center">
-      <Grid2 gap={2} container justifyContent="center" alignItems="center">
+    <Grid2 container gap={3}>
+      <Grid2 gap={2} width={'100%'} container justifyContent="center" alignItems="center">
         <SearchField onChange={updateSearchString} value={searchString} />
         <FilterOrder value={sortType} onChange={handleChangeSortType} />
       </Grid2>
@@ -70,7 +69,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
         ))}
       </Grid2>
 
-      <Grid2 container justifyContent="center">
+      <Grid2 width={'100%'} container justifyContent="center">
         <Paper elevation={10} sx={{ p: 1 }}>
           <Pagination count={amountOfPages} page={pageNumber} onChange={handleChangeCurrentPage} />
         </Paper>

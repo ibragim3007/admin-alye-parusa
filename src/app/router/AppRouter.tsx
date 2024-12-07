@@ -1,17 +1,15 @@
+import { useMe } from '@/entities/me/me.repository';
+import { CardsPageLazy } from '@/pages/cards';
+import { ClientsPage } from '@/pages/clients';
 import LoginPage from '@/pages/login/LoginPage';
+import { authService } from '@/shared/api/api';
+import LoaderFullScreen from '@/shared/ui/loader/LoaderFullScreen';
 import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { config } from './routerConfig';
-import CardsPage from '@/pages/cards/CardsPage';
-import { authService } from '@/shared/api/api';
-import { ClientsPage } from '@/pages/clients';
-import { useMe } from '@/entities/me/me.repository';
-import { CardsPageLazy } from '@/pages/cards';
-import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { Grid2 } from '@mui/material';
 
 const AppRoter: React.FC = () => {
-  const { data, isLoading, isError } = useMe();
+  const { data, isLoading } = useMe();
 
   useEffect(() => {
     if (!isLoading && !data) {
@@ -19,23 +17,11 @@ const AppRoter: React.FC = () => {
     }
   }, [isLoading, data]);
 
-  if (isLoading) {
-    return (
-      <Grid2 container justifyContent="center" alignItems="center" height="100vh">
-        <LoaderGeneral />
-      </Grid2>
-    );
-  }
+  if (isLoading) return <LoaderFullScreen />;
 
   return (
     <BrowserRouter>
-      <Suspense
-        fallback={
-          <Grid2 container justifyContent="center" alignItems="center" height="100vh">
-            <LoaderGeneral />
-          </Grid2>
-        }
-      >
+      <Suspense fallback={<LoaderFullScreen />}>
         {!data?.userName ? (
           <Routes>
             <Route path={config.login} element={<LoginPage />} />
