@@ -8,6 +8,8 @@ import { Button, Card, Chip, Divider, Grid2, Tooltip, Typography } from '@mui/ma
 import { useState } from 'react';
 import { ClientFormProps } from '../clientForm/ClientForm';
 import StatusInfo from './ui/StatusInfo';
+import { NavLink } from 'react-router-dom';
+import { config } from '@/app/router/routerConfig';
 interface CardItemProps {
   card: ICard;
   ClientForm: React.ElementType<ClientFormProps>;
@@ -64,9 +66,14 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
             </Grid2>
             <Grid2>
               {isClientExist ? (
-                <Button variant="outlined" onClick={toggleForm}>
-                  {showForm ? 'Скрыть' : 'Открыть профиль'}
-                </Button>
+                <Grid2 container gap={2}>
+                  <NavLink to={`${config.cards}/id/${card.id}`}>
+                    <Button variant="outlined">Создать тур</Button>
+                  </NavLink>
+                  <Button variant="outlined" onClick={toggleForm}>
+                    {showForm ? 'Скрыть' : 'Открыть профиль'}
+                  </Button>
+                </Grid2>
               ) : (
                 <Button onClick={toggleForm}>{showForm ? 'Скрыть' : 'Создать клиента'}</Button>
               )}

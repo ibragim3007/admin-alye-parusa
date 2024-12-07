@@ -20,6 +20,10 @@ export function useGetCards(params?: CardGetPaginationParams) {
   };
 }
 
+// export function useGetCardById(id: number) {
+//   const {} = useQuery(())
+// }
+
 export function useCreateCard() {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending, isSuccess, isError } = useMutation({
