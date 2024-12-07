@@ -1,10 +1,12 @@
 import { CardStatusType } from '../../card/types/res.type';
-import { ContactType } from '../../dictionary/types';
+import { ContactType, TourStateType } from '../../dictionary/types';
 
 export type TourGetDto = {
   id: number;
   userId: number;
   name: string;
+  fromDate: string;
+  toDate: string;
   cardId: number;
   price: number;
   finalPrice: number;
@@ -43,22 +45,20 @@ export type TourClientGetDto = {
     createdAt: Date;
     updatedAt: Date;
   };
-  tours: [
-    {
-      id: number;
-      userId: number;
-      name: string;
-      fromDate: Date;
-      toDate: Date;
-      cardId: number;
-      price: number;
-      finalPrice: number;
-      bonusDeposit: number;
-      bonusSpending: number;
-      state: 'Created';
-      description: string;
-      createdAt: Date;
-      updatedAt: Date;
-    },
-  ];
+  tours: {
+    id: number;
+    userId: number;
+    name: string;
+    fromDate: string;
+    toDate: string;
+    cardId: number;
+    price: number;
+    finalPrice: number;
+    bonusDeposit: number;
+    bonusSpending: number;
+    state: TourStateType;
+    description: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 };

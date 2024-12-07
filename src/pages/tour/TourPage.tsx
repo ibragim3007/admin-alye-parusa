@@ -1,6 +1,7 @@
 import { useGetTourByClientId } from '@/entities/tour/tour.repository';
 import { CardBalanceLazy } from '@/features/cardBalance';
 import { CardInfoBigLazy } from '@/features/cardInfoBig';
+import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -12,7 +13,7 @@ export default function TourPage() {
 
   return (
     <Grid2
-      sx={{ minHeight: '100vh', maxWidth: 900, margin: '0 auto' }}
+      sx={{ minHeight: '100vh', maxWidth: 1200, margin: '0 auto' }}
       container
       flexDirection="column"
       gap={3}
@@ -22,7 +23,10 @@ export default function TourPage() {
       {isLoading && <LoaderGeneral />}
       {!data && !isLoading && <LoaderGeneral />}
       {data && !isLoading && (
-        <CardInfoBigLazy tour={data} BalanceComponent={<CardBalanceLazy cardId={data.card.id} />} />
+        <>
+          <CardInfoBigLazy tour={data} BalanceComponent={<CardBalanceLazy cardId={data.card.id} />} />
+          <ToursTableLazy data={data} />
+        </>
       )}
     </Grid2>
   );
