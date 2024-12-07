@@ -2,8 +2,11 @@ import ListOfCards from '@/features/cards/ListOfCards';
 import { ClientForm } from '@/features/clientForm';
 import { CreateCard } from '@/features/createCard';
 import { Grid2, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 export default function CardsPage() {
+  const { pageNumber } = useParams();
+
   return (
     <Grid2
       sx={{ bgcolor: 'background.default', minHeight: '100vh' }}
@@ -16,7 +19,7 @@ export default function CardsPage() {
         <Typography variant="h3">Карты</Typography>
         <CreateCard />
       </Grid2>
-      <ListOfCards ClientForm={ClientForm} />
+      <ListOfCards pageNumber={parseInt(pageNumber || '1')} ClientForm={ClientForm} />
     </Grid2>
   );
 }

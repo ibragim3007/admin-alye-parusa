@@ -1,3 +1,5 @@
-import LoginPage from '../login/LoginPage';
+import { lazy } from 'react';
 
-export { LoginPage };
+const CardsPageLazy = lazy(() => import('./CardsPage'));
+
+export { CardsPageLazy };

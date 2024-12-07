@@ -8,23 +8,29 @@ import { ClientFormProps } from '../clientForm/ClientForm';
 import CardItem from './CardItem';
 import FilterOrder from './ui/FilterOrder';
 import SearchField from './ui/SearchField';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { config } from '@/app/router/routerConfig';
 
 interface ListOfCardsProps {
   ClientForm: React.ElementType<ClientFormProps>;
+  pageNumber: number;
 }
 
-export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps) {
+  // const [currentPage, setCurrentPage] = useState(pageNumber);
   const [amountOfPages, setAmountOfPages] = useState(0);
   const [sortType, setSortType] = useState<SortOrderType>('notBoundDescending');
   const handleChangeSortType = (updatedSortType: SortOrderType) => setSortType(updatedSortType);
 
   const [searchString, setSearchString] = useState('');
   const debouncedSearchString = useDebounce(searchString, 500);
-  const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => setCurrentPage(value);
+  const navigate = useNavigate();
+  const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => {
+    navigate(`/cards/${value}`);
+  };
 
   const { data, isLoading } = useGetCards({
-    page: currentPage,
+    page: pageNumber,
     searchString: debouncedSearchString,
     pageSize: 10,
     sortOrder: sortType,
@@ -59,16 +65,15 @@ export default function ListOfCards({ ClientForm }: ListOfCardsProps) {
             key={card.id}
             card={card}
             ClientForm={ClientForm}
-            params={{ page: currentPage, searchString: debouncedSearchString, sortOrder: sortType }}
+            params={{ page: pageNumber, searchString: debouncedSearchString, sortOrder: sortType }}
           />
         ))}
       </Grid2>
+
       <Grid2 container justifyContent="center">
-        {/* <Grid2 style={{ position: 'fixed', bottom: 50 }} container justifyContent="center"> */}
         <Paper elevation={10} sx={{ p: 1 }}>
-          <Pagination count={amountOfPages} page={currentPage} onChange={handleChangeCurrentPage} />
+          <Pagination count={amountOfPages} page={pageNumber} onChange={handleChangeCurrentPage} />
         </Paper>
-        {/* </Grid2> */}
       </Grid2>
     </Grid2>
   );
