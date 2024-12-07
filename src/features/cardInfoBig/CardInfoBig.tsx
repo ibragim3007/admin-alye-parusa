@@ -22,7 +22,7 @@ export default function CardInfoBig({ tour, BalanceComponent }: CardInfoBigProps
             </Grid2>
 
             <Grid2 gap={2} container flexDirection="column" flex={1}>
-              <Grid2 container justifyContent="space-between">
+              <Grid2 gap={3} container justifyContent="space-between">
                 <LabelContainer containerProps={{ container: true, gap: 1 }} label="Паспорт">
                   <Typography>{tour.client.passportSeries}</Typography>
                   <Typography>{tour.client.passportNumber}</Typography>

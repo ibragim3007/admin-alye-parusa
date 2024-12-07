@@ -110,7 +110,7 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
 }
 
 export function useGetCardBalance(id: number) {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, isFetching } = useQuery({
     queryKey: cardsKey,
     queryFn: () => getBalance(id),
   });
@@ -125,5 +125,6 @@ export function useGetCardBalance(id: number) {
     data,
     error,
     isLoading,
+    isFetching,
   };
 }

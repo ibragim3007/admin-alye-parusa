@@ -1,10 +1,9 @@
-import CardInfoBig from '@/features/cardInfoBig/CardInfoBig';
+import { useGetTourByClientId } from '@/entities/tour/tour.repository';
+import { CardBalanceLazy } from '@/features/cardBalance';
+import { CardInfoBigLazy } from '@/features/cardInfoBig';
+import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import mockCardGetDto from './mock';
-import { useGetTourByClientId } from '@/entities/tour/tour.repository';
-import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { CardBalanceLazy } from '@/features/cardBalance';
 
 export default function TourPage() {
   const { clientId } = useParams();
@@ -22,7 +21,9 @@ export default function TourPage() {
       <Typography variant="h3">Туры</Typography>
       {isLoading && <LoaderGeneral />}
       {!data && !isLoading && <LoaderGeneral />}
-      {data && !isLoading && <CardInfoBig tour={data} BalanceComponent={<CardBalanceLazy cardId={data.card.id} />} />}
+      {data && !isLoading && (
+        <CardInfoBigLazy tour={data} BalanceComponent={<CardBalanceLazy cardId={data.card.id} />} />
+      )}
     </Grid2>
   );
 }

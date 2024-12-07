@@ -27,7 +27,7 @@ export const useGetTours = () => {
 };
 
 export const useGetTourByClientId = (clientId: number) => {
-  const { data, isLoading, error, isError } = useQuery({
+  const { data, isLoading, error, isError, isFetching } = useQuery({
     queryKey: [...tourKeys, clientId],
     queryFn: () => getToursByClientId(clientId),
   });
@@ -41,6 +41,7 @@ export const useGetTourByClientId = (clientId: number) => {
   return {
     data,
     isLoading,
+    isFetching,
     error,
     isError,
   };
