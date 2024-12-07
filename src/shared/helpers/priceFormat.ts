@@ -4,6 +4,10 @@ export const priceFormat = (price: number) => {
   );
 };
 
+export const numberFormatToPriceFormat = (price: number) => {
+  return new Intl.NumberFormat('ru-RU', { maximumSignificantDigits: 3 }).format(price);
+};
+
 export function formatCurrency(price: number) {
   const formatter = new Intl.NumberFormat('ru-RU', {
     minimumFractionDigits: 0,

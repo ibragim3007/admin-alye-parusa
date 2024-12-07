@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Grid2, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import PriceSell from './ui/PriceSell';
+import BonusSell from './ui/BonusSell';
 type TourStateType = 'created' | 'approved' | 'canceled' | 'deleted';
 
 // type TourRow = {
@@ -69,18 +71,17 @@ const columns: GridColDef[] = [
     field: 'finalPrice',
     width: 100,
     headerName: 'Стоймость',
-    valueGetter: (value: number) => {
-      return priceFormat(value);
-    },
-    renderCell: (params: GridRenderCellParams<TourGetDto>) => {
-      console.log(params.row);
-      return <Typography>{params.row.price}</Typography>;
-    },
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
+      <PriceSell price={row.price} finalPrice={row.finalPrice} />
+    ),
   },
   {
     field: 'bonusSpending',
     width: 100,
     headerName: 'Бонусы',
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
+      <BonusSell bonusDeposit={row.bonusDeposit} bonusSpending={row.bonusSpending} />
+    ),
   },
   {
     field: 'state',
