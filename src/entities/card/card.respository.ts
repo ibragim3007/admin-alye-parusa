@@ -1,11 +1,23 @@
-import { changeCardStatus, createCard, deleteCard, getBalance, getCards } from '@/shared/api/entities/card/card.api';
-import { CardCreateDto, CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
+import {
+  changeCardStatus,
+  createCard,
+  deleteCard,
+  getBalance,
+  getBonusExpectation,
+  getCards,
+} from '@/shared/api/entities/card/card.api';
+import {
+  CardBonusExceptationDto,
+  CardCreateDto,
+  CardGetPaginationParams,
+} from '@/shared/api/entities/card/types/req.type';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CardChangeStatusDto } from './../../shared/api/entities/card/types/req.type';
 import { useEffect } from 'react';
 import { Inform } from '@/shared/service/log/log.service';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 
 export const cardsKey = ['cards'];
 
@@ -126,5 +138,35 @@ export function useGetCardBalance(id: number) {
     error,
     isLoading,
     isFetching,
+  };
+}
+
+export function useGetBonusExpectation(id?: number, params?: CardBonusExceptationDto) {
+  const debouncedPrice = useDebounce(params?.price, 500);
+  const debouncedBonuses = useDebounce(params?.bonuses, 500); // Add debounce with 500ms delay
+
+  const { data, error, isLoading, isFetching } = useQuery({
+    queryKey: [...cardsKey, debouncedPrice, debouncedBonuses],
+
+    queryFn: () =>
+      id && params && debouncedPrice !== undefined && debouncedBonuses !== undefined && params.price > 0
+        ? getBonusExpectation(id, { ...params, price: debouncedPrice, bonuses: debouncedBonuses })
+        : Promise.resolve(null),
+  });
+
+  useEffect(() => {
+    if (error) {
+      Inform.error(error);
+    }
+  }, [error]);
+
+  const isBonusSpendingEnabled = debouncedPrice !== undefined && debouncedPrice > 0;
+
+  return {
+    data,
+    error,
+    isLoading,
+    isFetching,
+    isBonusSpendingEnabled,
   };
 }

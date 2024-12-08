@@ -9,7 +9,6 @@ export const apiConfig = {
       cards: '/api/cards',
       balance: (id: IdType) => `/api/cards/${id}/balance`,
       bonusExpectation: (id: IdType) => `/api/cards/${id}/bonus-expectation`,
-      bonusSpendingAllowed: (id: IdType) => `/api/cards/${id}/bonus-spending-allowed`,
     },
     post: {
       cards: '/api/cards',

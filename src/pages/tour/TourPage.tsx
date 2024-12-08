@@ -1,6 +1,9 @@
 import { useGetTourByClientId } from '@/entities/tour/tour.repository';
+import AllowedToSpend from '@/features/allowedToSpend/AllowedToSpend';
+import BonusExpectation from '@/features/bonusExpectation/BonusExpectation';
 import { CardBalanceLazy } from '@/features/cardBalance';
 import { CardInfoBigLazy } from '@/features/cardInfoBig';
+import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2, Typography } from '@mui/material';
@@ -24,7 +27,17 @@ export default function TourPage() {
       {!data && !isLoading && <LoaderGeneral />}
       {data && !isLoading && (
         <>
-          <CardInfoBigLazy tour={data} BalanceComponent={<CardBalanceLazy cardId={data.card.id} />} />
+          <CardInfoBigLazy
+            tour={data}
+            BalanceComponent={<CardBalanceLazy cardId={data.card.id} />}
+            CreateTourComponent={
+              <TourForm
+                cardId={data.card.id}
+                BonusExpectationComponent={BonusExpectation}
+                AllowedToSpend={AllowedToSpend} // Pass AllowedToSpend component
+              />
+            }
+          />
           <ToursTableLazy data={data} />
         </>
       )}

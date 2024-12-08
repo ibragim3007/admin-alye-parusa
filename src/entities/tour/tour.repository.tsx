@@ -27,9 +27,10 @@ export const useGetTours = () => {
   };
 };
 
+const toursByClientKey = ['tour-by-client'];
 export const useGetTourByClientId = (clientId: number) => {
   const { data, isLoading, error, isError, isFetching } = useQuery({
-    queryKey: ['tour-by-client'],
+    queryKey: toursByClientKey,
     queryFn: () => getToursByClientId(clientId),
   });
 
@@ -49,9 +50,13 @@ export const useGetTourByClientId = (clientId: number) => {
 };
 
 export const useCreateTour = () => {
+  const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: tourKeys,
+    mutationKey: toursByClientKey,
     mutationFn: (data: TourCreateDto) => createTour(data),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+    },
   });
 
   const createTourFn = async (data: TourCreateDto) => {
@@ -71,7 +76,7 @@ type TChangeStateTourParams = {
 export const useChangeStateTour = () => {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: tourKeys,
+    mutationKey: toursByClientKey,
     mutationFn: (data: TChangeStateTourParams) => changeTourState(data.id, data.tourState),
     onSuccess: (data, variables) => {
       data;

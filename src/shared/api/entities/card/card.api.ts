@@ -7,7 +7,12 @@ import {
   CardCreateDto,
   CardGetPaginationParams,
 } from './types/req.type';
-import { CardBalanceResponseDto, CardGetDto, CardsGetPaginationDto } from './types/res.type';
+import {
+  BonusExpectationResponseDto,
+  CardBalanceResponseDto,
+  CardGetDto,
+  CardsGetPaginationDto,
+} from './types/res.type';
 
 export async function getCards(params?: CardGetPaginationParams) {
   return (await api.get<Promise<CardsGetPaginationDto>>(apiConfig.card.get.cards, { params })).data;
@@ -34,11 +39,8 @@ export async function changeCardStatus(id: number, params: CardChangeStatusDto) 
 }
 
 export async function getBonusExpectation(id: number, params: CardBonusExceptationDto) {
-  return (await api.get<Promise<number>>(apiConfig.card.get.bonusExpectation(id), { params })).data;
-}
-
-export async function getBonusSpendingAllowed(id: number, params: CardBonusSpendingAllowedDto) {
-  return (await api.get<Promise<number>>(apiConfig.card.get.bonusSpendingAllowed(id), { params })).data;
+  return (await api.get<Promise<BonusExpectationResponseDto>>(apiConfig.card.get.bonusExpectation(id), { params }))
+    .data;
 }
 
 export async function updateBonusPercentage(id: number, payload: number) {

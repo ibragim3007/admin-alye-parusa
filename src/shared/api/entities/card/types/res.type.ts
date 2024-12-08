@@ -63,3 +63,8 @@ export type CardBalanceResponseDto = {
     date: Date;
   };
 };
+
+export type BonusExpectationResponseDto = {
+  expectation: number;
+  allowedToSpend: number;
+};

@@ -1,6 +1,6 @@
-import React from 'react';
+import { Autocomplete, TextField } from '@mui/material';
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { TextField, Autocomplete } from '@mui/material';
+import { NumericFormat } from 'react-number-format';
 
 interface RHFTextFieldProps<T extends FieldValues> {
   name: Path<T>;
@@ -14,6 +14,10 @@ interface RHFTextFieldProps<T extends FieldValues> {
   disabled?: boolean;
   error?: boolean;
   helperText?: string;
+  value?: string | number;
+  currencyFormat?: boolean; // Новый пропс для валюты
+  decimalScale?: number; // Количество знаков после запятой
+  prefix?: string; // Префикс для валюты, например, "$"
 }
 
 export const RHFTextField = <T extends FieldValues>({
@@ -26,6 +30,11 @@ export const RHFTextField = <T extends FieldValues>({
   multiline = false,
   rows = 1,
   disabled = false,
+  helperText,
+  value,
+  currencyFormat = false,
+  decimalScale = 2,
+  prefix = '',
 }: RHFTextFieldProps<T>) => {
   if (options) {
     return (
@@ -41,7 +50,13 @@ export const RHFTextField = <T extends FieldValues>({
             }}
             options={options}
             renderInput={(params) => (
-              <TextField {...params} label={label} error={!!error} helperText={error?.message} fullWidth={fullWidth} />
+              <TextField
+                {...params}
+                label={label}
+                error={!!error}
+                helperText={helperText || error?.message}
+                fullWidth={fullWidth}
+              />
             )}
             size="small"
             disabled={disabled}
@@ -57,17 +72,46 @@ export const RHFTextField = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField
-          {...field}
-          label={label}
-          error={!!error}
-          helperText={error?.message}
-          disabled={disabled}
-          fullWidth={fullWidth}
-          size="small"
-          multiline={multiline}
-          rows={rows}
-        />
+        <>
+          {currencyFormat ? (
+            <NumericFormat
+              value={field.value} // Значение из React Hook Form
+              thousandSeparator=" " // Разделитель тысяч
+              decimalSeparator="." // Разделитель дробной части
+              decimalScale={decimalScale} // Количество знаков после запятой
+              fixedDecimalScale // Фиксированное количество знаков после запятой
+              prefix={prefix} // Префикс для валюты
+              customInput={TextField} // Используем MUI TextField
+              label={label}
+              error={!!error}
+              helperText={helperText || error?.message}
+              disabled={disabled}
+              fullWidth={fullWidth}
+              size="small"
+              onValueChange={(values: { floatValue?: number; value: string }) => {
+                field.onChange(values.floatValue ?? 0); // Если floatValue отсутствует, используем 0
+                if (onChangeHandler) onChangeHandler(values.floatValue ?? 0);
+              }}
+            />
+          ) : (
+            <TextField
+              {...field}
+              value={value || field.value}
+              label={label}
+              error={!!error}
+              helperText={helperText || error?.message}
+              disabled={disabled}
+              fullWidth={fullWidth}
+              size="small"
+              multiline={multiline}
+              rows={rows}
+              onChange={(event) => {
+                field.onChange(event.target.value);
+                if (onChangeHandler) onChangeHandler(event.target.value);
+              }}
+            />
+          )}
+        </>
       )}
     />
   );

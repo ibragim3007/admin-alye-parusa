@@ -19,6 +19,7 @@ export type CardChangeStatusDto = {
 
 export type CardBonusExceptationDto = {
   price: number;
+  bonuses: number;
 };
 
 export type CardBonusSpendingAllowedDto = {

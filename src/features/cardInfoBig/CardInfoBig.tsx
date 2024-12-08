@@ -1,14 +1,15 @@
 import { formatCardNumber } from '@/entities/card/helpers/formatCardNumber';
 import { ITourClientGet } from '@/entities/tour/types';
 import LabelContainer from '@/shared/ui/LabelContainer';
-import { Button, Card, Chip, Grid2, Typography } from '@mui/material';
+import { Card, Chip, Grid2, Typography } from '@mui/material';
 
 interface CardInfoBigProps {
   tour: ITourClientGet;
   BalanceComponent?: React.ReactNode;
+  CreateTourComponent?: React.ReactNode;
 }
 
-export default function CardInfoBig({ tour, BalanceComponent }: CardInfoBigProps) {
+export default function CardInfoBig({ tour, BalanceComponent, CreateTourComponent }: CardInfoBigProps) {
   return (
     <Grid2>
       <Card>
@@ -46,7 +47,7 @@ export default function CardInfoBig({ tour, BalanceComponent }: CardInfoBigProps
             </Grid2>
           </Grid2>
           <Grid2 container justifyContent="flex-end">
-            <Button variant="outlined">Создать тур</Button>
+            {CreateTourComponent}
           </Grid2>
         </Grid2>
       </Card>
