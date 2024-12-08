@@ -11157,7 +11157,7 @@ __metadata:
     styled-components: ^6.1.1
     ts-loader: ^9.5.1
     ts-node: ^10.9.2
-    typescript: ^5.3.3
+    typescript: ^5.7.2
     url-loader: ^4.1.1
     web-vitals: ^2.1.0
     webpack: ^5.91.0
@@ -19178,7 +19178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3":
+"typescript@npm:^5.7.2":
   version: 5.7.2
   resolution: "typescript@npm:5.7.2"
   bin:
@@ -19188,7 +19188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.7.2#~builtin<compat/typescript>":
   version: 5.7.2
   resolution: "typescript@patch:typescript@npm%3A5.7.2#~builtin<compat/typescript>::version=5.7.2&hash=29ae49"
   bin:
