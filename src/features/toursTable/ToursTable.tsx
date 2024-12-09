@@ -1,14 +1,13 @@
 import { ITourClientGet } from '@/entities/tour/types';
-import { TourStateType } from '@/shared/api/entities/dictionary/types';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import { getFromToDateString } from '@/shared/helpers/getFromToDateString';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Grid2, IconButton } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import StatusCell from './ui/ActionCells/StatusCell';
 import BonusSell from './ui/Cells/BonusSell';
 import PriceSell from './ui/Cells/PriceSell';
-import StatusCell from './ui/ActionCells/StatusCell';
 
 const handleEdit = (id: number) => {
   console.log(`Editing tour ${id}`);

@@ -77,12 +77,14 @@ type TChangeStateTourParams = {
 export const useChangeStateTour = () => {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: toursByClientKey,
+    mutationKey: [...toursByClientKey],
     mutationFn: (data: TChangeStateTourParams) => changeTourState(data.id, data.tourState),
     onSuccess: (data, variables) => {
-      data;
       // Обновляем локальный кэш
-      queryClient.setQueryData<TourClientGetDto>(['tour-by-client'], (cachedData) => {
+
+      void queryClient.invalidateQueries({ queryKey: ['balance'] });
+
+      queryClient.setQueryData<TourClientGetDto>([...toursByClientKey], (cachedData) => {
         if (!cachedData) return undefined;
 
         // Обновляем состояние нужного тура

@@ -1,4 +1,5 @@
 import { IClientCreate } from '@/entities/client/types';
+import { useGetContactTypes } from '@/entities/dictionary/dictionary.repository';
 import { ContactTypesArray } from '@/shared/enums/constants';
 import { RHFTextField } from '@/shared/ui/RHFTextField';
 import { Grid2, Typography } from '@mui/material';
@@ -13,6 +14,7 @@ interface ClientFieldsProps {
 
 export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
   const { control } = formApi;
+  const { data } = useGetContactTypes();
 
   return (
     <FormProvider {...formApi}>
@@ -29,7 +31,7 @@ export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
               disabled={isFrozen}
               name="contactType"
               control={control}
-              options={ContactTypesArray}
+              options={data}
               label={'Вид связи'}
               fullWidth
             />

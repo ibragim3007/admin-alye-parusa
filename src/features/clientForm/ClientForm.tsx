@@ -12,6 +12,7 @@ import { formStatuses } from './types';
 import ClientFields from './ui/ClientFields';
 import CreateClientButton, { CreateClientButtonProps } from './ui/create-client-button/CreateClientButton';
 import EditClientButton, { EditClientButtonProps } from './ui/edit-client-button/EditClientButton';
+import { useGetContactTypes } from '@/entities/dictionary/dictionary.repository';
 
 const renderAddClientButton = ({ ...props }: CreateClientButtonProps) => <CreateClientButton {...props} />;
 
@@ -30,12 +31,13 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
   const { data, isLoading } = useGetClientById(clientId || 0);
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
   const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
+  const { data: contactTypes } = useGetContactTypes();
 
   const formApi = useForm<IClientCreate>({
     defaultValues: {
       comment: '',
       contact: '',
-      contactType: 'telegramm',
+      contactType: (contactTypes || [])[0] || 'unknown',
       name: '',
       passportNumber: '',
       passportSeries: '',
