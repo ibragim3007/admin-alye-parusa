@@ -4,6 +4,10 @@ import { queryClient } from '@/shared/api/api';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Theme from '@/shared/theme/theme';
+import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
+
+dayjs.locale('ru');
 function App() {
   return (
     <Theme>

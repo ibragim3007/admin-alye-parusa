@@ -1,11 +1,13 @@
 import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
 import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
+import { formatTourDates } from '@/shared/helpers/formatTourDates';
 import { numberFormatToPriceFormat } from '@/shared/helpers/priceFormat';
 import RHFDatePicker from '@/shared/ui/inputs/RHFDatePicker';
 import LabelContainer from '@/shared/ui/LabelContainer';
 import { RHFTextField } from '@/shared/ui/RHFTextField';
 
 import { Grid2, Typography } from '@mui/material';
+import { Dayjs } from 'dayjs';
 import React, { useEffect } from 'react';
 import { FormProvider, UseFormReturn, useWatch } from 'react-hook-form';
 
@@ -23,7 +25,7 @@ export default function TourFields({
   allowedToSpend,
 }: TourFieldsProps) {
   const { control, setValue } = formApi;
-  const { bonusSpending } = useWatch({ control });
+  const { bonusSpending, fromDate, toDate } = useWatch({ control });
   const { data } = useGetTourStates();
 
   useEffect(() => {
@@ -64,6 +66,12 @@ export default function TourFields({
           <RHFDatePicker label="Дата отправления" name="fromDate" control={control} />
           <RHFDatePicker label="Дата возвращения" name="toDate" control={control} />
         </Grid2>
+        <Typography>
+          {formatTourDates(
+            fromDate instanceof Date ? new Date() : (fromDate as unknown as Dayjs).toDate(),
+            toDate instanceof Date ? new Date() : (toDate as unknown as Dayjs).toDate()
+          )}
+        </Typography>
       </Grid2>
     </FormProvider>
   );
