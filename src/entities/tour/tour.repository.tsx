@@ -29,9 +29,10 @@ export const useGetTours = () => {
 
 const toursByClientKey = ['tour-by-client'];
 export const useGetTourByClientId = (clientId: number) => {
-  const { data, isLoading, error, isError, isFetching } = useQuery({
+  const { data, isLoading, error, isError, isFetching, refetch } = useQuery({
     queryKey: toursByClientKey,
     queryFn: () => getToursByClientId(clientId),
+    refetchOnMount: true,
   });
 
   useEffect(() => {
@@ -41,9 +42,9 @@ export const useGetTourByClientId = (clientId: number) => {
   }, [error]);
 
   return {
+    refetch,
     data,
-    isLoading,
-    isFetching,
+    isLoading: isLoading || isFetching,
     error,
     isError,
   };
@@ -60,7 +61,7 @@ export const useCreateTour = () => {
   });
 
   const createTourFn = async (data: TourCreateDto) => {
-    await handleMutation(() => mutateAsync(data), FeedbackMessage.createdMessage('тур'));
+    return await handleMutation(() => mutateAsync(data), FeedbackMessage.createdMessage('тур'));
   };
 
   return {

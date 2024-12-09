@@ -28,12 +28,16 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
     navigate(`/cards/${value}`);
   };
 
-  const { data, isLoading } = useGetCards({
+  const { data, isLoading, refetch } = useGetCards({
     page: pageNumber,
     searchString: debouncedSearchString,
     pageSize: 10,
     sortOrder: sortType,
   });
+
+  useEffect(() => {
+    void refetch();
+  }, [debouncedSearchString, sortType, pageNumber, refetch]);
 
   const updateSearchString = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchString(e.target.value);
@@ -54,19 +58,20 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
 
       <Grid2 gap={3} container flexDirection="column" alignContent="center" width={'100%'} minHeight={'70vh'}>
         {isLoading && <LoaderGeneral />}
-        {data?.cards.length === 0 && !isLoading && (
+        {(data?.cards || []).length === 0 && !isLoading && (
           <Alert color="info" variant="filled">
             Нет данных
           </Alert>
         )}
-        {(data?.cards || []).map((card) => (
-          <CardItem
-            key={card.id}
-            card={card}
-            ClientForm={ClientForm}
-            params={{ page: pageNumber, searchString: debouncedSearchString, sortOrder: sortType }}
-          />
-        ))}
+        {!isLoading &&
+          (data?.cards || []).map((card) => (
+            <CardItem
+              key={card.id}
+              card={card}
+              ClientForm={ClientForm}
+              params={{ page: pageNumber, searchString: debouncedSearchString, sortOrder: sortType }}
+            />
+          ))}
       </Grid2>
 
       <Grid2 width={'100%'} container justifyContent="center">

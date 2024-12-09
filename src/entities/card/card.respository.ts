@@ -22,14 +22,15 @@ import { useDebounce } from '@/shared/hooks/useDebounce';
 export const cardsKey = ['cards'];
 
 export function useGetCards(params?: CardGetPaginationParams) {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [...cardsKey, params?.page, params?.searchString, params?.sortOrder],
+  const { data, isLoading, isFetching, isError, refetch } = useQuery({
+    queryKey: cardsKey,
     queryFn: () => getCards(params),
   });
 
   return {
+    refetch,
     data,
-    isLoading,
+    isLoading: isLoading || isFetching,
     isError,
   };
 }
@@ -86,11 +87,11 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending, isSuccess, isError } = useMutation({
-    mutationKey: [...cardsKey],
+    mutationKey: cardsKey,
     mutationFn: ({ cardId, cardChangeStatus }: UpdateCardStatusParams) => changeCardStatus(cardId, cardChangeStatus),
     onSettled: () => {
       void queryClient.invalidateQueries({
-        queryKey: [...cardsKey, params?.page, params?.searchString, params?.sortOrder],
+        queryKey: cardsKey,
       });
     },
     // onSuccess: (updatedCard) => {

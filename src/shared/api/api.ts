@@ -8,7 +8,13 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
-const queryClientInstance = new QueryClient();
+const queryClientInstance = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 export interface IAuthService {
   getToken: () => string;

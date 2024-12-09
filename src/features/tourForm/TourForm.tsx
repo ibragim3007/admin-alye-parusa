@@ -9,20 +9,23 @@ import { BonusExpectationProps } from '../bonusExpectation/BonusExpectation';
 import TourFields from './TourFields/TourFields';
 import { useCreateTour } from '@/entities/tour/tour.repository';
 import { LoadingButton } from '@mui/lab';
+
+import { ITourClientGet } from '@/entities/tour/types';
+import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
 interface TourFormProps {
   BonusExpectationComponent: React.ElementType<BonusExpectationProps>;
   AllowedToSpend: React.ElementType<AllowedToSpendProps>;
-  cardId: number;
+  tour: ITourClientGet;
 }
 
-export default function TourForm({ BonusExpectationComponent, AllowedToSpend, cardId }: TourFormProps) {
+export default function TourForm({ BonusExpectationComponent, AllowedToSpend, tour }: TourFormProps) {
   const [open, setOpen] = useState(false);
   const toggleDialog = () => setOpen(!open);
-
+  const { data: tourStates } = useGetTourStates();
   const formApi = useForm<TourCreateDto>({
     defaultValues: {
-      state: 'approved',
-      cardId: 1,
+      state: (tourStates || [])[0] || 'approved',
+      cardId: tour.card.id,
       name: '',
       price: 0,
       bonusSpending: 0,
@@ -33,28 +36,28 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, ca
   });
 
   const { price, bonusSpending } = useWatch({ control: formApi.control });
-  const { data } = useGetBonusExpectation(cardId, { price: price || 0, bonuses: bonusSpending || 0 });
+  const { data } = useGetBonusExpectation(tour.card.id, { price: price || 0, bonuses: bonusSpending || 0 });
   const { createTourFn, isPending } = useCreateTour();
 
   const onCreateButtom = async (data: TourCreateDto) => {
-    await createTourFn(data);
-    toggleDialog();
+    const res = await createTourFn(data);
+    if (res) toggleDialog();
   };
 
   return (
     <Grid2>
       <Dialog fullWidth open={open} onClose={toggleDialog}>
         <Grid2>
-          <DialogTitle>Создание тура для карты {formatCardNumber(1)}</DialogTitle>
+          <DialogTitle>Создание тура для карты {formatCardNumber(tour.card.cardNumber)}</DialogTitle>
         </Grid2>
         <DialogContent sx={{ paddingTop: 2 }}>
           <Grid2 container gap={3} flexDirection="column">
             <TourFields
               formApi={formApi}
               BonusExpectationComponent={
-                <BonusExpectationComponent id={cardId} price={price || 0} bonuses={bonusSpending || 0} />
+                <BonusExpectationComponent id={tour.card.id} price={price || 0} bonuses={bonusSpending || 0} />
               }
-              AllowedToSpend={<AllowedToSpend id={cardId} price={price || 0} bonuses={bonusSpending || 0} />}
+              AllowedToSpend={<AllowedToSpend id={tour.card.id} price={price || 0} bonuses={bonusSpending || 0} />}
               allowedToSpend={data?.allowedToSpend || 0}
             />
             <Grid2 container gap={1} justifyContent="space-between">

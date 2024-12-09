@@ -1,5 +1,5 @@
+import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
 import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
-import { TourStateTypesArray } from '@/shared/enums/constants';
 import { numberFormatToPriceFormat } from '@/shared/helpers/priceFormat';
 import RHFDatePicker from '@/shared/ui/inputs/RHFDatePicker';
 import LabelContainer from '@/shared/ui/LabelContainer';
@@ -23,8 +23,8 @@ export default function TourFields({
   allowedToSpend,
 }: TourFieldsProps) {
   const { control, setValue } = formApi;
-
   const { bonusSpending } = useWatch({ control });
+  const { data } = useGetTourStates();
 
   useEffect(() => {
     if (bonusSpending && bonusSpending > allowedToSpend && allowedToSpend !== 0)
@@ -58,7 +58,8 @@ export default function TourFields({
             </Grid2>
           </Grid2>
         </Grid2>
-        <RHFTextField label="Статус" name="state" control={control} options={TourStateTypesArray} fullWidth />
+
+        <RHFTextField label="Статус" name="state" control={control} options={data} fullWidth />
         <Grid2 container gap={3} justifyContent="space-between">
           <RHFDatePicker label="Дата отправления" name="fromDate" control={control} />
           <RHFDatePicker label="Дата возвращения" name="toDate" control={control} />

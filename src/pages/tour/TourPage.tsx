@@ -7,12 +7,17 @@ import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { Grid2, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function TourPage() {
   const { clientId } = useParams();
 
-  const { data, isLoading } = useGetTourByClientId(parseInt(clientId || '0'));
+  const { data, isLoading, refetch } = useGetTourByClientId(parseInt(clientId || '0'));
+
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
 
   return (
     <Grid2
@@ -32,7 +37,7 @@ export default function TourPage() {
             BalanceComponent={<CardBalanceLazy cardId={data.card.id} />}
             CreateTourComponent={
               <TourForm
-                cardId={data.card.id}
+                tour={data}
                 BonusExpectationComponent={BonusExpectation}
                 AllowedToSpend={AllowedToSpend} // Pass AllowedToSpend component
               />

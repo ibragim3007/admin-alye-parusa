@@ -10,11 +10,6 @@ import BonusSell from './ui/Cells/BonusSell';
 import PriceSell from './ui/Cells/PriceSell';
 import StatusCell from './ui/ActionCells/StatusCell';
 
-const handleStateChange = (id: number, newState: TourStateType) => {
-  console.log(`State for tour ${id} changed to ${newState}`);
-  // Update logic here
-};
-
 const handleEdit = (id: number) => {
   console.log(`Editing tour ${id}`);
   // Edit logic here
