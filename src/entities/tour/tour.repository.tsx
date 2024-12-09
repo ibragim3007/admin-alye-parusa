@@ -1,4 +1,10 @@
-import { changeTourState, createTour, getTours, getToursByClientId } from '@/shared/api/entities/tour/tour.api';
+import {
+  changeTourState,
+  createTour,
+  deleteTour,
+  getTours,
+  getToursByClientId,
+} from '@/shared/api/entities/tour/tour.api';
 import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
 import { Inform } from '@/shared/service/log/log.service';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
@@ -6,7 +12,7 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IChangeTourState } from './types';
-import { TourClientGetDto } from '@/shared/api/entities/tour/types/res.type';
+import { TourClientGetDto, TourClientQueryParamsDto } from '@/shared/api/entities/tour/types/res.type';
 
 const tourKeys = ['tour'];
 
@@ -28,10 +34,10 @@ export const useGetTours = () => {
 };
 
 const toursByClientKey = ['tour-by-client'];
-export const useGetTourByClientId = (clientId: number) => {
+export const useGetTourByClientId = (clientId: number, params?: TourClientQueryParamsDto) => {
   const { data, isLoading, error, isError, isFetching, refetch } = useQuery({
-    queryKey: toursByClientKey,
-    queryFn: () => getToursByClientId(clientId),
+    queryKey: [...toursByClientKey, params?.includeDeleted],
+    queryFn: () => getToursByClientId(clientId, params),
     refetchOnMount: true,
   });
 
@@ -108,9 +114,22 @@ export const useChangeStateTour = () => {
   };
 };
 
-// export const useDeleteTour = () => {
-//   const {} = useMutation({
-//     mutationKey: tourKeys,
-//     mutationFn: () =>
-//   });
-// };
+export function useDeleteTour() {
+  const queryClient = useQueryClient();
+  const { mutateAsync, isPending } = useMutation({
+    mutationKey: toursByClientKey,
+    mutationFn: (id: number) => deleteTour(id),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+    },
+  });
+
+  const deleteTourFn = async (id: number) => {
+    return await handleMutation(() => mutateAsync(id), FeedbackMessage.deleteMessage('тур'));
+  };
+
+  return {
+    deleteTourFn,
+    isPending,
+  };
+}

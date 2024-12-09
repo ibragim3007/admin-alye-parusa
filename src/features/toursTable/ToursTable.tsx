@@ -1,22 +1,25 @@
 import { ITourClientGet } from '@/entities/tour/types';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import { getFromToDateString } from '@/shared/helpers/getFromToDateString';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Grid2, IconButton } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { makeStyles } from '@mui/styles';
+
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowClassNameParams } from '@mui/x-data-grid';
+import DeleteCell from './ui/ActionCells/DeleteCell';
 import StatusCell from './ui/ActionCells/StatusCell';
 import BonusSell from './ui/Cells/BonusSell';
 import PriceSell from './ui/Cells/PriceSell';
 
+const useStyles = makeStyles({
+  transparentRow: {
+    opacity: 0.2,
+  },
+});
+
 const handleEdit = (id: number) => {
   console.log(`Editing tour ${id}`);
   // Edit logic here
-};
-
-const handleDelete = (id: number) => {
-  console.log(`Deleting tour ${id}`);
-  // Delete logic here
 };
 
 const columns: GridColDef[] = [
@@ -67,13 +70,7 @@ const columns: GridColDef[] = [
     field: 'delete',
     headerName: 'Удалить',
     width: 80,
-    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
-      <Grid2 container justifyContent="center" alignItems="center" height="100%">
-        <IconButton color="error" onClick={() => handleDelete(row.id)}>
-          <DeleteIcon />
-        </IconButton>
-      </Grid2>
-    ),
+    renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <DeleteCell tour={row} />,
   },
 ];
 
@@ -82,6 +79,8 @@ interface ToursTableProps {
 }
 
 export default function ToursTable({ data }: ToursTableProps) {
+  const classes = useStyles();
+
   return (
     <Grid2>
       <DataGrid
@@ -100,6 +99,9 @@ export default function ToursTable({ data }: ToursTableProps) {
         disableColumnResize={false}
         disableRowSelectionOnClick
         scrollbarSize={10}
+        getRowClassName={(params: GridRowClassNameParams<TourGetDto>) =>
+          params.row.state === 'deleted' ? classes.transparentRow : ''
+        }
       />
     </Grid2>
   );

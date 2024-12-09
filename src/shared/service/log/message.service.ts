@@ -13,7 +13,8 @@ export class FeedbackMessage {
     return `Успешно изменен объект ${value}`;
   }
 
-  static deleteMessage(value: string) {
+  static deleteMessage(value: string, str?: string) {
+    if (str) return `Успешно удален ${value} – ${str}`;
     return `Успешно удален объект ${value}`;
   }
 }

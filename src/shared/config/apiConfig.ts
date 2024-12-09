@@ -54,7 +54,7 @@ export const apiConfig = {
       tours: '/api/tours',
     },
     delete: {
-      tours: '/api/tours',
+      tour: (id: number) => `/api/tours/${id}/delete`,
     },
     put: {
       changeState: (id: IdType) => `/api/tours/${id}/change-state`,

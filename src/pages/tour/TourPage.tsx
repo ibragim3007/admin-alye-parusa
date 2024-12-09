@@ -6,14 +6,16 @@ import { CardInfoBigLazy } from '@/features/cardInfoBig';
 import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { Grid2, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { FormControlLabel, Grid2, Switch, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function TourPage() {
   const { clientId } = useParams();
+  const [includeDeleted, setIncludeDeleted] = useState(false);
+  const toggleIncludeDeleted = () => setIncludeDeleted(!includeDeleted);
 
-  const { data, isLoading, refetch } = useGetTourByClientId(parseInt(clientId || '0'));
+  const { data, isLoading, refetch } = useGetTourByClientId(parseInt(clientId || '0'), { includeDeleted });
 
   useEffect(() => {
     void refetch();
@@ -42,6 +44,12 @@ export default function TourPage() {
                 AllowedToSpend={AllowedToSpend} // Pass AllowedToSpend component
               />
             }
+          />
+          <FormControlLabel
+            onChange={toggleIncludeDeleted}
+            checked={includeDeleted}
+            control={<Switch />}
+            label="Показать удаленные"
           />
           <ToursTableLazy data={data} />
         </>

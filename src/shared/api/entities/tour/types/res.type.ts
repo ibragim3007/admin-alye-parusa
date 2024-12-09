@@ -18,6 +18,10 @@ export type TourGetDto = {
   updatedAt: Date;
 };
 
+export type TourClientQueryParamsDto = {
+  includeDeleted?: boolean;
+};
+
 export type TourClientGetDto = {
   card: {
     id: number;

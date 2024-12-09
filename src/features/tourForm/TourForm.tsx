@@ -24,14 +24,14 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, to
   const { data: tourStates } = useGetTourStates();
   const formApi = useForm<TourCreateDto>({
     defaultValues: {
-      state: (tourStates || [])[0] || 'approved',
       cardId: tour.card.id,
       name: '',
+      description: '',
       price: 0,
       bonusSpending: 0,
-      description: '',
       fromDate: new Date(),
       toDate: new Date(),
+      state: (tourStates || [])[0] || 'approved',
     },
   });
 
