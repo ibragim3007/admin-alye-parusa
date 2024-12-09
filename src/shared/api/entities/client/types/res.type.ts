@@ -11,6 +11,6 @@ export type ClientGetDto = {
   phone: string;
   contactType: 'telegramm';
   contact: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };

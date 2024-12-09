@@ -1,9 +1,8 @@
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ruRU } from '@mui/x-date-pickers/locales';
 import dayjs from 'dayjs';
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { ruRU } from '@mui/x-date-pickers/locales';
-import { Typography } from '@mui/material';
 
 const ruLocale = ruRU.components.MuiLocalizationProvider.defaultProps.localeText;
 interface RHFDatePickerProps<T extends FieldValues> {
@@ -18,7 +17,7 @@ export default function RHFDatePicker<T extends FieldValues>({
   name,
   control,
   label,
-  defaultValue = new Date(),
+  defaultValue = undefined,
   disabled = false,
 }: RHFDatePickerProps<T>) {
   return (
@@ -32,14 +31,15 @@ export default function RHFDatePicker<T extends FieldValues>({
               {...field}
               localeText={ruLocale}
               label={label}
+              disabled={disabled}
               format="DD.MM.YYYY"
-              value={field.value ? dayjs(field.value) : dayjs(defaultValue)}
+              value={field.value ? dayjs(field.value) : undefined}
               onChange={(newValue) => field.onChange(newValue)}
               slotProps={{
                 textField: {
                   error: !!error,
                   helperText: error?.message,
-                  size: 'small', // Add this line to reduce the size of the input
+                  size: 'small',
                 },
               }}
             />

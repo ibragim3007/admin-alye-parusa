@@ -13,6 +13,8 @@ import ClientFields from './ui/ClientFields';
 import CreateClientButton, { CreateClientButtonProps } from './ui/create-client-button/CreateClientButton';
 import EditClientButton, { EditClientButtonProps } from './ui/edit-client-button/EditClientButton';
 import { useGetContactTypes } from '@/entities/dictionary/dictionary.repository';
+import LabelContainer from '@/shared/ui/LabelContainer';
+import { formatIsoDateToLocalString } from '@/shared/helpers/covertTimeToLocal';
 
 const renderAddClientButton = ({ ...props }: CreateClientButtonProps) => <CreateClientButton {...props} />;
 
@@ -45,6 +47,7 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
       patronymic: '',
       phone: '',
       surname: '',
+      birthday: undefined,
     },
     mode: 'onChange',
   });
@@ -83,6 +86,16 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
         )}
       </Grid2>
       <ClientFields isFrozen={isFrozen} formApi={formApi} actionButton={undefined} />
+      {data && (
+        <Grid2>
+          <LabelContainer label="Дата создания" gridProps={{ container: true, flexDirection: 'row', gap: 1 }}>
+            <Typography variant="body2">{formatIsoDateToLocalString(data?.createdAt)}</Typography>
+          </LabelContainer>
+          <LabelContainer label="Дата изменения" gridProps={{ container: true, flexDirection: 'row', gap: 1 }}>
+            <Typography variant="body2">{formatIsoDateToLocalString(data?.updatedAt)}</Typography>
+          </LabelContainer>
+        </Grid2>
+      )}
       <Grid2 container justifyContent="flex-end">
         {(() => {
           if (formStatus === 'create') {

@@ -1,11 +1,10 @@
 import { useCreateClient } from '@/entities/client/client.repository';
 import { IClientCreate } from '@/entities/client/types';
 import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
-import { BasicErrorType, isAxiosError } from '@/shared/utils/axiosErrorHandler';
+import { RHFsetErrorsToInputs } from '@/shared/helpers/RHFsetErrorsToInputs';
 import { useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { formStatuses } from '../types';
-import { RHFsetErrorsToInputs } from '@/shared/helpers/RHFsetErrorsToInputs';
 
 export function useCreateClientForm(
   cardId: string,

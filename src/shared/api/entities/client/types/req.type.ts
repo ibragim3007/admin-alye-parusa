@@ -30,6 +30,7 @@ export type ClientCreateDto = {
   phone: string;
   contactType: ContactType;
   contact: string;
+  birthday: Date;
 };
 
 export type ClientUpdateDto = {
