@@ -1,6 +1,6 @@
 import { useUpdateClient } from '@/entities/client/client.repository';
 import { IClientCreate } from '@/entities/client/types';
-import { BasicErrorType, isAxiosError } from '@/shared/utils/axiosErrorHandler';
+import { RHFsetErrorsToInputs } from '@/shared/helpers/RHFsetErrorsToInputs';
 import { useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { formStatuses } from '../types';
@@ -16,18 +16,7 @@ export function useEditClientForm(
   };
 
   useEffect(() => {
-    if (isAxiosError<BasicErrorType>(editError)) {
-      if (editError.response?.data) {
-        const { errors } = editError.response.data;
-
-        Object.entries(errors).forEach(([field, messages]) => {
-          formApi.setError(field as keyof IClientCreate, {
-            type: 'server',
-            message: Array.isArray(messages) ? messages.join(' ') : messages,
-          });
-        });
-      }
-    }
+    RHFsetErrorsToInputs(editError, formApi);
   }, [editError, formApi]);
 
   return {

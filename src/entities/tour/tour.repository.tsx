@@ -50,7 +50,7 @@ export const useGetTourByClientId = (clientId: number, params?: TourClientQueryP
   return {
     refetch,
     data,
-    isLoading: isLoading || isFetching,
+    isLoading: isLoading,
     error,
     isError,
   };
@@ -58,7 +58,7 @@ export const useGetTourByClientId = (clientId: number, params?: TourClientQueryP
 
 export const useCreateTour = () => {
   const queryClient = useQueryClient();
-  const { mutateAsync, isPending } = useMutation({
+  const { mutateAsync, isPending, error } = useMutation({
     mutationKey: toursByClientKey,
     mutationFn: (data: TourCreateDto) => createTour(data),
     onSuccess: () => {
@@ -73,6 +73,7 @@ export const useCreateTour = () => {
   return {
     createTourFn,
     isPending,
+    error,
   };
 };
 
@@ -113,6 +114,26 @@ export const useChangeStateTour = () => {
     isPending,
   };
 };
+
+export function useUpdateTour() {
+  const queryClient = useQueryClient();
+  const { mutateAsync, isPending } = useMutation({
+    mutationKey: toursByClientKey,
+    mutationFn: (data: TourCreateDto) => createTour(data),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+    },
+  });
+
+  const updateTourFn = async (data: TourCreateDto) => {
+    return await handleMutation(() => mutateAsync(data), FeedbackMessage.updatedMessage('тур'));
+  };
+
+  return {
+    updateTourFn,
+    isPending,
+  };
+}
 
 export function useDeleteTour() {
   const queryClient = useQueryClient();

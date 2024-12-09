@@ -3,6 +3,7 @@ import AllowedToSpend from '@/features/allowedToSpend/AllowedToSpend';
 import BonusExpectation from '@/features/bonusExpectation/BonusExpectation';
 import { CardBalanceLazy } from '@/features/cardBalance';
 import { CardInfoBigLazy } from '@/features/cardInfoBig';
+import { TourFieldsLazy } from '@/features/tourForm';
 import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
@@ -51,7 +52,12 @@ export default function TourPage() {
             control={<Switch />}
             label="Показать удаленные"
           />
-          <ToursTableLazy data={data} />
+          <ToursTableLazy
+            data={data}
+            TourFields={TourFieldsLazy}
+            AllowedToSpend={AllowedToSpend}
+            BonusExpectationComponent={BonusExpectation}
+          />
         </>
       )}
     </Grid2>

@@ -1,17 +1,17 @@
-import { useGetBonusExpectation } from '@/entities/card/card.respository';
 import { formatCardNumber } from '@/entities/card/helpers/formatCardNumber';
+import { useCreateTour } from '@/entities/tour/tour.repository';
 import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
-import { Button, Dialog, DialogContent, DialogTitle, Grid2 } from '@mui/material';
-import { useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { LoadingButton } from '@mui/lab';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid2 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AllowedToSpendProps } from '../allowedToSpend/AllowedToSpend';
 import { BonusExpectationProps } from '../bonusExpectation/BonusExpectation';
 import TourFields from './TourFields/TourFields';
-import { useCreateTour } from '@/entities/tour/tour.repository';
-import { LoadingButton } from '@mui/lab';
 
-import { ITourClientGet } from '@/entities/tour/types';
 import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
+import { ITourClientGet } from '@/entities/tour/types';
+import { RHFsetErrorsToInputs } from '@/shared/helpers/RHFsetErrorsToInputs';
 interface TourFormProps {
   BonusExpectationComponent: React.ElementType<BonusExpectationProps>;
   AllowedToSpend: React.ElementType<AllowedToSpendProps>;
@@ -35,9 +35,11 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, to
     },
   });
 
-  const { price, bonusSpending } = useWatch({ control: formApi.control });
-  const { data } = useGetBonusExpectation(tour.card.id, { price: price || 0, bonuses: bonusSpending || 0 });
-  const { createTourFn, isPending } = useCreateTour();
+  const { createTourFn, isPending, error } = useCreateTour();
+
+  useEffect(() => {
+    RHFsetErrorsToInputs(error, formApi);
+  }, [error, formApi]);
 
   const onCreateButtom = async (data: TourCreateDto) => {
     const res = await createTourFn(data);
@@ -54,24 +56,21 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, to
           <Grid2 container gap={3} flexDirection="column">
             <TourFields
               formApi={formApi}
-              BonusExpectationComponent={
-                <BonusExpectationComponent id={tour.card.id} price={price || 0} bonuses={bonusSpending || 0} />
-              }
-              AllowedToSpend={<AllowedToSpend id={tour.card.id} price={price || 0} bonuses={bonusSpending || 0} />}
-              allowedToSpend={data?.allowedToSpend || 0}
+              BonusExpectationComponent={BonusExpectationComponent}
+              AllowedToSpend={AllowedToSpend}
             />
-            <Grid2 container gap={1} justifyContent="space-between">
-              <Button onClick={toggleDialog}>Отменить</Button>
-              <LoadingButton
-                loading={isPending}
-                variant="outlined"
-                onClick={() => void formApi.handleSubmit(onCreateButtom)()}
-              >
-                Создать
-              </LoadingButton>
-            </Grid2>
           </Grid2>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDialog}>Отменить</Button>
+          <LoadingButton
+            loading={isPending}
+            variant="contained"
+            onClick={() => void formApi.handleSubmit(onCreateButtom)()}
+          >
+            Создать
+          </LoadingButton>
+        </DialogActions>
       </Dialog>
       <Button variant="outlined" onClick={toggleDialog}>
         Создать тур

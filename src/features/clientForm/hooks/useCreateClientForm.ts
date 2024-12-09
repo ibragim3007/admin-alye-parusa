@@ -5,6 +5,7 @@ import { BasicErrorType, isAxiosError } from '@/shared/utils/axiosErrorHandler';
 import { useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { formStatuses } from '../types';
+import { RHFsetErrorsToInputs } from '@/shared/helpers/RHFsetErrorsToInputs';
 
 export function useCreateClientForm(
   cardId: string,
@@ -22,18 +23,7 @@ export function useCreateClientForm(
   };
 
   useEffect(() => {
-    if (isAxiosError<BasicErrorType>(createError)) {
-      if (createError.response?.data) {
-        const { errors } = createError.response.data;
-
-        Object.entries(errors).forEach(([field, messages]) => {
-          formApi.setError(field as keyof IClientCreate, {
-            type: 'server',
-            message: Array.isArray(messages) ? messages.join(' ') : messages,
-          });
-        });
-      }
-    }
+    RHFsetErrorsToInputs(createError, formApi);
   }, [createError, formApi]);
 
   return { onClickCreateButton, loadingCreateClient };
