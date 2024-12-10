@@ -12,7 +12,7 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IChangeTourState } from './types';
-import { TourClientGetDto, TourClientQueryParamsDto } from '@/shared/api/entities/tour/types/res.type';
+import { TourClientGetDto, TourClientQueryParamsDto, TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 
 const tourKeys = ['tour'];
 
@@ -136,13 +136,14 @@ export function useUpdateTour() {
   };
 }
 
-export function useDeleteTour() {
+export function useDeleteTour(tour: TourGetDto) {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationKey: toursByClientKey,
     mutationFn: (id: number) => deleteTour(id),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+      void queryClient.invalidateQueries({ queryKey: ['balance'] });
+      void queryClient.invalidateQueries({ queryKey: [...toursByClientKey] });
     },
   });
 

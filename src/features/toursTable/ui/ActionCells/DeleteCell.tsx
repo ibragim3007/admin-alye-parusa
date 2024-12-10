@@ -13,10 +13,13 @@ export default function DeleteCell({ tour }: DeleteCellProps) {
   const toggleDialog = () => {
     setOpen(!open);
   };
-  const { deleteTourFn, isPending } = useDeleteTour();
+  const { deleteTourFn, isPending } = useDeleteTour(tour);
 
   async function handleDelete(id: number) {
-    await deleteTourFn(id);
+    const res = await deleteTourFn(id);
+    if (res) {
+      toggleDialog();
+    }
   }
 
   return (
