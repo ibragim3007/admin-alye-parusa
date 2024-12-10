@@ -1,5 +1,4 @@
 import { Grid2 } from '@mui/material';
-import React from 'react';
 import LoaderGeneral from '../LoaderGeneral';
 
 export default function LoaderFullScreen() {

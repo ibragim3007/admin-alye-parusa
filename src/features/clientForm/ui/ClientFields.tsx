@@ -23,7 +23,13 @@ export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
           <RHFTextField name="name" label="Имя" control={control} disabled={isFrozen} />
           <RHFTextField disabled={isFrozen} name="patronymic" label="Отчество" control={control} />
           <RHFTextField disabled={isFrozen} name="surname" label="Фамилия" control={control} />
-          <RHFDatePicker disabled={isFrozen} label="День рождения" name="birthday" control={control} />
+          <RHFDatePicker
+            disableFuture={true}
+            disabled={isFrozen}
+            label="День рождения"
+            name="birthday"
+            control={control}
+          />
         </Grid2>
         <Grid2 container gap={2} flex={2}>
           <RHFTextField disabled={isFrozen} name="phone" label="Номер" control={control} fullWidth />

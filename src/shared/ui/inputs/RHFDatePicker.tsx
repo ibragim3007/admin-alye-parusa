@@ -11,6 +11,7 @@ interface RHFDatePickerProps<T extends FieldValues> {
   label: string;
   defaultValue?: Date;
   disabled?: boolean;
+  disableFuture?: boolean;
 }
 
 export default function RHFDatePicker<T extends FieldValues>({
@@ -18,6 +19,7 @@ export default function RHFDatePicker<T extends FieldValues>({
   control,
   label,
   defaultValue = undefined,
+  disableFuture,
   disabled = false,
 }: RHFDatePickerProps<T>) {
   return (
@@ -29,12 +31,15 @@ export default function RHFDatePicker<T extends FieldValues>({
           <span>
             <DatePicker
               {...field}
+              disableFuture={disableFuture}
               localeText={ruLocale}
               label={label}
               disabled={disabled}
               format="DD.MM.YYYY"
+              referenceDate={dayjs().subtract(18, 'year').startOf('year')}
               value={field.value ? dayjs(field.value) : undefined}
               onChange={(newValue) => field.onChange(newValue)}
+              // defaultCalendarMonth={dayjs().subtract(18, 'year').startOf('year')}
               slotProps={{
                 textField: {
                   error: !!error,
