@@ -85,9 +85,15 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
       {showForm && (
         <Card sx={{ p: 2, borderTopLeftRadius: 0, borderTopRightRadius: 0 }} elevation={0}>
           {isClientExist && card.clientId ? (
-            <ClientForm params={params} clientId={card.clientId} formStatusProps="frozen" cardId={String(card.id)} />
+            <ClientForm
+              toggleForm={toggleForm}
+              params={params}
+              clientId={card.clientId}
+              formStatusProps="frozen"
+              cardId={String(card.id)}
+            />
           ) : (
-            <ClientForm params={params} cardId={String(card.id)} formStatusProps="create" />
+            <ClientForm toggleForm={toggleForm} params={params} cardId={String(card.id)} formStatusProps="create" />
           )}
         </Card>
       )}

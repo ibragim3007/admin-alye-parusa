@@ -18,7 +18,6 @@ export default function RHFDatePicker<T extends FieldValues>({
   name,
   control,
   label,
-  defaultValue = undefined,
   disableFuture,
   disabled = false,
 }: RHFDatePickerProps<T>) {
@@ -36,6 +35,7 @@ export default function RHFDatePicker<T extends FieldValues>({
               label={label}
               disabled={disabled}
               format="DD.MM.YYYY"
+              referenceDate={dayjs().subtract(18, 'year').startOf('year')}
               value={field.value ? dayjs(field.value) : undefined}
               onChange={(newValue) => field.onChange(newValue)}
               slotProps={{

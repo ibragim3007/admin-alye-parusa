@@ -27,9 +27,16 @@ export interface ClientFormProps {
   cardId: string;
   clientId?: number;
   params?: CardGetPaginationParams;
+  toggleForm: () => void;
 }
 
-export default function ClientForm({ params, cardId, formStatusProps = 'create', clientId }: ClientFormProps) {
+export default function ClientForm({
+  params,
+  cardId,
+  formStatusProps = 'create',
+  clientId,
+  toggleForm,
+}: ClientFormProps) {
   const { data, isLoading } = useGetClientById(clientId || 0);
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
   const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
@@ -102,6 +109,7 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
               callback: () => formApi.handleSubmit(onClickCreateButton)(),
               params,
               loading: loadingCreateClient,
+              toggleForm,
             });
           }
 
@@ -110,6 +118,7 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
               loading: loadingUpdateClient,
               formStatus,
               formApi,
+              toggleForm,
               callback: () => formApi.handleSubmit((data) => onClickEditButton(clientId || 0, data))(),
             });
           }
