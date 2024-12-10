@@ -24,16 +24,17 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
   const [searchString, setSearchString] = useState('');
   const debouncedSearchString = useDebounce(searchString, 500);
   const navigate = useNavigate();
-  const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => {
-    navigate(`/cards/${value}`);
-  };
-
   const { data, isLoading, isFetching, refetch } = useGetCards({
     page: pageNumber,
     searchString: debouncedSearchString,
     pageSize: 10,
     sortOrder: sortType,
   });
+
+  const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => {
+    navigate(`/cards/${value}`);
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
 
   useEffect(() => {
     void refetch();
@@ -66,7 +67,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
         width={'100%'}
         minHeight={'70vh'}
       >
-        {isLoading && <LoaderGeneral />}
+        {(isLoading || isFetching) && <LoaderGeneral />}
         {(data?.cards || []).length === 0 && !isLoading && (
           <Alert color="info" variant="filled">
             Нет данных
@@ -74,6 +75,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
         )}
 
         {!isLoading &&
+          !isFetching &&
           (data?.cards || []).map((card) => (
             <CardItem
               key={card.id}
@@ -85,7 +87,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
       </Grid2>
 
       <Grid2 width={'100%'} container justifyContent="center">
-        <Paper elevation={10} sx={{ p: 1 }}>
+        <Paper sx={{ p: 1 }}>
           <Pagination count={amountOfPages} page={pageNumber} onChange={handleChangeCurrentPage} />
         </Paper>
       </Grid2>

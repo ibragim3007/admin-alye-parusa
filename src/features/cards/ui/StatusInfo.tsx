@@ -25,7 +25,7 @@ export default function StatusInfo({ card, isLoading, onChangeStatus }: StatusIn
   if (isLoading) return <LoaderGeneral size={24} />;
 
   return (
-    <FormControl>
+    <FormControl style={{ minWidth: 160 }}>
       <InputLabel variant="outlined" htmlFor="uncontrolled-native">
         Статус
       </InputLabel>

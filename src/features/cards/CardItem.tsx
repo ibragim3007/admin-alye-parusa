@@ -57,6 +57,7 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
           <Grid2 marginTop={3} container gap={2} justifyContent="space-between" alignItems="center">
             <Grid2 container gap={2}>
               <StatusInfo onChangeStatus={changeCardStatusFn} card={card} isLoading={isPending} />
+
               <DeleteButtonConfirmation
                 loading={deleteLoading}
                 callback={() => void deleteCardFn(card.id)}
