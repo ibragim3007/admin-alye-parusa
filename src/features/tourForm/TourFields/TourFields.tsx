@@ -45,7 +45,7 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
                 label="Бонусы"
                 name="bonusSpending"
                 control={control}
-                disabled={!data?.allowedToSpend}
+                disabled={(price ?? 0) <= 0}
                 currencyFormat
                 decimalScale={0}
               />

@@ -152,7 +152,12 @@ export function useGetBonusExpectation(id?: number, params?: CardBonusExceptatio
     queryKey: [...cardsKey, debouncedPrice, debouncedBonuses],
 
     queryFn: () =>
-      id && params && debouncedPrice !== undefined && debouncedBonuses !== undefined && params.price > 0
+      id &&
+      params &&
+      debouncedPrice !== undefined &&
+      debouncedBonuses !== undefined &&
+      params.price > 0 &&
+      params.bonuses >= 0
         ? getBonusExpectation(id, { ...params, price: debouncedPrice, bonuses: debouncedBonuses })
         : Promise.resolve(null),
   });
