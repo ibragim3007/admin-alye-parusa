@@ -35,7 +35,9 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, to
     },
   });
 
-  const { createTourFn, isPending, error } = useCreateTour();
+  const resetFields = () => formApi.reset();
+
+  const { createTourFn, isPending, error } = useCreateTour(tour.card.id, tour.client.id);
 
   useEffect(() => {
     RHFsetErrorsToInputs(error, formApi);
@@ -43,14 +45,22 @@ export default function TourForm({ BonusExpectationComponent, AllowedToSpend, to
 
   const onCreateButtom = async (data: TourCreateDto) => {
     const res = await createTourFn(data);
-    if (res) toggleDialog();
+    if (res) {
+      resetFields();
+      toggleDialog();
+    }
   };
 
   return (
     <Grid2>
       <Dialog fullWidth open={open} onClose={toggleDialog}>
         <Grid2>
-          <DialogTitle>Создание тура для карты {formatCardNumber(tour.card.cardNumber)}</DialogTitle>
+          <DialogTitle>
+            <Grid2 container justifyContent="space-between">
+              Создание тура для карты {formatCardNumber(tour.card.cardNumber)}
+              <Button onClick={resetFields}>Сбросить поля</Button>
+            </Grid2>
+          </DialogTitle>
         </Grid2>
         <DialogContent sx={{ paddingTop: 2 }}>
           <Grid2 container gap={3} flexDirection="column">

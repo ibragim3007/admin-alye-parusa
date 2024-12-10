@@ -6,13 +6,13 @@ import {
   getToursByClientId,
 } from '@/shared/api/entities/tour/tour.api';
 import { TourCreateDto } from '@/shared/api/entities/tour/types/req.type';
+import { TourClientGetDto, TourClientQueryParamsDto } from '@/shared/api/entities/tour/types/res.type';
 import { Inform } from '@/shared/service/log/log.service';
 import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IChangeTourState } from './types';
-import { TourClientGetDto, TourClientQueryParamsDto, TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 
 const tourKeys = ['tour'];
 
@@ -57,12 +57,13 @@ export const useGetTourByClientId = (clientId: number, params?: TourClientQueryP
   };
 };
 
-export const useCreateTour = () => {
+export const useCreateTour = (cardId: number, clientId: number) => {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: (data: TourCreateDto) => createTour(data),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+      void queryClient.invalidateQueries({ queryKey: [...toursByClientKey, clientId] });
+      void queryClient.invalidateQueries({ queryKey: ['balance'] });
     },
   });
 
