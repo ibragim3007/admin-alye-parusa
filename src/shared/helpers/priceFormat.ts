@@ -5,7 +5,7 @@ export const priceFormat = (price: number) => {
 };
 
 export const numberFormatToPriceFormat = (price: number) => {
-  return new Intl.NumberFormat('ru-RU', { maximumSignificantDigits: 3 }).format(price);
+  return new Intl.NumberFormat('ru-RU').format(price);
   // return String(price);
 };
 
