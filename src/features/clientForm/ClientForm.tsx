@@ -49,7 +49,6 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
       surname: '',
       birthday: undefined,
     },
-    mode: 'onChange',
   });
 
   const { onClickCreateButton, loadingCreateClient } = useCreateClientForm(cardId, formApi, updateFormStatus, params);
@@ -57,7 +56,7 @@ export default function ClientForm({ params, cardId, formStatusProps = 'create',
 
   useEffect(() => {
     if (data) formApi.reset(data);
-  }, [data, formApi]);
+  }, [data]);
 
   const isFrozen = formStatus === 'frozen';
   const isNewClient = formStatus === 'create';
