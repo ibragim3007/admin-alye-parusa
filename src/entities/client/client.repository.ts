@@ -1,4 +1,6 @@
+import { formStatuses } from '@/features/clientForm/types';
 import { CardGetPaginationParams } from '@/shared/api/entities/card/types/req.type';
+import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 import { createClient, getClientById, getClients, updateClient } from '@/shared/api/entities/client/client.api';
 import { ClientCreateParams } from '@/shared/api/entities/client/types/req.type';
 import { Inform } from '@/shared/service/log/log.service';
@@ -6,10 +8,8 @@ import { FeedbackMessage } from '@/shared/service/log/message.service';
 import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { IClientCreate } from './types';
-import { formStatuses } from '@/features/clientForm/types';
-import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
 import { cardsKey } from '../card/card.respository';
+import { IClientCreate } from './types';
 
 const clientKeys = ['client'];
 
@@ -34,19 +34,15 @@ export type CreateClientParams = {
 
 export const useCreateClient = (cardId: string, params?: CardGetPaginationParams) => {
   const queryClient = useQueryClient();
-  // const s = queryClient.getQueryData(['cards']);
 
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: (params: CreateClientParams) => createClient(params.clientCreateParams, params.body),
     onSuccess: (createdClient) => {
-      // void queryClient.invalidateQueries({ queryKey: ['client', cardId] });
-
       queryClient.setQueryData(cardsKey, (cardsPagination: CardsGetPaginationDto | undefined) => {
-        console.log(cardsPagination);
         if (!cardsPagination) return;
 
         const updatedCards = cardsPagination.cards.map((card) =>
-          card.id === Number(cardId) ? { ...card, clientId: createdClient.id } : card
+          card.id === Number(cardId) ? { ...card, shortName: createdClient.surname, clientId: createdClient.id } : card
         );
 
         const cardsPaginatiomUpdated = { ...cardsPagination, cards: updatedCards };
@@ -54,25 +50,6 @@ export const useCreateClient = (cardId: string, params?: CardGetPaginationParams
         return cardsPaginatiomUpdated;
       });
     },
-    // onSuccess: (createdClient) => {
-    //   console.log(s);
-    //   queryClient.setQueryData(
-    //     [...cardsKey, params?.page, params?.sortOrder, params?.searchString],
-    //     (oldData: CardsGetPaginationDto | undefined) => {
-    //       console.log(params);
-    //       console.log(oldData, createdClient);
-    //       if (!oldData) return;
-
-    //       const updatedCards = oldData.cards.map((card) =>
-    //         card.clientId === createdClient.id ? { ...card, client: { ...createdClient } } : card
-    //       );
-
-    //       return { ...oldData, cards: updatedCards };
-    //     }
-    //   );
-
-    //   void queryClient.invalidateQueries({ queryKey: ['client'] });
-    // },
   });
 
   const createClientFn = async (params: CreateClientParams) => {
@@ -117,7 +94,7 @@ export const useUpdateClient = () => {
 
 export const useGetClientById = (idCard?: number, formStatus?: formStatuses) => {
   const { data, isLoading, isFetching, isError } = useQuery({
-    queryKey: ['client', idCard, formStatus],
+    queryKey: ['client', idCard],
     queryFn: () => (idCard ? getClientById(idCard) : Promise.resolve(null)),
     enabled: !!idCard, // Запрос выполняется только если есть id
   });
