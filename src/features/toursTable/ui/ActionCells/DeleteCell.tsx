@@ -1,6 +1,7 @@
 import { useDeleteTour } from '@/entities/tour/tour.repository';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogTitle, Grid2, IconButton } from '@mui/material';
 import { useState } from 'react';
 
@@ -13,7 +14,7 @@ export default function DeleteCell({ tour }: DeleteCellProps) {
   const toggleDialog = () => {
     setOpen(!open);
   };
-  const { deleteTourFn, isPending } = useDeleteTour(tour);
+  const { deleteTourFn, isPending } = useDeleteTour();
 
   async function handleDelete(id: number) {
     const res = await deleteTourFn(id);
@@ -31,9 +32,14 @@ export default function DeleteCell({ tour }: DeleteCellProps) {
         <DialogTitle>Вы уверены что хотите удалить тур {tour.name}?</DialogTitle>
         <DialogActions>
           <Button onClick={toggleDialog}>Отмена</Button>
-          <Button variant="outlined" color="error" onClick={() => void handleDelete(tour.id)}>
+          <LoadingButton
+            loading={isPending}
+            variant="outlined"
+            color="error"
+            onClick={() => void handleDelete(tour.id)}
+          >
             Удалить
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </Grid2>

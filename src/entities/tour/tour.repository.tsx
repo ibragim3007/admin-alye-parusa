@@ -136,7 +136,7 @@ export function useUpdateTour() {
   };
 }
 
-export function useDeleteTour(tour: TourGetDto) {
+export function useDeleteTour() {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
     mutationKey: toursByClientKey,
