@@ -7,7 +7,18 @@ import { TourFieldsLazy } from '@/features/tourForm';
 import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
-import { FormControlLabel, Grid2, Switch, Typography } from '@mui/material';
+import {
+  Button,
+  FormControlLabel,
+  Grid2,
+  Switch,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -17,6 +28,15 @@ export default function TourPage() {
   const toggleIncludeDeleted = () => setIncludeDeleted(!includeDeleted);
 
   const { data, isLoading, refetch } = useGetTourByClientId(parseInt(clientId || '0'), { includeDeleted });
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleCompleteTour = () => {
+    handleClose();
+    window.close(); // Close the browser window
+  };
 
   useEffect(() => {
     void refetch();
@@ -30,7 +50,9 @@ export default function TourPage() {
       gap={3}
       padding={3}
     >
-      <Typography variant="h3">Туры</Typography>
+      <Grid2>
+        <Typography variant="h3">Туры</Typography>
+      </Grid2>
       {isLoading && <LoaderGeneral />}
       {!data && !isLoading && <LoaderGeneral />}
       {data && !isLoading && (
@@ -46,12 +68,28 @@ export default function TourPage() {
               />
             }
           />
-          <FormControlLabel
-            onChange={toggleIncludeDeleted}
-            checked={includeDeleted}
-            control={<Switch />}
-            label="Показать удаленные"
-          />
+          <Grid2 container justifyContent="space-between">
+            <FormControlLabel
+              onChange={toggleIncludeDeleted}
+              checked={includeDeleted}
+              control={<Switch />}
+              label="Показать удаленные"
+            />
+            <Button onClick={handleClickOpen}>Завершить</Button>
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Завершить тур</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Окно будет закрыто
+                  <br /> Вы уверены, что хотите завершить этот тур?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Отмена</Button>
+                <Button onClick={handleCompleteTour}>Завершить</Button>
+              </DialogActions>
+            </Dialog>
+          </Grid2>
           <ToursTableLazy
             data={data}
             TourFields={TourFieldsLazy}

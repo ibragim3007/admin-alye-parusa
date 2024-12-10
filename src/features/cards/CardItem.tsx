@@ -67,7 +67,7 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
             <Grid2>
               {isClientExist ? (
                 <Grid2 container gap={2}>
-                  <NavLink to={`${config.cards}/client/${card.clientId}`}>
+                  <NavLink target="_blank" to={`${config.cards}/client/${card.clientId}`}>
                     <Button variant="outlined">Создать тур</Button>
                   </NavLink>
                   <Button variant="outlined" onClick={toggleForm}>
