@@ -24,7 +24,10 @@ export default function CardInfoBig({ tour, BalanceComponent, CreateTourComponen
 
             <Grid2 gap={2} container flexDirection="column" flex={1}>
               <Grid2 gap={3} container justifyContent="space-between">
-                <LabelContainer containerProps={{ container: true, gap: 1 }} label="Паспорт">
+                <LabelContainer
+                  containerProps={{ container: true, gap: 1 }}
+                  label={`Паспорт (${tour.client.passportType})`}
+                >
                   <Typography>{tour.client.passportSeries}</Typography>
                   <Typography>{tour.client.passportNumber}</Typography>
                 </LabelContainer>

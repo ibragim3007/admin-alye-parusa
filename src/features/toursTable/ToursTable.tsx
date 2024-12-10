@@ -61,9 +61,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       flex: 1,
       minWidth: 140,
       headerName: 'Бонусы',
-      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
-        <BonusSell bonusDeposit={row.bonusDeposit} bonusSpending={row.bonusSpending} />
-      ),
+      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <BonusSell tour={row} />,
     },
     {
       field: 'state',
