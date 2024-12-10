@@ -13,10 +13,14 @@ import PriceSell from './ui/Cells/PriceSell';
 import { TourFieldsProps } from '../tourForm/TourFields/TourFields';
 import { AllowedToSpendProps } from '../allowedToSpend/AllowedToSpend';
 import { BonusExpectationProps } from '../bonusExpectation/BonusExpectation';
+import { useGetTourByClientId } from '@/entities/tour/tour.repository';
 
 const useStyles = makeStyles({
   transparentRow: {
     opacity: 0.2,
+  },
+  scrollable: {
+    overflowX: 'auto',
   },
 });
 
@@ -29,20 +33,23 @@ interface ToursTableProps {
 
 export default function ToursTable({ data, TourFields, BonusExpectationComponent, AllowedToSpend }: ToursTableProps) {
   const classes = useStyles();
+  const { isLoading } = useGetTourByClientId(data.client.id);
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Имя тура', width: 200 },
+    { field: 'name', headerName: 'Имя тура', flex: 1, minWidth: 100 },
     {
       field: 'fromDate',
       headerName: 'Отправление / Прибытие',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       valueGetter: (val: string, row: TourGetDto) => {
         return getFromToDateString(row.fromDate, row.toDate);
       },
     },
     {
       field: 'finalPrice',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       headerName: 'Стоймость',
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
         <PriceSell price={row.price} finalPrice={row.finalPrice} />
@@ -50,7 +57,8 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     },
     {
       field: 'bonusSpending',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       headerName: 'Бонусы',
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
         <BonusSell bonusDeposit={row.bonusDeposit} bonusSpending={row.bonusSpending} />
@@ -59,13 +67,17 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     {
       field: 'state',
       headerName: 'Статус',
-      width: 200,
+      flex: 0.7,
+      minWidth: 140,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell id={row.id} state={row.state} />,
     },
     {
       field: 'edit',
       headerName: 'Изменить',
-      width: 90,
+      flex: 0.4,
+      minWidth: 70,
+      sortable: false,
+      filterable: false,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
         <UpdateCell
           tour={row}
@@ -78,17 +90,20 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     {
       field: 'delete',
       headerName: 'Удалить',
-      width: 80,
+      flex: 0.4,
+      minWidth: 70,
+      filterable: false,
+      sortable: false,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <DeleteCell tour={row} />,
     },
   ];
 
   return (
-    <Grid2>
+    <Grid2 width="100%" className={classes.scrollable}>
       <DataGrid
         rows={data.tours}
         columns={columns}
-        // hideFooter
+        loading={isLoading}
         initialState={{
           pagination: {
             paginationModel: {
@@ -96,7 +111,6 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
             },
           },
         }}
-        // checkboxSelection
         autoHeight
         disableColumnResize={false}
         disableRowSelectionOnClick
