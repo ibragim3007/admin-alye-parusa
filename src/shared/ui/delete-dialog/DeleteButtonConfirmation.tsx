@@ -1,4 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
+import { LoadingButton } from '@mui/lab';
 import {
   Button,
   CircularProgress,
@@ -37,15 +38,16 @@ export default function DeleteButtonConfirmation({ callback, title, content, loa
           <Button autoFocus variant="contained" onClick={toggleModal}>
             Отменить
           </Button>
-          <Button
-            startIcon={loading ? <CircularProgress size={14} /> : null}
+          <LoadingButton
+            loading={loading}
+            disabled={loading}
             color="error"
             variant="outlined"
             onClick={() => void callback()}
             autoFocus
           >
             ⚠️ Удалить
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </>

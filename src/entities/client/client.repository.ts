@@ -8,6 +8,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IClientCreate } from './types';
 import { formStatuses } from '@/features/clientForm/types';
+import { CardsGetPaginationDto } from '@/shared/api/entities/card/types/res.type';
+import { cardsKey } from '../card/card.respository';
 
 const clientKeys = ['client'];
 
@@ -30,14 +32,27 @@ export type CreateClientParams = {
   body: IClientCreate;
 };
 
-export const useCreateClient = (params?: CardGetPaginationParams) => {
+export const useCreateClient = (cardId: string, params?: CardGetPaginationParams) => {
   const queryClient = useQueryClient();
   // const s = queryClient.getQueryData(['cards']);
 
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: (params: CreateClientParams) => createClient(params.clientCreateParams, params.body),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['client'] });
+    onSuccess: (createdClient) => {
+      // void queryClient.invalidateQueries({ queryKey: ['client', cardId] });
+
+      queryClient.setQueryData(cardsKey, (cardsPagination: CardsGetPaginationDto | undefined) => {
+        console.log(cardsPagination);
+        if (!cardsPagination) return;
+
+        const updatedCards = cardsPagination.cards.map((card) =>
+          card.id === Number(cardId) ? { ...card, clientId: createdClient.id } : card
+        );
+
+        const cardsPaginatiomUpdated = { ...cardsPagination, cards: updatedCards };
+
+        return cardsPaginatiomUpdated;
+      });
     },
     // onSuccess: (createdClient) => {
     //   console.log(s);
@@ -100,16 +115,17 @@ export const useUpdateClient = () => {
   };
 };
 
-export const useGetClientById = (id?: number, formStatus?: formStatuses) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['client', id, formStatus],
-    queryFn: () => (id ? getClientById(id) : Promise.resolve(null)),
-    enabled: !!id, // Запрос выполняется только если есть id
+export const useGetClientById = (idCard?: number, formStatus?: formStatuses) => {
+  const { data, isLoading, isFetching, isError } = useQuery({
+    queryKey: ['client', idCard, formStatus],
+    queryFn: () => (idCard ? getClientById(idCard) : Promise.resolve(null)),
+    enabled: !!idCard, // Запрос выполняется только если есть id
   });
 
   return {
     data,
     isLoading,
     isError,
+    isFetching,
   };
 };

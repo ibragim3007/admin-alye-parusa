@@ -12,13 +12,10 @@ export function useCreateClientForm(
   updateFormStatus: (formStatus: formStatuses) => void,
   params?: CardGetPaginationParams
 ) {
-  const { createClientFn, isPending: loadingCreateClient, error: createError } = useCreateClient(params);
+  const { createClientFn, isPending: loadingCreateClient, error: createError } = useCreateClient(cardId, params);
 
   const onClickCreateButton = async (clientData: IClientCreate) => {
-    const res = await createClientFn({ body: clientData, clientCreateParams: { cardId } });
-    if (res) {
-      updateFormStatus('frozen');
-    }
+    await createClientFn({ body: clientData, clientCreateParams: { cardId } });
   };
 
   useEffect(() => {
