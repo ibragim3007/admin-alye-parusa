@@ -33,7 +33,7 @@ interface ToursTableProps {
 
 export default function ToursTable({ data, TourFields, BonusExpectationComponent, AllowedToSpend }: ToursTableProps) {
   const classes = useStyles();
-  const { isLoading } = useGetTourByClientId(data.client.id);
+  const { isLoading, isFetching } = useGetTourByClientId(data.client.id);
 
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Имя тура', flex: 1, minWidth: 150 },
@@ -69,7 +69,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       headerName: 'Статус',
       flex: 0.7,
       minWidth: 145,
-      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell id={row.id} state={row.state} />,
+      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell tour={row} />,
     },
     {
       field: 'edit',
@@ -103,7 +103,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       <DataGrid
         rows={data.tours}
         columns={columns}
-        loading={isLoading}
+        loading={isLoading || isFetching}
         initialState={{
           pagination: {
             paginationModel: {

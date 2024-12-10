@@ -20,7 +20,7 @@ export default function TourPage() {
 
   useEffect(() => {
     void refetch();
-  }, [refetch]);
+  }, [refetch, includeDeleted]);
 
   return (
     <Grid2

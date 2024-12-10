@@ -122,10 +122,10 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
   return { changeCardStatusFn, isPending, isSuccess, isError };
 }
 
-export function useGetCardBalance(id: number) {
+export function useGetCardBalance(cardId: number) {
   const { data, error, isLoading, isFetching } = useQuery({
-    queryKey: ['balance'],
-    queryFn: () => getBalance(id),
+    queryKey: ['balance', cardId],
+    queryFn: () => getBalance(cardId),
   });
 
   useEffect(() => {

@@ -36,7 +36,7 @@ export const useGetTours = () => {
 const toursByClientKey = ['tour-by-client'];
 export const useGetTourByClientId = (clientId: number, params?: TourClientQueryParamsDto) => {
   const { data, isLoading, error, isError, isFetching, refetch } = useQuery({
-    queryKey: [...toursByClientKey, params?.includeDeleted],
+    queryKey: [...toursByClientKey, clientId],
     queryFn: () => getToursByClientId(clientId, params),
     refetchOnMount: true,
   });
@@ -50,7 +50,8 @@ export const useGetTourByClientId = (clientId: number, params?: TourClientQueryP
   return {
     refetch,
     data,
-    isLoading: isLoading,
+    isFetching,
+    isLoading,
     error,
     isError,
   };
@@ -59,7 +60,6 @@ export const useGetTourByClientId = (clientId: number, params?: TourClientQueryP
 export const useCreateTour = () => {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending, error } = useMutation({
-    mutationKey: toursByClientKey,
     mutationFn: (data: TourCreateDto) => createTour(data),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: toursByClientKey });
@@ -81,17 +81,18 @@ type TChangeStateTourParams = {
   id: number;
   tourState: IChangeTourState;
 };
-export const useChangeStateTour = () => {
+export const useChangeStateTour = (clientId: number, cardId: number) => {
   const queryClient = useQueryClient();
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: [...toursByClientKey],
     mutationFn: (data: TChangeStateTourParams) => changeTourState(data.id, data.tourState),
     onSuccess: (data, variables) => {
       // Обновляем локальный кэш
 
       void queryClient.invalidateQueries({ queryKey: ['balance'] });
+      void queryClient.invalidateQueries({ queryKey: toursByClientKey });
 
-      queryClient.setQueryData<TourClientGetDto>([...toursByClientKey], (cachedData) => {
+      queryClient.setQueryData<TourClientGetDto>([...toursByClientKey, clientId], (cachedData) => {
+        console.log(cachedData);
         if (!cachedData) return undefined;
 
         // Обновляем состояние нужного тура

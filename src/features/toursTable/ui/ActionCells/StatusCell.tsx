@@ -1,22 +1,21 @@
 import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
 import { useChangeStateTour } from '@/entities/tour/tour.repository';
 import { TourStateType } from '@/shared/api/entities/dictionary/types';
+import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { MenuItem, Select } from '@mui/material';
 
 interface StatusCellProps {
-  state: TourStateType;
-  id: number;
-  // handleStateChange: (id: number, value: TourStateType) => void;
+  tour: TourGetDto;
 }
 
-export default function StatusCell({ id, state }: StatusCellProps) {
-  const { changeTourStateFn, isPending } = useChangeStateTour();
+export default function StatusCell({ tour }: StatusCellProps) {
+  const { changeTourStateFn, isPending } = useChangeStateTour(tour.userId, tour.cardId);
   const { data, isLoading } = useGetTourStates();
 
-  const handleChangeState = async (id: number, value: TourStateType) => {
+  const handleChangeState = async (tourId: number, value: TourStateType) => {
     await changeTourStateFn({
-      id,
+      id: tourId,
       tourState: {
         tourState: value,
       },
@@ -34,8 +33,8 @@ export default function StatusCell({ id, state }: StatusCellProps) {
     <Select
       disabled={isPending || isLoading}
       size="small"
-      value={state}
-      onChange={(event) => void handleChangeState(id, event.target.value as TourStateType)}
+      value={tour.state}
+      onChange={(event) => void handleChangeState(tour.id, event.target.value as TourStateType)}
       fullWidth
       displayEmpty
       renderValue={(selected) => {
