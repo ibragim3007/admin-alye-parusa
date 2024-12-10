@@ -10,16 +10,23 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 interface DeleteButtonConfirmationProps {
   callback: () => void;
   title: string;
   loading?: boolean;
   content?: string;
+  renderButon?: React.ReactNode;
 }
 
-export default function DeleteButtonConfirmation({ callback, title, content, loading }: DeleteButtonConfirmationProps) {
+export default function DeleteButtonConfirmation({
+  callback,
+  renderButon,
+  title,
+  content,
+  loading,
+}: DeleteButtonConfirmationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -27,9 +34,13 @@ export default function DeleteButtonConfirmation({ callback, title, content, loa
   return (
     <>
       <Tooltip title="Delete">
-        <IconButton onClick={toggleModal}>
-          <DeleteIcon />
-        </IconButton>
+        {renderButon ? (
+          <div onClick={toggleModal}>{renderButon}</div>
+        ) : (
+          <IconButton onClick={toggleModal}>
+            <DeleteIcon />
+          </IconButton>
+        )}
       </Tooltip>
       <Dialog open={isOpen} onClose={toggleModal}>
         <DialogTitle>{title}</DialogTitle>
