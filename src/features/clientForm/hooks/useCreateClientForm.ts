@@ -15,7 +15,8 @@ export function useCreateClientForm(
   const { createClientFn, isPending: loadingCreateClient, error: createError } = useCreateClient(cardId, params);
 
   const onClickCreateButton = async (clientData: IClientCreate) => {
-    await createClientFn({ body: clientData, clientCreateParams: { cardId } });
+    const res = await createClientFn({ body: clientData, clientCreateParams: { cardId } });
+    if (res) updateFormStatus('edit');
   };
 
   useEffect(() => {
