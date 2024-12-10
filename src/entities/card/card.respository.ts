@@ -25,12 +25,14 @@ export function useGetCards(params?: CardGetPaginationParams) {
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: cardsKey,
     queryFn: () => getCards(params),
+    // refetchOnWindowFocus: false,
   });
 
   return {
     refetch,
     data,
-    isLoading: isLoading || isFetching,
+    isLoading,
+    isFetching,
     isError,
   };
 }

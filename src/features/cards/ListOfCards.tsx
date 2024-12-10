@@ -28,7 +28,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
     navigate(`/cards/${value}`);
   };
 
-  const { data, isLoading, refetch } = useGetCards({
+  const { data, isLoading, isFetching, refetch } = useGetCards({
     page: pageNumber,
     searchString: debouncedSearchString,
     pageSize: 10,
@@ -56,13 +56,23 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
         <FilterOrder value={sortType} onChange={handleChangeSortType} />
       </Grid2>
 
-      <Grid2 gap={3} container flexDirection="column" alignContent="center" width={'100%'} minHeight={'70vh'}>
+      <Grid2
+        maxWidth={800}
+        style={{ margin: '0 auto' }}
+        gap={3}
+        container
+        flexDirection="column"
+        alignContent="center"
+        width={'100%'}
+        minHeight={'70vh'}
+      >
         {isLoading && <LoaderGeneral />}
         {(data?.cards || []).length === 0 && !isLoading && (
           <Alert color="info" variant="filled">
             Нет данных
           </Alert>
         )}
+
         {!isLoading &&
           (data?.cards || []).map((card) => (
             <CardItem

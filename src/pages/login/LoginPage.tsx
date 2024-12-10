@@ -1,13 +1,13 @@
+import { config } from '@/app/router/routerConfig';
 import { authService } from '@/shared/api/api';
 import { getMe } from '@/shared/api/entities/me/me.api';
 import { generateToken } from '@/shared/service/auth.service';
 import { Inform } from '@/shared/service/log/log.service';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Alert, Card, Grid2 as Grid, TextField, Typography } from '@mui/material';
+import { Alert, Grid2 as Grid, Grid2, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LoginInterface } from './type';
-import { config } from '@/app/router/routerConfig';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -46,20 +46,21 @@ export default function LoginPage() {
       minHeight="100vh"
       sx={{ bgcolor: 'background.default' }}
     >
-      <Card>
+      <Grid2>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             void handleSubmit(onSubmit)();
           }}
         >
-          <Grid container gap={3} padding={3} maxWidth={500} width="100%">
+          <Grid container gap={3} padding={3} maxWidth={500} width="100%" justifyContent="center">
             <Typography variant="h5">Алые паруса</Typography>
             <TextField
               error={errors.login && true}
               {...register('login', { required: 'true' })}
               label="Логин"
               fullWidth
+              size="small"
             />
             <TextField
               error={errors.password && true}
@@ -67,6 +68,7 @@ export default function LoginPage() {
               label="Пароль"
               type="password"
               fullWidth
+              size="small"
             />
             {errors.password && <Alert color="error">{errors.password.message}</Alert>}
             <Grid container width="100%" justifyContent="flex-end">
@@ -76,7 +78,7 @@ export default function LoginPage() {
             </Grid>
           </Grid>
         </form>
-      </Card>
+      </Grid2>
     </Grid>
   );
 }

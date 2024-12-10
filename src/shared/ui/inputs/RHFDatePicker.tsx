@@ -36,10 +36,8 @@ export default function RHFDatePicker<T extends FieldValues>({
               label={label}
               disabled={disabled}
               format="DD.MM.YYYY"
-              referenceDate={dayjs().subtract(18, 'year').startOf('year')}
               value={field.value ? dayjs(field.value) : undefined}
               onChange={(newValue) => field.onChange(newValue)}
-              // defaultCalendarMonth={dayjs().subtract(18, 'year').startOf('year')}
               slotProps={{
                 textField: {
                   error: !!error,

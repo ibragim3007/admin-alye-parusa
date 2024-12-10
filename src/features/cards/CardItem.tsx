@@ -25,7 +25,7 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
   const isClientExist = card.clientId !== null;
 
   return (
-    <Grid2 style={{ width: '60%' }}>
+    <Grid2 width="100%">
       <Card sx={{ p: 2, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <Grid2 container flexDirection="column" gap={1}>
           <Grid2 container justifyContent="space-between">
