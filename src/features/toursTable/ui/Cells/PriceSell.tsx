@@ -8,7 +8,7 @@ interface PriceSellProps {
 
 export default function PriceSell({ price, finalPrice }: PriceSellProps) {
   return (
-    <Grid2 container alignItems="flex-end" flexDirection="column" justifyContent="center" height="100%">
+    <Grid2 container alignItems="flex-start" flexDirection="column" justifyContent="center" height="100%">
       <Typography variant="body1">{priceFormat(price)}</Typography>
       <Typography variant="caption" color="textSecondary">
         {priceFormat(finalPrice)}

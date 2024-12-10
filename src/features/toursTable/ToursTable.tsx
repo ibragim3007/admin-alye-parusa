@@ -36,12 +36,12 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
   const { isLoading } = useGetTourByClientId(data.client.id);
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Имя тура', flex: 1, minWidth: 100 },
+    { field: 'name', headerName: 'Имя тура', flex: 1, minWidth: 150 },
     {
       field: 'fromDate',
       headerName: 'Отправление / Прибытие',
       flex: 1,
-      minWidth: 200,
+      minWidth: 230,
       valueGetter: (val: string, row: TourGetDto) => {
         return getFromToDateString(row.fromDate, row.toDate);
       },
@@ -49,7 +49,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     {
       field: 'finalPrice',
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       headerName: 'Стоймость',
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
         <PriceSell price={row.price} finalPrice={row.finalPrice} />
@@ -58,7 +58,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     {
       field: 'bonusSpending',
       flex: 1,
-      minWidth: 100,
+      minWidth: 140,
       headerName: 'Бонусы',
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
         <BonusSell bonusDeposit={row.bonusDeposit} bonusSpending={row.bonusSpending} />
@@ -68,14 +68,14 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       field: 'state',
       headerName: 'Статус',
       flex: 0.7,
-      minWidth: 140,
+      minWidth: 145,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell id={row.id} state={row.state} />,
     },
     {
       field: 'edit',
       headerName: 'Изменить',
       flex: 0.4,
-      minWidth: 70,
+      minWidth: 100,
       sortable: false,
       filterable: false,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
@@ -91,7 +91,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       field: 'delete',
       headerName: 'Удалить',
       flex: 0.4,
-      minWidth: 70,
+      minWidth: 100,
       filterable: false,
       sortable: false,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <DeleteCell tour={row} />,

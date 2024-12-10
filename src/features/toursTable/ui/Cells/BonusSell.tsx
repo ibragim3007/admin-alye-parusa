@@ -8,7 +8,7 @@ interface BonusSellProps {
 
 export default function BonusSell({ bonusDeposit, bonusSpending }: BonusSellProps) {
   return (
-    <Grid2 container alignItems="flex-end" flexDirection="column" justifyContent="center" height="100%">
+    <Grid2 container alignItems="flex-start" flexDirection="column" justifyContent="center" height="100%">
       <Typography color="success" variant="body1">
         +{numberFormatToPriceFormat(bonusDeposit)}
       </Typography>
