@@ -5,6 +5,7 @@ import { Grid2 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowClassNameParams } from '@mui/x-data-grid';
+import { ruRU } from '@mui/x-data-grid/locales';
 import DeleteCell from './ui/ActionCells/DeleteCell';
 import StatusCell from './ui/ActionCells/StatusCell';
 import UpdateCell from './ui/ActionCells/UpdateCell';
@@ -115,6 +116,7 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
         disableColumnResize={false}
         disableRowSelectionOnClick
         scrollbarSize={10}
+        localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
         getRowClassName={(params: GridRowClassNameParams<TourGetDto>) =>
           params.row.state === 'deleted' ? classes.transparentRow : ''
         }
