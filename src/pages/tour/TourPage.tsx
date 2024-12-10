@@ -6,20 +6,20 @@ import { CardInfoBigLazy } from '@/features/cardInfoBig';
 import { TourFieldsLazy } from '@/features/tourForm';
 import TourForm from '@/features/tourForm/TourForm';
 import { ToursTableLazy } from '@/features/toursTable';
-import LoaderGeneral from '@/shared/ui/LoaderGeneral';
+import LoaderFullScreen from '@/shared/ui/loader/LoaderFullScreen';
 import {
   Button,
-  FormControlLabel,
-  Grid2,
-  Switch,
-  Typography,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  Grid2,
+  Switch,
+  Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function TourPage() {
@@ -42,6 +42,8 @@ export default function TourPage() {
     void refetch();
   }, [refetch, includeDeleted]);
 
+  if (isLoading || !data) return <LoaderFullScreen />;
+
   return (
     <Grid2
       sx={{ minHeight: '100vh', maxWidth: 1200, margin: '0 auto' }}
@@ -53,10 +55,9 @@ export default function TourPage() {
       <Grid2>
         <Typography variant="h3">Туры</Typography>
       </Grid2>
-      {isLoading && <LoaderGeneral />}
-      {!data && !isLoading && <LoaderGeneral />}
+
       {data && !isLoading && (
-        <>
+        <React.Fragment>
           <CardInfoBigLazy
             tour={data}
             BalanceComponent={<CardBalanceLazy cardId={data.card.id} />}
@@ -96,7 +97,7 @@ export default function TourPage() {
             AllowedToSpend={AllowedToSpend}
             BonusExpectationComponent={BonusExpectation}
           />
-        </>
+        </React.Fragment>
       )}
     </Grid2>
   );
