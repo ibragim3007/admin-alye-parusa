@@ -18,8 +18,8 @@ export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
 
   return (
     <FormProvider {...formApi}>
-      <Grid2 gap={2} container flexDirection="row" wrap="nowrap">
-        <Grid2 flex={1} gap={2} container flexDirection="column">
+      <Grid2 gap={2} container wrap="wrap">
+        <Grid2 gap={2} container flexDirection="column" size={'grow'} minWidth={250}>
           <RHFTextField name="name" label="Имя" control={control} disabled={isFrozen} />
           <RHFTextField disabled={isFrozen} name="patronymic" label="Отчество" control={control} />
           <RHFTextField disabled={isFrozen} name="surname" label="Фамилия" control={control} />
@@ -31,7 +31,7 @@ export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
             control={control}
           />
         </Grid2>
-        <Grid2 container gap={2} flex={2}>
+        <Grid2 container gap={2} size={'grow'} minWidth={250}>
           <RHFTextField disabled={isFrozen} name="phone" label="Номер" control={control} fullWidth />
           <Grid2 width={'100%'} container gap={1} flexDirection="row" wrap="nowrap">
             <RHFTextField

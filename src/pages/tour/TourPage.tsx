@@ -62,11 +62,7 @@ export default function TourPage() {
             tour={data}
             BalanceComponent={<CardBalanceLazy cardId={data.card.id} />}
             CreateTourComponent={
-              <TourForm
-                tour={data}
-                BonusExpectationComponent={BonusExpectation}
-                AllowedToSpend={AllowedToSpend} // Pass AllowedToSpend component
-              />
+              <TourForm tour={data} BonusExpectationComponent={BonusExpectation} AllowedToSpend={AllowedToSpend} />
             }
           />
           <Grid2 container justifyContent="space-between">
@@ -78,11 +74,12 @@ export default function TourPage() {
             />
             <Button onClick={handleClickOpen}>Завершить</Button>
             <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>Завершить тур</DialogTitle>
+              <DialogTitle>Закрыть управление турами </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Окно будет закрыто
-                  <br /> Вы уверены, что хотите завершить этот тур?
+                  Вкладка будет закрыта.
+                  <br />
+                  Вы уверены, что хотите выйти?
                 </DialogContentText>
               </DialogContent>
               <DialogActions>

@@ -21,7 +21,7 @@ export default function CreateCard() {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          <Grid2 container justifyContent="space-between" alignItems="center" gap={5}>
+          <Grid2 container justifyContent="space-between" alignItems="center" wrap="nowrap" gap={5}>
             <Typography variant="h6">Добавление новой карты</Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />

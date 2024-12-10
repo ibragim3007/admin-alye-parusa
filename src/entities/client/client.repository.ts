@@ -7,6 +7,7 @@ import { handleMutation } from '@/shared/utils/handleMutation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { IClientCreate } from './types';
+import { formStatuses } from '@/features/clientForm/types';
 
 const clientKeys = ['client'];
 
@@ -99,9 +100,9 @@ export const useUpdateClient = () => {
   };
 };
 
-export const useGetClientById = (id?: number) => {
+export const useGetClientById = (id?: number, formStatus?: formStatuses) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['client', id],
+    queryKey: ['client', id, formStatus],
     queryFn: () => (id ? getClientById(id) : Promise.resolve(null)),
     enabled: !!id, // Запрос выполняется только если есть id
   });

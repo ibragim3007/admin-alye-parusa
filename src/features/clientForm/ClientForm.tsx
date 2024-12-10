@@ -37,8 +37,8 @@ export default function ClientForm({
   clientId,
   toggleForm,
 }: ClientFormProps) {
-  const { data, isLoading } = useGetClientById(clientId || 0);
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
+  const { data, isLoading } = useGetClientById(clientId || 0, formStatus);
   const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
   const { data: contactTypes } = useGetContactTypes();
 
@@ -63,7 +63,7 @@ export default function ClientForm({
 
   useEffect(() => {
     if (data) formApi.reset(data);
-  }, [data]);
+  }, [data, isLoading]);
 
   const isFrozen = formStatus === 'frozen';
   const isNewClient = formStatus === 'create';
@@ -80,7 +80,7 @@ export default function ClientForm({
     <Grid2 container width={'100%'} gap={2} mt={2} flexDirection="column">
       <Grid2 container justifyContent="space-between" alignItems="center">
         <Typography variant="h6">{isNewClient ? 'Создание клиента' : 'Изменение клиента'}</Typography>
-        {clientId && (
+        {data && (
           <Tooltip title="Изменить клиента">
             <IconButton
               sx={{ bgcolor: formStatus === 'edit' ? 'background.default' : 'transparent' }}

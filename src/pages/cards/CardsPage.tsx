@@ -15,7 +15,7 @@ export default function CardsPage() {
       gap={3}
       padding={3}
     >
-      <Grid2 container justifyContent="space-between">
+      <Grid2 container justifyContent="space-between" flexDirection="row" wrap="wrap">
         <Typography variant="h3">Карты</Typography>
         <CreateCard />
       </Grid2>
