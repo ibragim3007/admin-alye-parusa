@@ -43,6 +43,7 @@ export default function RHFDatePicker<T extends FieldValues>({
                   error: !!error,
                   helperText: error?.message,
                   size: 'small',
+                  fullWidth: true,
                 },
               }}
             />

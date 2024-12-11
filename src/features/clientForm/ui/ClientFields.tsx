@@ -31,7 +31,7 @@ export default function ClientFields({ formApi, isFrozen }: ClientFieldsProps) {
             control={control}
           />
         </Grid2>
-        <Grid2 container gap={2} size={'grow'} minWidth={350}>
+        <Grid2 container gap={2} size={'grow'} flex={2} minWidth={300}>
           <RHFTextField disabled={isFrozen} name="phone" label="Номер" control={control} fullWidth />
           <Grid2 width={'100%'} container gap={1} flexDirection="row" wrap="nowrap">
             <RHFTextField
