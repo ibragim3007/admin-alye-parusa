@@ -4210,6 +4210,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/core-downloads-tracker@npm:^6.1.10":
+  version: 6.1.10
+  resolution: "@mui/core-downloads-tracker@npm:6.1.10"
+  checksum: 853515ae3a09d2b8d2a7fc5a1eec235954e2739400b3739cda049bc363d2ad255728037b964ded4150d19b795699a0df9017140a3e019ae8f070b2491fc9345a
+  languageName: node
+  linkType: hard
+
 "@mui/core-downloads-tracker@npm:^6.1.9":
   version: 6.1.9
   resolution: "@mui/core-downloads-tracker@npm:6.1.9"
@@ -11134,6 +11141,7 @@ __metadata:
     "@babel/preset-typescript": ^7.24.1
     "@emotion/react": ^11.13.5
     "@emotion/styled": ^11.13.5
+    "@mui/core-downloads-tracker": ^6.1.10
     "@mui/icons-material": ^6.1.9
     "@mui/lab": ^6.0.0-beta.18
     "@mui/material": ^6.1.9

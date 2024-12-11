@@ -18,6 +18,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@mui/core-downloads-tracker": "^6.1.10",
     "@mui/icons-material": "^6.1.9",
     "@mui/lab": "^6.0.0-beta.18",
     "@mui/material": "^6.1.9",
