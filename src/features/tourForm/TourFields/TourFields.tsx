@@ -31,6 +31,19 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
       setValue('bonusSpending', data?.allowedToSpend ?? 0);
   }, [bonusSpending, data?.allowedToSpend, setValue]);
 
+  const allowedToSpendValue = data?.allowedToSpend ?? 0;
+  const bonusSpendingValue = bonusSpending ?? 0;
+  const priceValue = price ?? 0;
+
+  const priceLessThanZero = priceValue <= 0;
+  const allowedToSpendLessThanZero = allowedToSpendValue <= 0;
+  const bonusSpendingLessThanZero = bonusSpendingValue < 0;
+
+  const disableBonusInput =
+    priceLessThanZero ||
+    (allowedToSpendLessThanZero && bonusSpendingLessThanZero) ||
+    (!allowedToSpendLessThanZero && !bonusSpendingLessThanZero);
+
   return (
     <FormProvider {...formApi}>
       <Grid2 container gap={2} flexDirection="column">
@@ -45,7 +58,7 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
                 label="Бонусы"
                 name="bonusSpending"
                 control={control}
-                disabled={(price ?? 0) <= 0}
+                disabled={!disableBonusInput}
                 currencyFormat
                 decimalScale={0}
               />
