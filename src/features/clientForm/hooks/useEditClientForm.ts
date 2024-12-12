@@ -7,9 +7,10 @@ import { formStatuses } from '../types';
 
 export function useEditClientForm(
   formApi: UseFormReturn<IClientCreate, any, undefined>,
-  updateFormStatus: (formStatus: formStatuses) => void
+  updateFormStatus: (formStatus: formStatuses) => void,
+  cardId: string
 ) {
-  const { updateClientFn, isPending: loadingUpdateClient, error: editError } = useUpdateClient();
+  const { updateClientFn, isPending: loadingUpdateClient, error: editError } = useUpdateClient(cardId);
   const onClickEditButton = async (id: number, clientData: IClientCreate) => {
     const res = await updateClientFn({ id: id, body: clientData });
     if (res) updateFormStatus('frozen');

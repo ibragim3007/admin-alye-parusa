@@ -72,9 +72,13 @@ export type UpdateClientParams = {
   body: IClientCreate;
 };
 
-export const useUpdateClient = () => {
+export const useUpdateClient = (cardId: string) => {
+  const queryClient = useQueryClient();
   const { mutateAsync, isPending, isError, error } = useMutation({
     mutationFn: (params: UpdateClientParams) => updateClient(params.id, params.body),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['client'] });
+    },
   });
 
   const updateClientFn = async (params: UpdateClientParams) => {
@@ -97,6 +101,7 @@ export const useGetClientById = (idCard?: number, formStatus?: formStatuses) => 
     queryKey: ['client', idCard],
     queryFn: () => (idCard ? getClientById(idCard) : Promise.resolve(null)),
     enabled: !!idCard, // Запрос выполняется только если есть id
+    refetchOnWindowFocus: false,
   });
 
   return {
