@@ -1,7 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface DeleteButtonConfirmationProps {
   callback: () => void;
@@ -9,6 +9,8 @@ interface DeleteButtonConfirmationProps {
   loading?: boolean;
   content?: string;
   renderButon?: React.ReactNode;
+  open: boolean;
+  handleClose: () => void;
 }
 
 export default function DeleteButtonConfirmation({
@@ -17,27 +19,25 @@ export default function DeleteButtonConfirmation({
   title,
   content,
   loading,
+  handleClose,
+  open,
 }: DeleteButtonConfirmationProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
       <Tooltip title="Delete">
         {renderButon ? (
-          <div onClick={toggleModal}>{renderButon}</div>
+          <div onClick={handleClose}>{renderButon}</div>
         ) : (
-          <IconButton onClick={toggleModal}>
+          <IconButton onClick={handleClose}>
             <DeleteIcon />
           </IconButton>
         )}
       </Tooltip>
-      <Dialog open={isOpen} onClose={toggleModal}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{content}</DialogContent>
         <DialogActions>
-          <Button autoFocus variant="contained" onClick={toggleModal}>
+          <Button autoFocus variant="contained" onClick={handleClose}>
             Отменить
           </Button>
           <LoadingButton

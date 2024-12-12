@@ -17,10 +17,18 @@ interface CardItemProps {
 }
 
 export default function CardItem({ card, ClientForm, params }: CardItemProps) {
+  const [open, setOpen] = useState(false);
+  const toggleDialog = () => setOpen(!open);
+
   const { changeCardStatusFn, isPending } = useUpdateCardStatus(params);
   const { deleteCardFn, isPending: deleteLoading } = useDeleteCard();
   const [showForm, setShowForm] = useState(false);
   const toggleForm = () => setShowForm(!showForm);
+
+  const deleteHandler = async (cardId: number) => {
+    const res = await deleteCardFn(cardId);
+    if (res) toggleDialog;
+  };
 
   const isClientExist = card.clientId !== null;
 
@@ -59,8 +67,10 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
               <StatusInfo onChangeStatus={changeCardStatusFn} card={card} isLoading={isPending} />
 
               <DeleteButtonConfirmation
+                open={open}
+                handleClose={toggleDialog}
                 loading={deleteLoading}
-                callback={() => void deleteCardFn(card.id)}
+                callback={() => void deleteHandler(card.id)}
                 title="Вы уверены что хотите удалить карту навсегда?"
                 content="Если вы это сделаете, будут утеряны все данные о турах этой карты и баланс её бонусов."
               />

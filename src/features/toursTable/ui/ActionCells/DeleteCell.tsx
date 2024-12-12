@@ -2,8 +2,7 @@ import { useDeleteTour } from '@/entities/tour/tour.repository';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
 import DeleteButtonConfirmation from '@/shared/ui/delete-dialog/DeleteButtonConfirmation';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { LoadingButton } from '@mui/lab';
-import { Button, Dialog, DialogActions, DialogTitle, Grid2, Icon, IconButton } from '@mui/material';
+import { Grid2, IconButton } from '@mui/material';
 import { useState } from 'react';
 
 interface DeleteCellProps {
@@ -12,9 +11,8 @@ interface DeleteCellProps {
 
 export default function DeleteCell({ tour }: DeleteCellProps) {
   const [open, setOpen] = useState(false);
-  const toggleDialog = () => {
-    setOpen(!open);
-  };
+  const toggleDialog = () => setOpen(!open);
+
   const { deleteTourFn, isPending } = useDeleteTour();
 
   async function handleDelete(id: number) {
@@ -27,6 +25,8 @@ export default function DeleteCell({ tour }: DeleteCellProps) {
   return (
     <Grid2 container justifyContent="center" alignItems="center" height="100%">
       <DeleteButtonConfirmation
+        open={open}
+        handleClose={toggleDialog}
         renderButon={
           <IconButton>
             <DeleteIcon color="error" />

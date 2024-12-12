@@ -1,7 +1,7 @@
 import { formatCardNumber } from '@/entities/card/helpers/formatCardNumber';
 import { ITourClientGet } from '@/entities/tour/types';
 import LabelContainer from '@/shared/ui/LabelContainer';
-import { Card, Chip, Grid2, Typography } from '@mui/material';
+import { Card, Chip, Grid2, Tooltip, Typography } from '@mui/material';
 
 interface CardInfoBigProps {
   tour: ITourClientGet;
@@ -36,12 +36,14 @@ export default function CardInfoBig({ tour, BalanceComponent, CreateTourComponen
                   containerProps={{ container: true, flexDirection: 'row', gap: 1, alignItems: 'center' }}
                 >
                   <Typography>{formatCardNumber(tour.card.cardNumber)}</Typography>
-                  <Chip
-                    color="default"
-                    style={{ fontSize: 16 }}
-                    label={`${tour.card.bonusPercentage}%`}
-                    variant="outlined"
-                  />
+                  <Tooltip title="Бонусные проценты">
+                    <Chip
+                      color="default"
+                      style={{ fontSize: 16 }}
+                      label={`${tour.card.bonusPercentage}%`}
+                      variant="outlined"
+                    />
+                  </Tooltip>
                 </LabelContainer>
               </Grid2>
               <LabelContainer label="Комментарий оператора о клиенте">

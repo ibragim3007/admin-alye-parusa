@@ -73,7 +73,7 @@ export function useDeleteCard() {
   });
 
   const deleteCardFn = async (id: number) => {
-    await handleMutation(() => mutateAsync(id), FeedbackMessage.deleteMessage('карта'));
+    return await handleMutation(() => mutateAsync(id), FeedbackMessage.deleteMessage('карта'));
   };
 
   return {
@@ -96,25 +96,6 @@ export function useUpdateCardStatus(params?: CardGetPaginationParams) {
         queryKey: cardsKey,
       });
     },
-    // onSuccess: (updatedCard) => {
-    //   console.log(updatedCard);
-    //   queryClient.setQueryData(
-    //     [[...cardsKey, params?.page, params?.searchString]],
-    //     (oldCards: CardsGetPaginationDto | undefined) => {
-    //       console.log(oldCards);
-    //       if (!oldCards) return [];
-
-    //       const updatedCache = {
-    //         ...oldCards,
-    //         cards: oldCards.cards.map((card: ICard) =>
-    //           card.id === updatedCard.id ? { ...card, ...updatedCard } : card
-    //         ),
-    //       };
-
-    //       return updatedCache;
-    //     }
-    //   );
-    // },
   });
 
   const changeCardStatusFn = async (data: UpdateCardStatusParams) => {
