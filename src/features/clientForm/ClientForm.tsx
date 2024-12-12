@@ -62,8 +62,9 @@ export default function ClientForm({
   const { onClickEditButton, loadingUpdateClient } = useEditClientForm(formApi, updateFormStatus, cardId);
 
   useEffect(() => {
-    if (data && !isFetching && !isLoading) formApi.reset(data);
-  }, [data, isLoading, isFetching, loadingUpdateClient]);
+    console.log(data, isLoading);
+    if (data && !isLoading) formApi.reset(data);
+  }, [data, isLoading]);
 
   const isFrozen = formStatus === 'frozen';
   const isNewClient = formStatus === 'create';

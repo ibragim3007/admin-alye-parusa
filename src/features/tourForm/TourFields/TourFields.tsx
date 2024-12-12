@@ -93,7 +93,7 @@ export default function TourFields({
           options={tourStates}
           fullWidth
           disabled={disableForm}
-          translateOptions={tourStateStatusesConverted} // Передаем объект перевода
+          translateOptions={tourStateStatusesConverted}
         />
         <Grid2 container gap={3} flexDirection="row" wrap="nowrap" justifyContent="space-between">
           <RHFDatePicker label="Дата отправления" name="fromDate" control={control} disabled={disableForm} />
