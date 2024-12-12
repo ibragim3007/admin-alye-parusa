@@ -16,6 +16,7 @@ const Theme: React.FC<ThemeProps> = ({ children }) => {
           },
           text: {
             primary: '#000000',
+
             secondary: '#555555',
           },
         },

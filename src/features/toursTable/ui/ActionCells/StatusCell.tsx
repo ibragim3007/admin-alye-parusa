@@ -2,6 +2,7 @@ import { useGetTourStates } from '@/entities/dictionary/dictionary.repository';
 import { useChangeStateTour } from '@/entities/tour/tour.repository';
 import { TourStateType } from '@/shared/api/entities/dictionary/types';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
+import { tourStateStatusesConverted } from '@/shared/enums/cardStatusesConverted';
 import LoaderGeneral from '@/shared/ui/LoaderGeneral';
 import { MenuItem, Select } from '@mui/material';
 
@@ -33,7 +34,7 @@ export default function StatusCell({ tour }: StatusCellProps) {
     <Select
       disabled={isPending || isLoading}
       size="small"
-      value={tour.state}
+      value={tourStateStatusesConverted[tour.state] || tour.state}
       onChange={(event) => void handleChangeState(tour.id, event.target.value as TourStateType)}
       fullWidth
       displayEmpty
@@ -46,7 +47,7 @@ export default function StatusCell({ tour }: StatusCellProps) {
     >
       {data?.map((state) => (
         <MenuItem key={state} value={state}>
-          {state}
+          {tourStateStatusesConverted[state] || state}
         </MenuItem>
       ))}
     </Select>

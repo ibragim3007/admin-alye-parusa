@@ -8,6 +8,7 @@ import { numberFormatToPriceFormat } from '@/shared/helpers/priceFormat';
 import RHFDatePicker from '@/shared/ui/inputs/RHFDatePicker';
 import LabelContainer from '@/shared/ui/LabelContainer';
 import { RHFTextField } from '@/shared/ui/RHFTextField';
+import { tourStateStatusesConverted } from '@/shared/enums/cardStatusesConverted';
 
 import { Grid2, Typography } from '@mui/material';
 import { Dayjs } from 'dayjs';
@@ -92,6 +93,7 @@ export default function TourFields({
           options={tourStates}
           fullWidth
           disabled={disableForm}
+          translateOptions={tourStateStatusesConverted} // Передаем объект перевода
         />
         <Grid2 container gap={3} flexDirection="row" wrap="nowrap" justifyContent="space-between">
           <RHFDatePicker label="Дата отправления" name="fromDate" control={control} disabled={disableForm} />

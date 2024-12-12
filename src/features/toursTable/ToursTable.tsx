@@ -1,20 +1,20 @@
 import { ITourClientGet } from '@/entities/tour/types';
 import { TourGetDto } from '@/shared/api/entities/tour/types/res.type';
-import { getFromToDateString } from '@/shared/helpers/getFromToDateString';
 import { Grid2 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
+import { useGetTourByClientId } from '@/entities/tour/tour.repository';
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowClassNameParams } from '@mui/x-data-grid';
 import { ruRU } from '@mui/x-data-grid/locales';
+import { AllowedToSpendProps } from '../allowedToSpend/AllowedToSpend';
+import { BonusExpectationProps } from '../bonusExpectation/BonusExpectation';
+import { TourFieldsProps } from '../tourForm/TourFields/TourFields';
 import DeleteCell from './ui/ActionCells/DeleteCell';
 import StatusCell from './ui/ActionCells/StatusCell';
 import UpdateCell from './ui/ActionCells/UpdateCell';
 import BonusSell from './ui/Cells/BonusSell';
+import DestinationCell from './ui/Cells/DestinationCell';
 import PriceSell from './ui/Cells/PriceSell';
-import { TourFieldsProps } from '../tourForm/TourFields/TourFields';
-import { AllowedToSpendProps } from '../allowedToSpend/AllowedToSpend';
-import { BonusExpectationProps } from '../bonusExpectation/BonusExpectation';
-import { useGetTourByClientId } from '@/entities/tour/tour.repository';
 
 const useStyles = makeStyles({
   transparentRow: {
@@ -43,18 +43,14 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
       headerName: 'Отправление / Прибытие',
       flex: 1,
       minWidth: 230,
-      valueGetter: (val: string, row: TourGetDto) => {
-        return getFromToDateString(row.fromDate, row.toDate);
-      },
+      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <DestinationCell tour={row} />,
     },
     {
       field: 'finalPrice',
       flex: 1,
       minWidth: 150,
       headerName: 'Стоймость',
-      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => (
-        <PriceSell price={row.price} finalPrice={row.finalPrice} />
-      ),
+      renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <PriceSell tour={row} />,
     },
     {
       field: 'bonusSpending',
@@ -66,8 +62,8 @@ export default function ToursTable({ data, TourFields, BonusExpectationComponent
     {
       field: 'state',
       headerName: 'Статус',
-      flex: 0.7,
-      minWidth: 145,
+      flex: 1,
+      minWidth: 155,
       renderCell: ({ row }: GridRenderCellParams<TourGetDto>) => <StatusCell tour={row} />,
     },
     {

@@ -48,7 +48,17 @@ export default function UpdateCell({ tour, TourFields, BonusExpectationComponent
     if (formState === 'frozen') formApi.reset();
   }, [formApi, formState]);
 
-  const handlerClickEdit = async (data: TourCreateDto) => await updateTourFn({ id: tour.id, data: data });
+  useEffect(() => {
+    if (!isPending) formApi.reset({ ...tour, fromDate: new Date(tour.fromDate), toDate: new Date(tour.toDate) });
+  }, [formApi, isPending, tour]);
+
+  const handlerClickEdit = async (data: TourCreateDto) => {
+    const res = await updateTourFn({ id: tour.id, data: data });
+    if (res) {
+      toggleDialog();
+      updateFormStatus('frozen');
+    }
+  };
 
   const handleClickCancel = () => {
     formApi.reset();

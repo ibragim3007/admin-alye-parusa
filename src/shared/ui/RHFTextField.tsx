@@ -14,10 +14,11 @@ interface RHFTextFieldProps<T extends FieldValues> {
   disabled?: boolean;
   error?: boolean;
   helperText?: string;
-  value?: string | number;
+  value?: string;
   currencyFormat?: boolean; // Новый пропс для валюты
   decimalScale?: number; // Количество знаков после запятой
   prefix?: string; // Префикс для валюты, например, "$"
+  translateOptions?: Record<string, string>; // Новый пропс для перевода опций
 }
 
 export const RHFTextField = <T extends FieldValues>({
@@ -35,8 +36,13 @@ export const RHFTextField = <T extends FieldValues>({
   currencyFormat = false,
   decimalScale = 2,
   prefix = '',
+  translateOptions,
 }: RHFTextFieldProps<T>) => {
   if (options) {
+    const translatedOptions = options.map((option) => ({
+      label: translateOptions ? translateOptions[option] : option,
+      value: option,
+    }));
     return (
       <Controller
         name={name}
@@ -44,11 +50,13 @@ export const RHFTextField = <T extends FieldValues>({
         render={({ field, fieldState: { error } }) => (
           <Autocomplete
             {...field}
-            onChange={(_, value) => {
-              field.onChange(value);
-              if (onChangeHandler) onChangeHandler(value);
+            value={translatedOptions.find((opt) => opt.value === (value ? value : field.value)) || null}
+            onChange={(_, newValue) => {
+              field.onChange(newValue?.value);
+              if (onChangeHandler) onChangeHandler(newValue?.value);
             }}
-            options={options}
+            options={translatedOptions}
+            getOptionLabel={(option) => option.label}
             renderInput={(params) => (
               <TextField
                 {...params}
