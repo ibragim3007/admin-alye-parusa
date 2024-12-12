@@ -1,7 +1,7 @@
 import { apiConfig } from '@/shared/config/apiConfig';
 import { api } from '../../api';
 import { TourClientGetDto, TourClientQueryParamsDto, TourGetDto } from './types/res.type';
-import { ChangeTourStateDto, TourCreateDto } from './types/req.type';
+import { ChangeTourStateDto, TourCreateDto, TourUpdateDto } from './types/req.type';
 
 // Получить список туров
 export async function getTours() {
@@ -26,6 +26,10 @@ export async function getTourById(id: number) {
 // Изменить состояние тура
 export async function changeTourState(id: number, params: ChangeTourStateDto) {
   return (await api.put<Promise<TourGetDto>>(apiConfig.tour.put.changeState(id), null, { params })).data;
+}
+
+export async function changeTour(id: number, payload: TourUpdateDto) {
+  return (await api.put<Promise<TourGetDto>>(apiConfig.tour.put.tour(id), payload)).data;
 }
 
 // Получить список туров по клиенту

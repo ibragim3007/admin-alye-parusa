@@ -18,9 +18,15 @@ export interface TourFieldsProps {
   formApi: UseFormReturn<TourCreateDto, any, undefined>;
   BonusExpectationComponent: React.ElementType<BonusExpectationProps>;
   AllowedToSpend: React.ElementType<AllowedToSpendProps>;
+  disableForm?: boolean;
 }
 
-export default function TourFields({ formApi, BonusExpectationComponent, AllowedToSpend }: TourFieldsProps) {
+export default function TourFields({
+  formApi,
+  disableForm,
+  BonusExpectationComponent,
+  AllowedToSpend,
+}: TourFieldsProps) {
   const { control, setValue } = formApi;
   const { bonusSpending, price, fromDate, toDate, cardId } = useWatch({ control });
   const { data: tourStates } = useGetTourStates();
@@ -35,7 +41,7 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
   const bonusSpendingValue = bonusSpending ?? 0;
   const priceValue = price ?? 0;
 
-  const priceLessThanZero = priceValue <= 0;
+  const priceLessThanZero = priceValue < 0;
   const allowedToSpendLessThanZero = allowedToSpendValue <= 0;
   const bonusSpendingLessThanZero = bonusSpendingValue < 0;
 
@@ -47,18 +53,25 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
   return (
     <FormProvider {...formApi}>
       <Grid2 container gap={2} flexDirection="column">
-        <RHFTextField label="Название тура" name="name" control={control} />
-        <RHFTextField label="Описание" name="description" control={control} multiline rows={2} />
+        <RHFTextField label="Название тура" name="name" control={control} disabled={disableForm} />
+        <RHFTextField label="Описание" name="description" control={control} multiline rows={2} disabled={disableForm} />
         <Grid2 flexDirection="column" container gap={3}>
           <AllowedToSpend id={cardId} price={price || 0} bonuses={bonusSpending || 0} />
           <Grid2 gap={3} container flexDirection="row">
             <Grid2 container flexDirection="column" gap={2}>
-              <RHFTextField name="price" label="Цена" control={control} currencyFormat decimalScale={0} />
+              <RHFTextField
+                name="price"
+                label="Цена"
+                control={control}
+                currencyFormat
+                decimalScale={0}
+                disabled={disableForm}
+              />
               <RHFTextField
                 label="Бонусы"
                 name="bonusSpending"
                 control={control}
-                disabled={!disableBonusInput}
+                disabled={!disableBonusInput || disableForm}
                 currencyFormat
                 decimalScale={0}
               />
@@ -72,10 +85,17 @@ export default function TourFields({ formApi, BonusExpectationComponent, Allowed
           </Grid2>
         </Grid2>
 
-        <RHFTextField label="Статус" name="state" control={control} options={tourStates} fullWidth />
+        <RHFTextField
+          label="Статус"
+          name="state"
+          control={control}
+          options={tourStates}
+          fullWidth
+          disabled={disableForm}
+        />
         <Grid2 container gap={3} flexDirection="row" wrap="nowrap" justifyContent="space-between">
-          <RHFDatePicker label="Дата отправления" name="fromDate" control={control} />
-          <RHFDatePicker label="Дата возвращения" name="toDate" control={control} />
+          <RHFDatePicker label="Дата отправления" name="fromDate" control={control} disabled={disableForm} />
+          <RHFDatePicker label="Дата возвращения" name="toDate" control={control} disabled={disableForm} />
         </Grid2>
         <Typography>
           {formatTourDates(

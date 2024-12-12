@@ -31,6 +31,16 @@ export class TourCreateDto {
   }
 }
 
+export interface TourUpdateDto {
+  state: TourStateType;
+  name: string;
+  description: string;
+  fromDate: Date;
+  toDate: Date;
+  price: number;
+  bonusSpending: number;
+}
+
 export type ChangeTourStateDto = {
   tourState: TourStateType;
 };

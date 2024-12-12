@@ -1,4 +1,5 @@
 import {
+  changeTour,
   changeTourState,
   createTour,
   deleteTour,
@@ -117,23 +118,27 @@ export const useChangeStateTour = (clientId: number, cardId: number) => {
   };
 };
 
+type UpdateTourParams = { id: number; data: TourCreateDto };
+
 export function useUpdateTour() {
   const queryClient = useQueryClient();
-  const { mutateAsync, isPending } = useMutation({
+  const { mutateAsync, isPending, error } = useMutation({
     mutationKey: toursByClientKey,
-    mutationFn: (data: TourCreateDto) => createTour(data),
+    mutationFn: (params: UpdateTourParams) => changeTour(params.id, params.data),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: toursByClientKey });
+      void queryClient.invalidateQueries({ queryKey: ['balance'] });
     },
   });
 
-  const updateTourFn = async (data: TourCreateDto) => {
-    return await handleMutation(() => mutateAsync(data), FeedbackMessage.updatedMessage('тур'));
+  const updateTourFn = async (params: UpdateTourParams) => {
+    return await handleMutation(() => mutateAsync(params), FeedbackMessage.updatedMessage('тур'));
   };
 
   return {
     updateTourFn,
     isPending,
+    error,
   };
 }
 

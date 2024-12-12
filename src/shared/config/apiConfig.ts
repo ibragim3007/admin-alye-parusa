@@ -58,6 +58,7 @@ export const apiConfig = {
     },
     put: {
       changeState: (id: IdType) => `/api/tours/${id}/change-state`,
+      tour: (id: IdType) => `/api/tours/${id}`,
     },
   },
 };
