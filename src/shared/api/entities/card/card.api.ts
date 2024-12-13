@@ -1,12 +1,6 @@
 import { apiConfig } from '@/shared/config/apiConfig';
 import { api } from '../../api';
-import {
-  CardBonusExceptationDto,
-  CardBonusSpendingAllowedDto,
-  CardChangeStatusDto,
-  CardCreateDto,
-  CardGetPaginationParams,
-} from './types/req.type';
+import { CardBonusExceptationDto, CardChangeStatusDto, CardCreateDto, CardGetPaginationParams } from './types/req.type';
 import {
   BonusExpectationResponseDto,
   CardBalanceResponseDto,

@@ -87,6 +87,7 @@ export default function UpdateCell({ tour, TourFields, BonusExpectationComponent
         <DialogContent sx={{ paddingTop: 2 }}>
           <Grid2 container gap={3} flexDirection="column">
             <TourFields
+              tourId={tour.id}
               formApi={formApi}
               BonusExpectationComponent={BonusExpectationComponent}
               AllowedToSpend={AllowedToSpend}

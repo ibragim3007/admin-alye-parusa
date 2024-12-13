@@ -8,10 +8,11 @@ export interface BonusExpectationProps {
   id?: number;
   price?: number;
   bonuses?: number;
+  tourId?: number;
 }
 
-export default function BonusExpectation({ id, price }: BonusExpectationProps) {
-  const { data, isLoading, isFetching } = useGetBonusExpectation(id, { price: price || 0, bonuses: 0 });
+export default function BonusExpectation({ id, price, tourId }: BonusExpectationProps) {
+  const { data, isLoading, isFetching } = useGetBonusExpectation(id, { price: price || 0, bonuses: 0, tourId: tourId });
 
   return (
     <LabelContainer label="Бонусов к начислению">

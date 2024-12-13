@@ -126,8 +126,9 @@ export function useGetCardBalance(cardId: number) {
 }
 
 export function useGetBonusExpectation(id?: number, params?: CardBonusExceptationDto) {
+  console.log(params?.tourId);
   const debouncedPrice = useDebounce(params?.price, 500);
-  const debouncedBonuses = useDebounce(params?.bonuses, 500); // Add debounce with 500ms delay
+  const debouncedBonuses = useDebounce(params?.bonuses, 500);
 
   const { data, error, isLoading, isFetching } = useQuery({
     queryKey: [...cardsKey, debouncedPrice, debouncedBonuses],
@@ -139,7 +140,12 @@ export function useGetBonusExpectation(id?: number, params?: CardBonusExceptatio
       debouncedBonuses !== undefined &&
       params.price > 0 &&
       params.bonuses >= 0
-        ? getBonusExpectation(id, { ...params, price: debouncedPrice, bonuses: debouncedBonuses })
+        ? getBonusExpectation(id, {
+            ...params,
+            price: debouncedPrice,
+            bonuses: debouncedBonuses,
+            tourId: params.tourId,
+          })
         : Promise.resolve(null),
   });
 

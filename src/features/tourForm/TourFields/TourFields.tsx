@@ -20,6 +20,7 @@ export interface TourFieldsProps {
   BonusExpectationComponent: React.ElementType<BonusExpectationProps>;
   AllowedToSpend: React.ElementType<AllowedToSpendProps>;
   disableForm?: boolean;
+  tourId?: number;
 }
 
 export default function TourFields({
@@ -27,11 +28,16 @@ export default function TourFields({
   disableForm,
   BonusExpectationComponent,
   AllowedToSpend,
+  tourId,
 }: TourFieldsProps) {
   const { control, setValue } = formApi;
   const { bonusSpending, price, fromDate, toDate, cardId } = useWatch({ control });
   const { data: tourStates } = useGetTourStates();
-  const { data } = useGetBonusExpectation(cardId, { price: price || 0, bonuses: bonusSpending || 0 });
+  const { data } = useGetBonusExpectation(cardId, {
+    price: price || 0,
+    bonuses: bonusSpending || 0,
+    tourId: tourId || 0,
+  });
 
   useEffect(() => {
     if (bonusSpending && bonusSpending > (data?.allowedToSpend ?? 0) && (data?.allowedToSpend ?? 0) !== 0)
@@ -57,7 +63,7 @@ export default function TourFields({
         <RHFTextField label="Название тура" name="name" control={control} disabled={disableForm} />
         <RHFTextField label="Описание" name="description" control={control} multiline rows={2} disabled={disableForm} />
         <Grid2 flexDirection="column" container gap={3}>
-          <AllowedToSpend id={cardId} price={price || 0} bonuses={bonusSpending || 0} />
+          <AllowedToSpend id={cardId} price={price || 0} bonuses={bonusSpending || 0} tourId={tourId} />
           <Grid2 gap={3} container flexDirection="row">
             <Grid2 container flexDirection="column" gap={2}>
               <RHFTextField
@@ -78,7 +84,7 @@ export default function TourFields({
               />
             </Grid2>
             <Grid2 container gap={1} flexDirection="column">
-              <BonusExpectationComponent id={cardId} price={price || 0} bonuses={bonusSpending || 0} />
+              <BonusExpectationComponent id={cardId} price={price || 0} bonuses={bonusSpending || 0} tourId={tourId} />
               <LabelContainer label="Бонусов будет списано">
                 <Typography color="error">{numberFormatToPriceFormat(bonusSpending || 0)}</Typography>
               </LabelContainer>

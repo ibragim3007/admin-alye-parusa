@@ -8,10 +8,15 @@ export interface AllowedToSpendProps {
   id?: number;
   price?: number;
   bonuses?: number;
+  tourId?: number;
 }
 
-export default function AllowedToSpend({ id, price, bonuses }: AllowedToSpendProps) {
-  const { data, isLoading, isFetching } = useGetBonusExpectation(id, { price: price || 0, bonuses: bonuses || 0 });
+export default function AllowedToSpend({ id, price, bonuses, tourId }: AllowedToSpendProps) {
+  const { data, isLoading, isFetching } = useGetBonusExpectation(id, {
+    price: price || 0,
+    bonuses: bonuses || 0,
+    tourId: tourId,
+  });
 
   return (
     <LabelContainer
