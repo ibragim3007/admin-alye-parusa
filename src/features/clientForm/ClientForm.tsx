@@ -38,7 +38,7 @@ export default function ClientForm({
   toggleForm,
 }: ClientFormProps) {
   const [formStatus, setFormStatus] = useState<formStatuses>(formStatusProps);
-  const { data, isLoading, isFetching } = useGetClientById(clientId || 0, formStatus);
+  const { data, isLoading } = useGetClientById(clientId || 0, formStatus);
   const updateFormStatus = (formStatus: formStatuses) => setFormStatus(formStatus);
   const { data: contactTypes } = useGetContactTypes();
 
@@ -62,7 +62,6 @@ export default function ClientForm({
   const { onClickEditButton, loadingUpdateClient } = useEditClientForm(formApi, updateFormStatus, cardId);
 
   useEffect(() => {
-    console.log(data, isLoading);
     if (data && !isLoading) formApi.reset(data);
   }, [data, isLoading]);
 

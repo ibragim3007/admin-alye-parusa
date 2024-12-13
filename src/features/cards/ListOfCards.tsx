@@ -16,7 +16,6 @@ interface ListOfCardsProps {
 }
 
 export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps) {
-  // const [currentPage, setCurrentPage] = useState(pageNumber);
   const [amountOfPages, setAmountOfPages] = useState(0);
   const [sortType, setSortType] = useState<SortOrderType>('notBoundDescending');
   const handleChangeSortType = (updatedSortType: SortOrderType) => setSortType(updatedSortType);
@@ -33,7 +32,7 @@ export default function ListOfCards({ ClientForm, pageNumber }: ListOfCardsProps
 
   const handleChangeCurrentPage = (event: React.ChangeEvent<unknown>, value: number) => {
     navigate(`/cards/${value}`);
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {

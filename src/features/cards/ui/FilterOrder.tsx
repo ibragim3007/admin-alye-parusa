@@ -1,4 +1,5 @@
 import { SortOrderType } from '@/shared/api/entities/dictionary/types';
+import { sortOrderTypeCoverted } from '@/shared/enums/cardStatusesConverted';
 import { SortOrderTypesArray } from '@/shared/enums/constants';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
@@ -27,7 +28,7 @@ export default function FilterOrder({ value, onChange }: FilterOrderProps) {
       >
         {SortOrderTypesArray.map((orderType) => (
           <MenuItem key={orderType} value={orderType}>
-            {orderType}
+            {sortOrderTypeCoverted[orderType] || orderType}
           </MenuItem>
         ))}
       </Select>

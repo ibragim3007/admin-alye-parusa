@@ -1,5 +1,5 @@
 import { CardStatusType } from '@/shared/api/entities/card/types/res.type';
-import { TourStateType } from '../api/entities/dictionary/types';
+import { SortOrderType, TourStateType } from '../api/entities/dictionary/types';
 
 export const cardStatusesConverted: Record<CardStatusType, string> = {
   attached: 'Активирована',
@@ -12,4 +12,10 @@ export const tourStateStatusesConverted: Record<TourStateType, string> = {
   canceled: 'отменен',
   deleted: 'удален',
   created: 'не оплачен',
+};
+
+export const sortOrderTypeCoverted: Record<SortOrderType, string> = {
+  ascending: 'По возрастанию',
+  notBoundDescending: 'Сначала непривязанные',
+  descending: 'По убыванию',
 };
