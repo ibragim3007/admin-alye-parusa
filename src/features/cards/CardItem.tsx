@@ -38,7 +38,13 @@ export default function CardItem({ card, ClientForm, params }: CardItemProps) {
         <Grid2 container flexDirection="column" gap={1}>
           <Grid2 container justifyContent="space-between">
             <Grid2>
-              <Typography variant="h6">{formatCardNumber(card.cardNumber)}</Typography>
+              <Grid2 spacing={2} container flexDirection="row">
+                <Typography variant="h6">{formatCardNumber(card.cardNumber)}</Typography>
+                <Typography color="success" variant="h6">
+                  ({card.balance})
+                </Typography>
+              </Grid2>
+
               {card.shortName && (
                 <Typography color="info" variant="body1">
                   {card.shortName}

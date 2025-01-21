@@ -17,7 +17,7 @@ export type CardGetDto = {
   cardNumber: number;
   clientId: number | null;
   status: CardStatusType;
-
+  balance: number;
   bonusPercentage: number;
   createdAt: string;
   updatedAt: string;
