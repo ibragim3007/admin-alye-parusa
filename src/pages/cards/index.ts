@@ -1,5 +1,3 @@
-import { lazy } from 'react';
+import CardsPage from './CardsPage';
 
-const CardsPageLazy = lazy(() => import('./CardsPage'));
-
-export { CardsPageLazy };
+export { CardsPage };

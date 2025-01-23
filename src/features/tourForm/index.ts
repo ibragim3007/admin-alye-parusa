@@ -1,6 +1,4 @@
-import { lazy } from 'react';
+import TourFields from './TourFields/TourFields';
+import TourForm from './TourForm';
 
-const TourFormLazy = lazy(() => import('./TourForm'));
-const TourFieldsLazy = lazy(() => import('./TourFields/TourFields'));
-
-export { TourFormLazy, TourFieldsLazy };
+export { TourFields, TourForm };

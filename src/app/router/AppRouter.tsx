@@ -1,5 +1,5 @@
 import { useMe } from '@/entities/me/me.repository';
-import { CardsPageLazy } from '@/pages/cards';
+
 import { ClientsPage } from '@/pages/clients';
 import LoginPage from '@/pages/login/LoginPage';
 import { authService } from '@/shared/api/api';
@@ -8,6 +8,7 @@ import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { config } from './routerConfig';
 import { TourPageLazy } from '@/pages/tour';
+import { CardsPage } from '@/pages/cards';
 
 const AppRoter: React.FC = () => {
   const { data, isLoading } = useMe();
@@ -31,8 +32,8 @@ const AppRoter: React.FC = () => {
         ) : (
           <Routes>
             <Route path={config.cards}>
-              <Route index element={<CardsPageLazy />} />
-              <Route path={':pageNumber'} element={<CardsPageLazy />} />
+              <Route index element={<CardsPage />} />
+              <Route path={':pageNumber'} element={<CardsPage />} />
               <Route path={'client/:clientId'} element={<TourPageLazy />} />
             </Route>
             <Route path={config.clients} element={<ClientsPage />} />
