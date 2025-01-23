@@ -19,6 +19,7 @@ const queryClientInstance = new QueryClient({
 export interface IAuthService {
   getToken: () => string;
   setToken: (token: string) => void;
+  removeToken: () => void;
 }
 
 class ApiService {
@@ -33,8 +34,15 @@ class ApiService {
     this.queryClient = queryClient;
     this.authService = authService;
 
+    this.setDisableCache();
     this.setRequestInterceptor();
     this.setResonseInterceptor();
+  }
+
+  private setDisableCache() {
+    this.api.defaults.headers['Cache-Control'] = 'no-cache';
+    this.api.defaults.headers.Pragma = 'no-cache';
+    this.api.defaults.headers.Expires = '0';
   }
 
   private setRequestInterceptor() {

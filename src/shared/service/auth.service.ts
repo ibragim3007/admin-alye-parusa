@@ -12,6 +12,10 @@ export class AuthService implements IAuthService {
     if (!value) return '';
     return value;
   }
+
+  removeToken() {
+    document.cookie = '_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+  }
 }
 
 export function generateToken(str: string) {

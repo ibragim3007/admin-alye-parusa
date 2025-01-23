@@ -32,6 +32,7 @@ export default function LoginPage() {
         const res = await getMe();
         if (res) window.location.href = config.cards;
       } catch (e) {
+        authService.removeToken();
         Inform.error('Данные введены неверно');
       }
     }
