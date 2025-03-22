@@ -24,7 +24,13 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginInterface) => {
     setLoading(true);
-    const token = generateToken(`${data.login}:${data.password}`);
+
+    const dataUpdated = {
+      login: data.login.trim(),
+      password: data.password.trim().replace(/[^a-zA-Z0-9]/g, ''),
+    };
+
+    const token = generateToken(`${dataUpdated.login}:${dataUpdated.password}`);
 
     if (token) {
       authService.removeToken();

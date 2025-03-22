@@ -12,6 +12,7 @@ const queryClientInstance = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 0,
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -63,7 +64,7 @@ class ApiService {
       },
       (error: AxiosError) => {
         if (error.response?.status === 401 && error.config?.headers.Authorization) {
-          Inform.error('Ошибка авторизации');
+          Inform.error(`Ошибка авторизации ${JSON.stringify(error)}`);
           this.authService.setToken('');
         }
         return Promise.reject(error);
