@@ -27,6 +27,7 @@ export default function LoginPage() {
     const token = generateToken(`${data.login}:${data.password}`);
 
     if (token) {
+      authService.removeToken();
       authService.setToken(token);
       try {
         const res = await getMe();
@@ -35,6 +36,8 @@ export default function LoginPage() {
         authService.removeToken();
         Inform.error('Данные введены неверно');
       }
+    } else {
+      Inform.error('Ошибка авторизации связана с генерацией токена');
     }
     setLoading(false);
   };
